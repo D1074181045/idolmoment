@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateUserPasswordRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'old_password' => ['required', 'regex:/^[0-9A-Za-z]+$/', 'string', 'min:8', 'max:32'],
+            'new_password' => ['required', 'regex:/^[0-9A-Za-z]+$/', 'string', 'min:8', 'max:32'],
+            'new_password_confirm' => ['required', 'pwd_equal:new_password']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            //
+            'old_password.required' => '錯誤：舊密碼為空',
+            'old_password.regex' => '錯誤：舊密碼中含有特殊字元',
+            'old_password.min' => '錯誤：舊密碼必須介於8~32字元之間',
+            'old_password.max' => '錯誤：舊密碼必須介於8~32字元之間',
+            'new_password.required' => '錯誤：新密碼為空',
+            'new_password.regex' => '錯誤：新密碼中含有特殊字元',
+            'new_password.min' => '錯誤：新密碼必須介於8~32字元之間',
+            'new_password.max' => '錯誤：新密碼必須介於8~32字元之間',
+            'new_password_confirm.required' => '錯誤：二次密碼為空',
+            'new_password_confirm.pwd_equal' => '錯誤：二次密碼需相同',
+        ];
+    }
+}
