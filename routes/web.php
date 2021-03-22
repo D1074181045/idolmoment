@@ -24,7 +24,7 @@ use App\Http\Controllers\HomeController;
 Route::middleware('auth')->group(function(){
     Route::get('/logout', [UserController::class, 'logout'])->name('home.logout');
     Route::get('/update-password', [UserController::class, 'update_password'])->name('home.update.password');
-    Route::get('/create-profile', [HomeController::class, 'spa'])->name('user.create.profile');
+    Route::get('/create-profile', [UserController::class, 'create_profile'])->name('user.create.profile');
 });
 
 Route::get('/{user}', [UserController::class, 'spa'])

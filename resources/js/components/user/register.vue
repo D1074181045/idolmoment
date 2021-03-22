@@ -57,7 +57,6 @@ import { msg } from '../../styles';
 export default {
     data() {
         return {
-            error: {'status': 0, 'message': null},
             username: "",
             password: "",
             password_confirm: "",
@@ -69,6 +68,11 @@ export default {
     },
     components:{
         msg
+    },
+    computed:{
+        error() {
+            return this.$store.state.error;
+        }
     },
     methods: {
         disabled_class(status) {
@@ -121,15 +125,6 @@ export default {
 
             this.register_disabled = t !== 2;
         },
-        show_error: function (message) {
-            this.error.status = true;
-            this.error.message = message;
-
-            setTimeout(() => {
-                this.error.status = 0;
-                this.error.message = null;
-            }, 3000)
-        },
         back: function (){
             this.$router.push({ name:'login' });
         },
@@ -153,7 +148,7 @@ export default {
                     this.$router.push({name: 'login'});
                 }
                 else {
-                    this.show_error(message);
+                    this.$store.commit("show_error", message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -164,9 +159,9 @@ export default {
                         s += errors[error] + '\n';
                     });
 
-                    this.show_error(s);
+                    this.$store.commit("show_error", s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.$store.commit("show_error", "發生錯誤: " + err.statusText);
                 }
             });
         },

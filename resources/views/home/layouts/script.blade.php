@@ -3,14 +3,6 @@
 {{ Html::script( mix('js/manifest.js') ) }}
 
 <script type="text/javascript">
-    {{--axios.defaults.headers.common['Authorization'] = 'Bearer {{ $api_token }}';--}}
-
-    {{--$.ajaxSetup({--}}
-    {{--    headers: {--}}
-    {{--        'Authorization': 'Bearer {{ $api_token }}'--}}
-    {{--    }--}}
-    {{--});--}}
-
     var ban_type = {signature: false, activity: false, operating: false, chat: false};
 
     const batch_change_value = (list) => {
@@ -200,9 +192,9 @@
                     if (danger_msg.length) {
                         clearTimeout(clear_danger_msg);
                         danger_msg.remove();
-                        $('#main').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
+                        $('#app').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
                     } else {
-                        $('#main').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
+                        $('#app').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
                     }
 
                     clear_danger_msg = setTimeout(() => {

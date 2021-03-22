@@ -53,9 +53,9 @@ class UserController extends Controller
         $self_info = Auth::user()->GameInfo;
 
         if (!is_null($self_info))
-            return Redirect::to(Route('home.index'));
+            return Redirect::to(Route('home', ''));
         else
-            return view('home.create-profile');
+            return view('home.app');
     }
 
     public function update_password() {

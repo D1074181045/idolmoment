@@ -56,7 +56,7 @@ import { msg } from '../../styles';
 export default {
     data() {
         return {
-            error: {'status': 0, 'message': null},
+            // error: {'status': 0, 'message': null},
             username: "",
             password: "",
             autologin: false,
@@ -68,6 +68,11 @@ export default {
     },
     components:{
         msg
+    },
+    computed:{
+        error() {
+            return this.$store.state.error;
+        }
     },
     methods: {
         disabled_class(status) {
@@ -89,15 +94,6 @@ export default {
             this.username_disabled = this.username.length <= 0;
             this.password_disabled = this.password.length <= 0;
             this.login_disabled = this.username_disabled || this.password_disabled;
-        },
-        show_error: function (message) {
-            this.error.status = true;
-            this.error.message = message;
-
-            setTimeout(() => {
-                this.error.status = 0;
-                this.error.message = null;
-            }, 3000)
         },
         to_register: function (){
             this.$router.push({ name:'register' });
@@ -123,7 +119,9 @@ export default {
                     this.password = "";
                     this.password_disabled = true;
                     this.autologin = false;
-                    this.show_error(message);
+                    this.login_disabled = true;
+
+                    this.$store.commit("show_error", message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -134,9 +132,9 @@ export default {
                         s += errors[error] + '\n';
                     });
 
-                    this.show_error(s);
+                    this.$store.commit("show_error", s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.$store.commit("show_error", "發生錯誤: " + err.statusText);
                 }
             });
         },

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from './store';
 import router from './router_user.js';
 
 class vue_global {
@@ -19,6 +20,7 @@ try {
 
     new Vue({
         el: '#app',
+        store,
         router
     });
 

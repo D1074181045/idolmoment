@@ -24,7 +24,7 @@ $dark_theme = Cookie::get('dark_theme', false);
     <body>
         <div id="app">
             @include('home.layouts.header')
-            <div class="col-md-6 center">
+            <div class="col-md-6 center" v-if="this.loaded">
                 <keep-alive>
                     <router-view v-if="$route.meta.KeepAlive"></router-view>
                 </keep-alive>

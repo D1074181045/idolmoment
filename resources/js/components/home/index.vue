@@ -6,54 +6,54 @@
                 <tbody>
                 <tr>
                     <th class="table-active">暱稱</th>
-                    <td>{{ nickname }}</td>
+                    <td>{{ profile.nickname }}</td>
                     <td rowspan="2" style="width: 80px;">
                         <div class="img-big">
                             <picture>
                                 <source type="image/png"
-                                        :srcset="characters_img_path(use_character.img_file_name)">
+                                        :srcset="characters_img_path(profile.use_character.img_file_name)">
                                 <img
-                                    :src="characters_img_path(use_character.img_file_name)"
-                                    :alt="characters_img_path(use_character.tc_name)">
+                                    :src="characters_img_path(profile.use_character.img_file_name)"
+                                    :alt="characters_img_path(profile.use_character.tc_name)">
                             </picture>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-active">偶像</th>
-                    <td>{{ use_character.tc_name }}</td>
+                    <td>{{ profile.use_character.tc_name }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">人氣</th>
-                    <td colspan="2">{{ popularity }}</td>
+                    <td colspan="2">{{ profile.popularity }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">名聲</th>
-                    <td colspan="2">{{ reputation }}</td>
+                    <td colspan="2">{{ profile.reputation }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">最大生命值</th>
-                    <td colspan="2">{{ max_vitality }}</td>
+                    <td colspan="2">{{ profile.max_vitality }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">目前生命值</th>
-                    <td colspan="2">{{ current_vitality }}</td>
+                    <td colspan="2">{{ profile.current_vitality }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">精力</th>
-                    <td colspan="2">{{ energy }}</td>
+                    <td colspan="2">{{ profile.energy }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">抗壓性</th>
-                    <td colspan="2">{{ resistance }}</td>
+                    <td colspan="2">{{ profile.resistance }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">魅力</th>
-                    <td colspan="2">{{ charm }}</td>
+                    <td colspan="2">{{ profile.charm }}</td>
                 </tr>
                 <tr>
                     <th class="table-secondary">轉生次數</th>
-                    <td colspan="2">{{ rebirth_counter }}</td>
+                    <td colspan="2">{{ profile.rebirth_counter }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -64,7 +64,8 @@
             <div class="tb-gap">
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;" for="signature">簽名檔</label>
-                    <input placeholder="最多30個字" type="text" name="signature" id="signature" class="form-control is-valid"
+                    <input placeholder="最多30個字" type="text" name="signature" id="signature"
+                           class="form-control is-valid"
                            value=""/>
                     <button type="button" id="set-signature" name="set-signature" class="btn btn-info">更新</button>
                 </div>
@@ -101,48 +102,34 @@
 </template>
 
 <script>
-    export default {
-        data () {
-            return {
-                nickname: this.my_profile.nickname,
-                popularity: this.my_profile.popularity,
-                reputation: this.my_profile.reputation,
-                max_vitality: this.my_profile.max_vitality,
-                current_vitality: this.my_profile.current_vitality,
-                energy: this.my_profile.energy,
-                resistance: this.my_profile.resistance,
-                charm: this.my_profile.charm,
-                rebirth_counter: this.my_profile.rebirth_counter,
-                use_character: this.my_profile.use_character,
-                graduate: this.my_profile.graduate,
-                signature: this.my_profile.signature,
-                teetee: this.my_profile.teetee
-            }
-        },
-        activated() {
-            if (!this.first_load) {
-                this.load_my_profile(true).then(() => {
-                    $.each(this.my_profile, (name, value) => {
-                        this[name] = value;
-                    })
-                });
-            }
-            this.first_load = false;
-        },
-        methods: {
-
+export default {
+    data() {
+        return {
         }
-    }
+    },
+    computed: {
+        profile: function () {
+            return this.$store.state.profile;
+        }
+    },
+    activated() {
+        if (!this.first_load) {
+            this.$store.dispatch('load_my_profile');
+        }
+        this.first_load = false;
+    },
+    methods: {}
+}
 </script>
 
 <style scoped>
-    .tb .tb-gap {
-        margin-top: 15px;
-        margin-bottom: 10px;
-    }
+.tb .tb-gap {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
 
-    button.btn.btn-bottom {
-        margin-bottom: 12px;
-        margin-right: 3px;
-    }
+button.btn.btn-bottom {
+    margin-bottom: 12px;
+    margin-right: 3px;
+}
 </style>

@@ -121,7 +121,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 更改簽名檔
+     * 獲得自己的遊戲資料
      *
      * @return JsonResponse
      */
@@ -164,7 +164,7 @@ class HomeController extends Controller
 
             return response()->json([
                 'status' => 1,
-                'my_profile' => $self_game_info,
+                'profile' => $self_game_info,
                 'teetee_info' => $teetee_info,
                 'cool_down' => $cool_down,
             ]);

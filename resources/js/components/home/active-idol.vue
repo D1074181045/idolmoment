@@ -31,7 +31,8 @@
                 <button type="button" disabled class="btn btn-info" value="1" v-on:click="up_page"
                         :disabled="up_page_disabled">上一頁
                 </button>
-                <input type="number" min="1" :max="total_pages" value="1" class="form-control" style="width: 70px; margin: 6px 2px;display: inline;"
+                <input type="number" min="1" :max="total_pages" value="1" class="form-control"
+                       style="width: 70px; margin: 6px 2px;display: inline;"
                        v-model="page_num" v-on:change="page">
                 <button type="button" class="btn btn-info" v-on:click="down_page"
                         :disabled="down_page_disabled">下一頁
@@ -105,7 +106,7 @@ export default {
             page_num: 1,
             total_pages: 1,
             max_popularity: 1,
-            current_popularity: this.my_profile.popularity,
+            current_popularity: this.$store.state.profile.popularity,
             idol_list: [],
             profile_path: '/profile/',
             first_page_disabled: false,
@@ -114,15 +115,24 @@ export default {
             down_page_disabled: false,
         }
     },
+    computed: {
+        name: function () {
+            return this.$store.state.profile.name;
+        },
+        teetee_info: function () {
+            return this.$store.state.teetee_info;
+        },
+    },
     activated() {
         if (this.reload()) {
-            this.current_popularity = this.my_profile.popularity;
+            this.current_popularity = this.$store.state.profile.popularity;
             this.page_num = 1;
             this.default_load();
         }
     },
     methods: {
         toProfile: function (path) {
+            // this.$router.push();
             window.location = this.profile_path.concat(path);
         },
         get_idol_list: function (page, popularity) {
@@ -159,17 +169,17 @@ export default {
             this.get_idol_list(this.page_num, this.current_popularity);
         },
         to_search_name: function () {
-            if (this.my_profile.name) {
-                axios.get(this.api_prefix.concat('/change-page/'), {
-                    params: {
-                        search_name: this.search_name,
-                    }
-                }).then(({status, idol_list}) => {
-                    if (status) {
-                        this.idol_list = idol_list;
-                    }
-                })
-            }
+            if (!this.search_name)
+                return;
+            axios.get(this.api_prefix.concat('/change-page/'), {
+                params: {
+                    search_name: this.search_name,
+                }
+            }).then(({status, idol_list}) => {
+                if (status) {
+                    this.idol_list = idol_list;
+                }
+            })
         },
         default_load: function () {
             this.get_idol_list(this.page_num, this.current_popularity);
@@ -200,7 +210,7 @@ export default {
         },
         idol_class: function (idol) {
             return {
-                self: this.my_profile.name === idol.name,
+                self: this.name === idol.name,
                 teetee: this.teetee_info.teetee_name === idol.name && this.teetee_info.status,
                 graduate: idol.graduate
             };
@@ -210,29 +220,29 @@ export default {
 </script>
 
 <style scoped>
-    picture img {
-        height: 60px;
-        width: 60px;
-    }
+picture img {
+    height: 60px;
+    width: 60px;
+}
 
-    .signature_td {
-        border-top: 1px solid var(--border-color);
-        padding: 4px 8px;
-    }
+.signature_td {
+    border-top: 1px solid var(--border-color);
+    padding: 4px 8px;
+}
 
-    .nickname_td {
-        padding: 4px 8px;
-    }
+.nickname_td {
+    padding: 4px 8px;
+}
 
-    .self {
-        background-color: var(--self-bg-color);
-    }
+.self {
+    background-color: var(--self-bg-color);
+}
 
-    .teetee {
-        background-color: var(--teetee-bg-color);
-    }
+.teetee {
+    background-color: var(--teetee-bg-color);
+}
 
-    .graduate {
-        color: var(--graduate-color);
-    }
+.graduate {
+    color: var(--graduate-color);
+}
 </style>

@@ -13,6 +13,12 @@ window.axios.interceptors.response.use(
         return response.data;
     },
     function (error) {
+        switch (error.response.status) {
+                case 401:
+                    document.location.href = "/logout";
+                    break;
+        }
+
         return Promise.reject(error.response);
     }
 );
