@@ -9,7 +9,7 @@
 
                     <div class="col-md-6">
                         <input type="text" class="form-control" autocomplete="off" required autofocus
-                               :class="disabled_class(username_disabled)" v-on:input="ban_register" v-model="username" />
+                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_register" v-model="username" />
                         <div style="font-size: 12px;margin: 4px 8px;">請介於5到15字元之間，且無特殊字元</div>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
 
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
-                               :class="disabled_class(password_disabled)" v-on:input="ban_register" :type="pw_type()" v-model="password" />
+                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register" :type="pw_type()" v-model="password" />
                         <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間，且無特殊字元</div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
 
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
-                               :class="disabled_class(password_disabled)" v-on:input="ban_register" :type="pw_type()" v-model="password_confirm"/>
+                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register" :type="pw_type()" v-model="password_confirm"/>
                     </div>
                     <button type="button" class="show-hide-toggle-button" tabindex="-1"
                             :class="pw_class()" :title="pw_title()" v-on:click="password_toggle_button"></button>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="card-footer" v-if="error.status">
-                <msg>{{ error.message }}</msg>
+                <msg style="text-align: center">{{ error.message }}</msg>
             </div>
         </div>
     </div>
@@ -72,12 +72,9 @@ export default {
     computed:{
         error() {
             return this.$store.state.error;
-        }
+        },
     },
     methods: {
-        disabled_class(status) {
-            return status ? 'is-invalid' : 'is-valid';
-        },
         pw_class: function () {
             return this.pw_is_show ? 'show-pw' : 'hide-pw';
         },

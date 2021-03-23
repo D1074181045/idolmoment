@@ -20,6 +20,8 @@ Route::get('/login', [UserController::class, 'login'])->name('api.login');
 Route::post('/register', [UserController::class, 'register'])->name('api.register');
 
 Route::middleware(['refresh.token'])->group(function(){
+    Route::get('/profile/{name}', [HomeController::class, 'profile']);
+    Route::get('/chat', [HomeController::class, 'get_chat']);
     Route::get('/my-profile', [HomeController::class, 'MyProfile']);
     Route::get('/own-character', [HomeController::class, 'own_character'])->name('home.own-character');
     Route::patch('/update-password', [UserController::class, 'update_password'])->name('api.update.password');

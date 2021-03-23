@@ -18,7 +18,6 @@ class UnlockCharacterEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $Character;
-    public bool $Back;
 
     /**
      * Create a new event instance.
@@ -29,7 +28,6 @@ class UnlockCharacterEvent implements ShouldBroadcast
     public function __construct($Character, bool $Back = false)
     {
         $this->Character = $Character;
-        $this->Back = $Back;
     }
 
     /**

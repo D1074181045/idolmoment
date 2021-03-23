@@ -23,7 +23,6 @@ use Illuminate\Validation\ValidationException;
 class HomeController extends Controller
 {
     public array $Character_List = array();
-    public bool $Back_Home = false;
 
     /**
      * 解鎖偶像
@@ -118,6 +117,43 @@ class HomeController extends Controller
         }
 
         return response()->json($Json);
+    }
+
+    public function get_chat() {
+
+        $chat_messages = ChatRoom::query()->Chat_info()->get();
+//        $chat_messages = ChatRoom::query()->with('GameInfo')->get();
+        $this->UsersNameEncrypt($chat_messages);
+
+        return response()->json([
+            'status' => 1,
+            'chat_messages' => $chat_messages,
+        ]);
+    }
+
+    public function profile($name) {
+//        $self_name = Auth::user()->name;
+        $opposite_name = $this->UserNameDecrypt($name);
+
+//        $self_game_info = GameInfo::query()->with('GameCharacter')->findOrFail($self_name);
+//        unset($self_game_info->name);
+
+        $opposite_game_info = GameInfo::query()->with('GameCharacter')
+            ->findOrFail($opposite_name, [
+                'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
+                'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character']);
+
+        $opposite_game_info['name'] = $name;
+        $opposite_game_info['use_character'] = [
+            'img_file_name' => $opposite_game_info->GameCharacter->img_file_name,
+            'tc_name' => $opposite_game_info->GameCharacter->tc_name,
+            'en_name' => $opposite_game_info->GameCharacter->en_name
+        ];
+
+        return response()->json([
+            'status' => 1,
+            'opposite_profile' => $opposite_game_info,
+        ]);
     }
 
     /**
@@ -630,7 +666,7 @@ class HomeController extends Controller
     {
         try {
             if (!empty($this->Character_List)) {
-                event(new UnlockCharacterEvent($this->Character_List, $this->Back_Home));
+                event(new UnlockCharacterEvent($this->Character_List));
             }
         } catch (Exception $e) {}
     }

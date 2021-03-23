@@ -64,8 +64,8 @@
                         </picture>
                     </div>
                 </td>
-                <td>{{ idol.popularity }}</td>
-                <td>{{ idol.reputation }}</td>
+                <td>{{ $store.getters.NumberFormat(idol.popularity, 'zh-TW') }}</td>
+                <td>{{ $store.getters.NumberFormat(idol.reputation, 'zh-TW') }}</td>
                 <td style="padding: 0;height: 50px;width: 50%;">
                     <div style="height: 100%;">
                         <div class="nickname_td">{{ idol.nickname }}</div>
@@ -99,6 +99,8 @@
 </template>
 
 <script>
+import profile from "./profile";
+
 export default {
     data() {
         return {
@@ -132,8 +134,7 @@ export default {
     },
     methods: {
         toProfile: function (path) {
-            // this.$router.push();
-            window.location = this.profile_path.concat(path);
+            this.$router.push({ name: 'profile', params: { name: path }});
         },
         get_idol_list: function (page, popularity) {
             this.current_popularity = popularity;
@@ -211,7 +212,7 @@ export default {
         idol_class: function (idol) {
             return {
                 self: this.name === idol.name,
-                teetee: this.teetee_info.teetee_name === idol.name && this.teetee_info.status,
+                teetee: this.teetee_info.status && this.teetee_info.teetee_name === idol.name && this.teetee_info.status,
                 graduate: idol.graduate
             };
         }

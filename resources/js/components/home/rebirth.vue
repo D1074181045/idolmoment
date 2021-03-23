@@ -50,9 +50,9 @@
                     </div>
                 </div>
             </div>
-            <div class="Msg" style="display:none;" id="Msg"></div>
         </div>
-        <button class="btn btn-primary btn-block" id="rebirth" style="margin: 0 0;">轉生</button>
+        <button class="btn btn-primary btn-block" style="margin: 0 0;"
+                :disabled="rebirth_disabled" v-on:click="to_rebirth">轉生</button>
     </div>
 </template>
 
@@ -60,27 +60,47 @@
     export default {
         data() {
             return {
+                rebirth_disabled: true,
                 selected_character: "",
                 own_character_list: [],
             }
         },
         activated() {
-            this.get_own_character();
+            this.get_own_character().then(() => {
+                document.getElementsByClassName('character-frame')[0].firstChild.click();
+                // $('div.character-frame').first().children().trigger('click');
+            });
         },
         methods: {
             character_select_status: function (character_name) {
                 return this.selected_character === character_name ? 'current-select' : 'not-select';
             },
             get_own_character: function () {
-                axios.get(this.api_prefix.concat('own-character'))
+                return axios.get(this.api_prefix.concat('own-character'))
                     .then(({status, own_character_list}) => {
-                    if (status) {
-                        this.own_character_list = own_character_list;
-                    }
-                })
+                        if (status) {
+                            this.own_character_list = own_character_list;
+                        }
+                    })
             },
             select_character: function (character_name) {
                 this.selected_character = character_name;
+                this.rebirth_disabled = false;
+            },
+            to_rebirth: function () {
+                this.rebirth_disabled = true;
+
+                axios.patch(this.api_prefix.concat('rebirth'), {
+                    character_name: this.selected_character,
+                }).then(({status}) => {
+                    if (status) {
+                        this.$router.push({ name:'index' })
+                    } else {
+                        this.rebirth_disabled = false;
+                    }
+                }).catch((err) => {
+                    this.rebirth_disabled = false;
+                });
             }
         }
     }

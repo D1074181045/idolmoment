@@ -23,23 +23,8 @@ class vue_global {
             }
         }
         Vue.prototype.characters_img_path = (img_file_name) => {
-            return 'img/characters/'.concat(img_file_name, '.jpg');
+            return '/img/characters/'.concat(img_file_name, '.jpg');
         }
-
-        // Vue.prototype.load_my_profile = () => {
-        //     window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
-        //
-        //     return axios.get(Vue.prototype.api_prefix.concat('my-profile'))
-        //         .then(({status, cool_down, my_profile, teetee_info}) => {
-        //             Vue.prototype.IsCreated = status;
-        //
-        //             if (status) {
-        //                 Vue.prototype.cool_down = cool_down;
-        //                 Vue.prototype.my_profile = my_profile;
-        //                 Vue.prototype.teetee_info = teetee_info;
-        //             }
-        //         })
-        // }
     }
 }
 

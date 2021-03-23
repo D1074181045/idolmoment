@@ -145,6 +145,12 @@
                         teetee: this.teetee_name === idol.name,
                         graduate: idol.graduate
                     };
+                },
+                NumberFormat: function (number) {
+                    return new Intl.NumberFormat('zh-TW', {
+                        notation: 'compact',
+                        compactDisplay: "long"
+                    }).format(number);
                 }
             }
         })

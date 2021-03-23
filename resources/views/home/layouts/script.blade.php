@@ -57,56 +57,6 @@
         );
     }
 
-    const CoolDown_Time = (Msg, time, btn, ban_name) => {
-        if (time > Date.now()) {
-            let Remaining_time = Math.ceil((time - Date.now()) / 1000) + 1;
-
-            btn.prop("disabled", true);
-            Msg.prop('style', 'display:flex').html('剩餘時間：' + Remaining_time);
-
-            ban_type[ban_name] = true;
-
-            const timeout = setInterval(() => {
-                Remaining_time = Math.ceil((time - Date.now()) / 1000) + 1;
-
-                if (Remaining_time < 1) {
-                    btn.prop("disabled", false);
-                    Msg.html(null).prop('style', 'display:none');
-                    ban_type[ban_name] = false;
-                    clearInterval(timeout);
-                } else {
-                    Msg.html('剩餘時間：' + Remaining_time);
-                }
-            }, 1000)
-        }
-    }
-
-    const setMsg = (msg, elem, delay = 1000) => {
-        const Msg = elem;
-
-        Msg.html(msg).prop('style', 'display:block');
-
-        setTimeout(() => {
-            $('#Msg').html("");
-            Msg.html(msg).prop('style', 'display:none');
-        }, delay);
-    }
-
-    const show_error_msg = (err, elem) => {
-        if (err.status === 422) {
-            let s = "";
-            let errors = err.data.errors;
-
-            Object.keys(errors).forEach((error) => {
-                s += errors[error] + '\n';
-            });
-
-            setMsg(s, elem);
-        } else {
-            setMsg("發生錯誤: " + err.status, elem);
-        }
-    }
-
     const keyup_unlock_role = (character_name) => {
         axios.post('{{ Route('api.store.keyup_unlock_character') }}', {
             character_name: character_name,
@@ -171,14 +121,8 @@
 
         Echo.connector.pusher.config.auth.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
         Echo.private('unlock-character-channel-{{ $self_name_encrypt }}')
-            .listen('.unlock-character-event', ({Character, Back}) => {
-                if (Back) {
-                    unlock_character_message(Character).then(() => {
-                        document.location.href = "/";
-                    });
-                } else {
-                    unlock_character_message(Character);
-                }
+            .listen('.unlock-character-event', ({Character}) => {
+                unlock_character_message(Character);
             });
 
         let clear_danger_msg = null;

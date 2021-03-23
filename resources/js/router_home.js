@@ -3,16 +3,10 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import index from './components/home/index.vue';
-import active_idol from './components/home/active-idol.vue';
-import rebirth from './components/home/rebirth.vue';
-import chatroom  from './components/home/chatroom.vue';
-import create_profile  from './components/home/create-profile.vue';
-
 export const routes = [
     {
         path: '/',
-        component: index,
+        component: () => import('./components/home/index.vue'),
         name: 'index',
         meta: {
             KeepAlive: true
@@ -20,15 +14,23 @@ export const routes = [
     },
     {
         path: '/active-idol',
-        component: active_idol,
+        component: () => import('./components/home/active-idol.vue'),
         name: 'active-idol',
         meta: {
             KeepAlive: true
         }
     },
     {
+        path: '/profile/:name',
+        component: () => import('./components/home/profile.vue'),
+        name: 'profile',
+        meta: {
+            KeepAlive: true
+        }
+    },
+    {
         path: '/rebirth',
-        component: rebirth,
+        component: () => import('./components/home/rebirth.vue'),
         name: 'rebirth',
         meta: {
             KeepAlive: true
@@ -36,7 +38,7 @@ export const routes = [
     },
     {
         path: '/chatroom',
-        component: chatroom,
+        component: () => import('./components/home/chatroom.vue'),
         name: 'chatroom',
         meta: {
             KeepAlive: true
@@ -44,7 +46,7 @@ export const routes = [
     },
     {
         path: '/create-profile',
-        component: create_profile,
+        component: () => import('./components/home/create-profile.vue'),
         name: 'create-profile',
     }
 ];

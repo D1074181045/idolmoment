@@ -9,7 +9,7 @@
 
                     <div class="col-md-6">
                         <input type="text" class="form-control" autocomplete="off" autofocus
-                               :class="disabled_class(username_disabled)" v-on:input="ban_login" v-model="username" />
+                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_login" v-model="username" />
                     </div>
                 </div>
 
@@ -18,7 +18,7 @@
 
                     <div class="col-md-6">
                         <input class="form-control" required autocomplete="off"
-                               :class="disabled_class(password_disabled)" v-on:input="ban_login" :type="pw_type()" v-model="password">
+                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_login" :type="pw_type()" v-model="password">
                     </div>
                     <button type="button" class="show-hide-toggle-button" title="顯示密碼" tabindex="-1"
                             :class="pw_class()" :title="pw_title()" v-on:click="password_toggle_button">
@@ -44,7 +44,7 @@
             </div>
 
             <div class="card-footer" v-if="error.status">
-                <msg>{{ error.message }}</msg>
+                <msg style="text-align: center">{{ error.message }}</msg>
             </div>
         </div>
     </div>
@@ -56,7 +56,6 @@ import { msg } from '../../styles';
 export default {
     data() {
         return {
-            // error: {'status': 0, 'message': null},
             username: "",
             password: "",
             autologin: false,
@@ -75,9 +74,6 @@ export default {
         }
     },
     methods: {
-        disabled_class(status) {
-            return status ? 'is-invalid' : 'is-valid';
-        },
         pw_class: function () {
             return this.pw_is_show ? 'show-pw' : 'hide-pw';
         },
