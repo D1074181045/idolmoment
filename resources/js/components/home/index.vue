@@ -206,6 +206,7 @@ export default {
 
             this.$store.state.ban_type.activity.status = true;
 
+
             axios.patch(this.api_prefix.concat('activity'), {
                 activity_type: activity_type,
             }).then(({status, ability, activity_time}) => {
@@ -214,10 +215,9 @@ export default {
                     this.$store.commit('cool_down', 'activity');
 
                     Object.keys(ability).forEach((key) => {
-                        console.log(value);
-
                         this.profile[key] = ability[key];
                     });
+
                 } else {
                     this.$store.state.ban_type.activity.status = false;
                 }

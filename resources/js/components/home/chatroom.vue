@@ -22,7 +22,8 @@
         <msg v-if="chat_cool_down.time">剩餘時間：{{ chat_cool_down.time }}</msg>
         <div class="setting">
             <input type="text" class="form-control" v-model="message"/>
-            <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message" :disabled="create_msg_disabled">
+            <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message"
+                    :disabled="create_msg_disabled">
                 送出
             </button>
         </div>
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-import { msg } from '../../styles';
+import {msg} from '../../styles';
 
 export default {
     data() {
@@ -40,22 +41,39 @@ export default {
         }
     },
     mounted() {
+    },
+    components: {
+        msg
+    },
+    computed: {
+        chat_cool_down: function () {
+            return this.$store.state.ban_type.chat;
+        },
+        create_msg_disabled: function () {
+            return this.$store.state.ban_type.chat.status;
+        },
+    },
+    activated() {
+        this.$store.commit('cool_down', 'chat');
+
         const tbody = $("tbody");
         var put_bottom = true;
 
         Echo.channel('public-chat-channel')
             .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
-                let profile_path = '/profile/'.concat(name);
-                let message_t = message ? message : '';
+                if (this.$route.name === 'chatroom') {
+                    let profile_path = '/profile/'.concat(name);
+                    let message_t = message ? message : '';
 
-                let td = '<td style="width: 150px;"><a style="font-size: 12px" href="' + profile_path + '">' + nickname + '</a></td>';
-                    td += '<td>' + message_t + '</td>';
-                    td += '<td style="width: 160px;">' + chat_created_at + '</td>';
+                    let td = '<td style="width: 150px;"><a style="font-size: 12px" href="' + profile_path + '">' + nickname + '</a></td>';
+                        td += '<td>' + message_t + '</td>';
+                        td += '<td style="width: 160px;">' + chat_created_at + '</td>';
 
-                $('tbody').append('<tr style="display: table;width: 100%;table-layout: fixed">' + td + '</tr>')
+                    $('tbody').append('<tr style="display: table;width: 100%;table-layout: fixed">' + td + '</tr>')
 
-                if (put_bottom)
-                    $("tbody").scrollTop(tbody.get(0).scrollHeight);
+                    if (put_bottom)
+                        $("tbody").scrollTop(tbody.get(0).scrollHeight);
+                }
             });
 
         tbody.scroll(function () {
@@ -65,25 +83,12 @@ export default {
         });
 
         tbody.scrollTop(tbody.get(0).scrollHeight);
-    },
-    components: {
-        msg
-    },
-    computed: {
-        chat_cool_down: function () {
-            return this.$store.state.ban_type.chat;
-        },
-        create_msg_disabled: function() {
-            return this.$store.state.ban_type.chat.status;
-        },
-    },
-    activated() {
-        this.$store.commit('cool_down', 'chat');
 
         axios.get(this.api_prefix.concat('chat'))
             .then(({status, chat_messages}) => {
-                if (status)
+                if (status) {
                     this.chat_messages = chat_messages;
+                }
             })
     },
     methods: {
@@ -105,21 +110,22 @@ export default {
                     this.$store.state.ban_type.chat.status = false;
                 }
             })
+            this.message = "";
         },
         timeStamp2String: function (time) {
             let datetime = new Date(time);
 
             let year = datetime.getFullYear();
             let month = datetime.getMonth() + 1;
-                month = month < 10 ? '0' + month.toString() : month;
+            month = month < 10 ? '0' + month.toString() : month;
             let date = datetime.getDate();
-                date = date < 10 ? '0' + date.toString() : date;
+            date = date < 10 ? '0' + date.toString() : date;
             let hour = datetime.getHours();
-                hour = hour < 10 ? '0' + hour.toString() : hour;
+            hour = hour < 10 ? '0' + hour.toString() : hour;
             let minute = datetime.getMinutes();
-                minute = minute < 10 ? '0' + minute.toString() : minute;
+            minute = minute < 10 ? '0' + minute.toString() : minute;
             let second = datetime.getSeconds();
-                second = second < 10 ? '0' + second.toString() : second;
+            second = second < 10 ? '0' + second.toString() : second;
 
             return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
         }

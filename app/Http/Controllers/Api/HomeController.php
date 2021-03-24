@@ -139,9 +139,10 @@ class HomeController extends Controller
 //        unset($self_game_info->name);
 
         $opposite_game_info = GameInfo::query()->with('GameCharacter')
-            ->findOrFail($opposite_name, [
+            ->findOrFail($opposite_name,[
                 'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
-                'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character']);
+                'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character'
+            ]);
 
         $opposite_game_info['name'] = $name;
         $opposite_game_info['use_character'] = [
@@ -469,13 +470,13 @@ class HomeController extends Controller
             'status' => 1,
             'activity_time' => $activity_time,
             'ability' => [
-                'popularity' => number_format($self_game_info->popularity),
-                'reputation' => number_format($self_game_info->reputation),
-                'max_vitality' => number_format($self_game_info->max_vitality),
-                'current_vitality' => number_format($self_game_info->current_vitality),
-                'energy' => number_format($self_game_info->energy),
-                'resistance' => number_format($self_game_info->resistance),
-                'charm' => number_format($self_game_info->charm),
+                'popularity' => $self_game_info->popularity,
+                'reputation' => $self_game_info->reputation,
+                'max_vitality' => $self_game_info->max_vitality,
+                'current_vitality' => $self_game_info->current_vitality,
+                'energy' => $self_game_info->energy,
+                'resistance' => $self_game_info->resistance,
+                'charm' => $self_game_info->charm,
             ],
             'message' => "活動進行生效"
         ]);
@@ -561,7 +562,7 @@ class HomeController extends Controller
     {
         $character_name = $request->post('character_name');
 
-        if (!$self_game_info = GameInfo::query()->CurrentLoginUser()) {
+        if (!$self_game_info = GameInfo::CurrentLoginUser()) {
             return response()->json([
                 'status' => 0,
                 'message' => "轉生失敗"
@@ -582,17 +583,25 @@ class HomeController extends Controller
             ]);
         }
 
-        $self_game_info->rebirth($game_character);
+        $self_game_info->use_character = $game_character->en_name;
+        $self_game_info->popularity = 1;
+        $self_game_info->max_vitality = $game_character->vitality;
+        $self_game_info->current_vitality = $game_character->vitality;
+        $self_game_info->energy = $game_character->energy;
+        $self_game_info->resistance = $game_character->resistance;
+        $self_game_info->charm = $game_character->charm;
+        $self_game_info->rebirth_counter++;
+        $self_game_info->graduate = false;
+        $self_game_info->save();
 
         switch ($self_game_info->rebirth_counter) {
             case 1:
-                $this->Back_Home = $this->unlock_character('Yukihana Lamy')['status'];
+                $this->unlock_character('Yukihana Lamy')['status'];
                 break;
         }
 
         return response()->json([
             'status' => 1,
-            'Back_Home' => !$this->Back_Home,
             'message' => "轉生成功"
         ]);
     }
@@ -606,47 +615,59 @@ class HomeController extends Controller
      */
     public function create_message(Request $request)
     {
-        if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
-            return response()->json([
-                'status' => 0,
-                'message' => '送出失敗'
-            ]);
-        }
-
-        $chat_time = $cool_down->chat;
-
-        if ($chat_time > Carbon::now()) {
-            return response()->json([
-                'status' => 0,
-                'message' => '送出失敗，剩餘時間：' . $this->remain_time($chat_time, Carbon::now()) . '秒'
-            ]);
-        }
-
-        $chat_message = ChatRoom::query()->create([
-            'name' => $cool_down->name,
-            'message' => $request->post('message')
-        ]);
-
-        $chat_time = $cool_down->update_chat(CHAT_DELAY_T);
-
-        $chat_message->GameInfo;
-        $chat_message = $chat_message->toArray();
-
-        $name = $this->UserNameEncrypt2($chat_message['name']);
-        $nickname = $chat_message['game_info']['nickname'];
-        $message = htmlspecialchars($chat_message['message']);
-
-        $chat_created_at = date("Y-m-d H:i:s", strtotime($chat_message['created_at']));
-
         try {
-            event(new ChatRoomEvent($name, $nickname, $message, $chat_created_at));
-        } catch (Exception $e) {}
+            $this->validate($request, [
+                'message' => ['nullable', 'max:255'],
+            ]);
 
-        return response()->json([
-            'status' => 1,
-            'chat_time' => $chat_time,
-            'message' => "送出成功"
-        ]);
+            if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => '送出失敗'
+                ]);
+            }
+
+            $chat_time = $cool_down->chat;
+
+            if ($chat_time > Carbon::now()) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => '送出失敗，剩餘時間：' . $this->remain_time($chat_time, Carbon::now()) . '秒'
+                ]);
+            }
+
+            $chat_message = ChatRoom::query()->create([
+                'name' => $cool_down->name,
+                'message' => $request->post('message')
+            ]);
+
+            $chat_time = $cool_down->update_chat(CHAT_DELAY_T);
+
+            $chat_message->GameInfo;
+            $chat_message = $chat_message->toArray();
+
+            $name = $this->UserNameEncrypt2($chat_message['name']);
+            $nickname = $chat_message['game_info']['nickname'];
+            $message = htmlspecialchars($chat_message['message']);
+
+            $chat_created_at = date("Y-m-d H:i:s", strtotime($chat_message['created_at']));
+
+            try {
+                event(new ChatRoomEvent($name, $nickname, $message, $chat_created_at));
+            } catch (Exception $e) {}
+
+            return response()->json([
+                'status' => 1,
+                'chat_time' => $chat_time,
+                'message' => "送出成功"
+            ]);
+        } catch (ValidationException $e) {
+
+            return response()->json([
+                'status' => 0,
+                'message' => "送出失敗"
+            ]);
+        }
     }
 
     public function own_character() {

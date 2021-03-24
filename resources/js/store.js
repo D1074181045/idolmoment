@@ -3,6 +3,18 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+function StringToDate(String) {
+    const arr = String.split(/[- :]/);
+    return new Date(
+        parseInt(arr[0]),
+        parseInt(arr[1]) - 1,
+        parseInt(arr[2]),
+        parseInt(arr[3]),
+        parseInt(arr[4]),
+        parseInt(arr[5])
+    );
+}
+
 const store = new Vuex.Store({
     state: {
         error: {'status': 0, 'message': null},
@@ -19,26 +31,30 @@ const store = new Vuex.Store({
     },
     mutations: {
         cool_down: function(state, type) {
-            let time = new Date(state.cool_down[type]).getTime();
+            if (state.cool_down[type]) {
+                let time = new Date(state.cool_down[type]).getTime()
+                    ? new Date(state.cool_down[type]).getTime()
+                    : new Date(StringToDate(state.cool_down[type])).getTime();
 
-            if (time > Date.now()) {
-                let Remaining_time = Math.ceil((time - Date.now()) / 1000);
+                if (time > Date.now()) {
+                    let Remaining_time = Math.ceil((time - Date.now()) / 1000);
 
-                state.ban_type[type].status = true;
-                state.ban_type[type].time = Remaining_time;
-
-                const timeout = setInterval(() => {
-                    Remaining_time = Math.ceil((time - Date.now()) / 1000);
-
+                    state.ban_type[type].status = true;
                     state.ban_type[type].time = Remaining_time;
 
-                    if (Remaining_time < 1) {
-                        // elem[type.concat('_', 'disabled')] = false;
-                        state.ban_type[type].status = false;
-                        state.ban_type[type].time = null;
-                        clearInterval(timeout);
-                    }
-                }, 1000)
+                    const timeout = setInterval(() => {
+                        Remaining_time = Math.ceil((time - Date.now()) / 1000);
+
+                        state.ban_type[type].time = Remaining_time;
+
+                        if (Remaining_time < 1) {
+                            // elem[type.concat('_', 'disabled')] = false;
+                            state.ban_type[type].status = false;
+                            state.ban_type[type].time = null;
+                            clearInterval(timeout);
+                        }
+                    }, 1000)
+                }
             }
         },
         show_error: function (state, message) {
@@ -73,7 +89,7 @@ const store = new Vuex.Store({
                        compactDisplay: "long"
                    }).format(number);
                 default:
-                    return new Intl.NumberFormat(type).format(number);
+                    return new Intl.NumberFormat().format(number);
             }
         }
     },
