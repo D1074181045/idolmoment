@@ -21,28 +21,6 @@ class UserController extends Controller
     }
 
     /**
-     * 登入頁面
-     *
-     *
-     * @return view
-     */
-    public function login()
-    {
-        return view('user.login');
-    }
-
-    /**
-     * 註冊頁面
-     *
-     *
-     * @return View
-     */
-    public function register()
-    {
-        return view('user.register');
-    }
-
-    /**
      * 建立使用者暱稱頁面
      *
      *
@@ -56,10 +34,6 @@ class UserController extends Controller
             return Redirect::to(Route('home', ''));
         else
             return view('home.app');
-    }
-
-    public function update_password() {
-        return view('home.update-password');
     }
 
     /**

@@ -20,8 +20,6 @@ class ChatRoomEvent implements ShouldBroadcast
     public $message;
     public $chat_created_at;
 
-    public $messages;
-
     /**
      * Create a new event instance.
      *
@@ -32,12 +30,10 @@ class ChatRoomEvent implements ShouldBroadcast
      * @throws \Exception
      */
     public function __construct($name, $nickname, $message, $chat_created_at)
-//    public function __construct($messages)
     {
         if (ChatRoom::all()->count() >= 100)
             ChatRoom::query()->orderBy('created_at')->first()->delete();
 
-//        $this->messages = $messages;
         $this->name = $name;
         $this->nickname = $nickname;
         $this->message = $message;

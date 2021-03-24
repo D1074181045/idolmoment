@@ -56,6 +56,14 @@ export const routes = [
         meta: {
             title: '創建偶像',
         }
+    },
+    {
+        path: '/update-password',
+        component: () => import('./components/home/update-password.vue'),
+        name: 'update-password',
+        meta: {
+            title: '修改密碼',
+        }
     }
 ];
 

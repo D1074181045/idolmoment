@@ -12,8 +12,7 @@
             <tbody>
             <tr v-for="chat_message in chat_messages" :key="chat_message.name">
                 <td style="width: 150px;">
-                    <a style="cursor: pointer;font-size: 12px;color: #3490dc;text-decoration: none;background-color: transparent;"
-                       v-on:click="to_profile(chat_message.name)">{{ chat_message.nickname }}</a>
+                    <router-link style="font-size: 12px;" :to="{ name: 'profile', params: { name: chat_message.name } }" exact>{{ chat_message.nickname }}</router-link>
                 </td>
                 <td>{{ chat_message.message }}</td>
                 <td style="width: 160px;">{{ timeStamp2String(chat_message.created_at) }}</td>
@@ -101,9 +100,6 @@ export default {
             })
     },
     methods: {
-        to_profile: function (name) {
-            this.$router.push({ name: 'profile', params: { name: name }});
-        },
         create_message: function () {
             if (this.create_msg_disabled)
                 return;
@@ -129,15 +125,15 @@ export default {
 
             let year = datetime.getFullYear();
             let month = datetime.getMonth() + 1;
-            month = month < 10 ? '0' + month.toString() : month;
+                month = month < 10 ? '0' + month.toString() : month;
             let date = datetime.getDate();
-            date = date < 10 ? '0' + date.toString() : date;
+                date = date < 10 ? '0' + date.toString() : date;
             let hour = datetime.getHours();
-            hour = hour < 10 ? '0' + hour.toString() : hour;
+                hour = hour < 10 ? '0' + hour.toString() : hour;
             let minute = datetime.getMinutes();
-            minute = minute < 10 ? '0' + minute.toString() : minute;
+                minute = minute < 10 ? '0' + minute.toString() : minute;
             let second = datetime.getSeconds();
-            second = second < 10 ? '0' + second.toString() : second;
+                second = second < 10 ? '0' + second.toString() : second;
 
             return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
         }

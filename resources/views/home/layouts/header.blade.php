@@ -36,7 +36,7 @@
                         {{ $self_name }}
                     </span>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <span class="dropdown-item nav-link-red" id="update_password" style="cursor: pointer;">修改密碼</span>
+                        <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red" :to="{ name: 'update-password' }" exact>修改密碼</router-link>
                         <span class="dropdown-item nav-link-red" id="logout" style="cursor: pointer;">登出</span>
                     </div>
                 </li>

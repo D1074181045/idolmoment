@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.user.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
-
 Broadcast::channel('unlock-character-channel-{name}', function ($user, $name) {
     return $user->name === Controller::UserNameDecrypt($name);
 });

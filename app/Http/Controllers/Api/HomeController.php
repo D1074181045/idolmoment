@@ -640,8 +640,7 @@ class HomeController extends Controller
             $name = $this->UserNameEncrypt2($chat_message['name']);
             $nickname = $chat_message['game_info']['nickname'];
             $message = $chat_message['message'];
-
-            $chat_created_at = date("Y-m-d H:i:s", strtotime($chat_message['created_at']));
+            $chat_created_at = $chat_message['created_at'];
 
             try {
                 event(new ChatRoomEvent($name, $nickname, $message, $chat_created_at));

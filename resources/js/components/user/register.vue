@@ -91,35 +91,24 @@ export default {
         },
         ban_register: function () {
             const legalityKey = new RegExp("^[0-9A-Za-z]+$");
-            let t = 0;
 
             if (!this.username.match(legalityKey)) {
                 this.username_disabled = true;
             } else {
-                if (this.between(this.username.length, 5, 15)) {
-                    this.username_disabled = false;
-                    t += 1;
-                } else {
-                    this.username_disabled = true;
-                }
+                this.username_disabled = !this.between(this.username.length, 5, 15);
             }
 
             if (this.password === this.password_confirm) {
                 if (!this.password.match(legalityKey)) {
                     this.password_disabled = true;
                 } else {
-                    if (this.between(this.password.length, 8, 32)) {
-                        this.password_disabled = false;
-                        t += 1;
-                    } else {
-                        this.password_disabled = true;
-                    }
+                    this.password_disabled = !this.between(this.password.length, 8, 32);
                 }
             } else {
                 this.password_disabled = true;
             }
 
-            this.register_disabled = t !== 2;
+            this.register_disabled = this.username_disabled || this.password_disabled;
         },
         back: function (){
             this.$router.push({ name:'login' });

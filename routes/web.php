@@ -23,7 +23,7 @@ use App\Http\Controllers\HomeController;
 
 Route::middleware('auth')->group(function(){
     Route::get('/logout', [UserController::class, 'logout'])->name('home.logout');
-    Route::get('/update-password', [UserController::class, 'update_password'])->name('home.update.password');
+    Route::get('/update-password', [HomeController::class, 'spa'])->name('home.update.password');
     Route::get('/create-profile', [UserController::class, 'create_profile'])->name('user.create.profile');
 });
 
@@ -37,15 +37,4 @@ Route::get('/{home}', [HomeController::class, 'spa'])
     ->name('home');
 
 //->where('path', '^(?!api).*')
-//
-//Route::middleware('auth.user')->group(function(){
-//    Route::get('/', [HomeController::class, 'index'])->name('home.index');
-//    Route::get('/active-idol', [HomeController::class, 'active_idol'])->name('home.active_idol');
-//    Route::get('/profile/{name}', [HomeController::class, 'profile'])->name('home.profile');
-//    Route::get('/rebirth', [HomeController::class, 'rebirth'])->name('home.rebirth');
-//    Route::get('/chatroom', [HomeController::class, 'chatroom'])->name('home.chatroom');
-//});
-
-/********************************************************************************************************************/
-
 
