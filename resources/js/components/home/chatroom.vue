@@ -34,12 +34,14 @@
 <script>
 import {msg} from '../../styles';
 
+var put_bottom = true;
+var messages_updated = false;
+
 export default {
     data() {
         return {
             message: "",
             chat_messages: [],
-            put_bottom: true,
         }
     },
     components: {
@@ -53,18 +55,33 @@ export default {
             return this.$store.state.ban_type.chat.status;
         },
     },
+    updated() {
+        if (messages_updated) {
+            if (put_bottom)
+                $('tbody').scrollTop($('tbody')[0].scrollHeight);
+            messages_updated = false;
+        }
+    },
     mounted() {
+        const tbody = $('tbody');
+
+        tbody.scroll(function () {
+            let last = tbody[0].scrollHeight - tbody.scrollTop();
+            put_bottom = last <= tbody.height();
+        });
+
         Echo.channel('public-chat-channel')
             .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
                 if (this.$route.name === 'chatroom') {
-                    let message_t = message ? message : '';
 
                     this.chat_messages.push({
                         name: name,
                         nickname: nickname,
-                        message: message_t,
+                        message: message,
                         created_at: chat_created_at
                     });
+
+                    messages_updated = true;
                 }
             });
     },
@@ -77,6 +94,10 @@ export default {
                 if (status) {
                     this.chat_messages = chat_messages;
                 }
+            })
+            .then(() => {
+                const tbody = $('tbody');
+                tbody.scrollTop(tbody[0].scrollHeight);
             })
     },
     methods: {

@@ -3,15 +3,6 @@
 {{ Html::script( mix('js/manifest.js') ) }}
 
 <script type="text/javascript">
-    var ban_type = {signature: false, activity: false, operating: false, chat: false};
-
-    const batch_change_value = (list) => {
-        $.each(list, (name, value) => {
-            let elem_name = '[name=' + name + ']';
-            $(elem_name).html(value);
-        })
-    }
-
     $('#lightSwitch').on('click', (e) => {
         let d = new Date();
         d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
@@ -22,20 +13,18 @@
         if (e.target.checked) {
             $('body').prop('class', 'dark');
             document.cookie = 'dark_theme=true; expires=' + d.toString() + '; path=/';
-            localStorage.setItem('dark_theme', 'true');
+            localStorage.dark_theme = true;
             link_swal_style.href = '{{ asset('css/sweetalert2.dark.theme.css') }}';
         } else {
             $('body').prop('class', '');
             document.cookie = 'dark_theme=false; expires=' + d.toString() + '; path=/';
-            localStorage.setItem('dark_theme', 'false');
+            localStorage.dark_theme = false;
             link_swal_style.href = '{{ asset('css/sweetalert2.default.theme.css') }}';
         }
     })
 
     const unlock_character_message = (new_character_name) => {
-        let character = '<div style="color: #DC3545;">' +
-            new_character_name +
-            '</div>';
+        let character = '<div style="color: #DC3545;">' + new_character_name + '</div>';
 
         return Swal.fire({
             title: "已解鎖新偶像",
@@ -43,18 +32,6 @@
             icon: "success",
             allowOutsideClick: false
         });
-    }
-
-    const StringToDate = (String) => {
-        const arr = String.split(/[- :]/);
-        return new Date(
-            parseInt(arr[0]),
-            parseInt(arr[1]) - 1,
-            parseInt(arr[2]),
-            parseInt(arr[3]),
-            parseInt(arr[4]),
-            parseInt(arr[5])
-        );
     }
 
     const keyup_unlock_role = (character_name) => {
@@ -113,10 +90,12 @@
     });
 
     $(function () {
-        if (localStorage.dark_theme === "true" && {{ Cookie::get('dark_theme', 'false') }}) {
+        if (localStorage.dark_theme === "true" && {{ $dark_theme }}) {
             $('body').prop('class', 'dark');
         } else if (localStorage.dark_theme === "true") {
             $('#lightSwitch').trigger('click');
+        } else if ({{ $dark_theme }}) {
+            $('body').prop('class', 'dark');
         }
 
         Echo.connector.pusher.config.auth.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
@@ -148,6 +127,5 @@
             });
     })
 </script>
-
 
 @yield('scripts')

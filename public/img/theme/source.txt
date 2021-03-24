@@ -1,0 +1,2 @@
+pic_moon.svg: https://i2.bahamut.com.tw/anime/pic_moon.svg
+pic_sun.svg: https://i2.bahamut.com.tw/anime/pic_sun.svg

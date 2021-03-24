@@ -20,9 +20,10 @@
                         <input class="form-control" required autocomplete="off"
                                :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_login" :type="pw_type()" v-model="password">
                     </div>
-                    <button type="button" class="show-hide-toggle-button" title="顯示密碼" tabindex="-1"
-                            :class="pw_class()" :title="pw_title()" v-on:click="password_toggle_button">
-                    </button>
+                    <div class="show-hide-toggle-button">
+                        <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
+                        <label for="password-toggle-button" :title="pw_title()" style="margin-bottom: 0;">Toggle</label>
+                    </div>
                 </div>
 
                 <div class="form-group row">
@@ -74,17 +75,14 @@ export default {
         }
     },
     methods: {
-        pw_class: function () {
-            return this.pw_is_show ? 'show-pw' : 'hide-pw';
-        },
         pw_title: function () {
             return this.pw_is_show ? '顯示密碼' : '隱藏密碼';
         },
         pw_type: function () {
             return this.pw_is_show ? 'text' : 'password';
         },
-        password_toggle_button: function () {
-            this.pw_is_show = !this.pw_is_show;
+        password_toggle_button: function (e) {
+            this.pw_is_show = e.target.checked;
         },
         ban_login: function () {
             this.username_disabled = this.username.length <= 0;

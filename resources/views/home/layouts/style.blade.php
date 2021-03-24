@@ -67,12 +67,6 @@
         width: 160px;
     }
 
-    .Msg {
-        color: #DC3545;
-        margin-bottom: 5px;
-        margin-top: -0.5rem;
-    }
-
     .center {
         padding-top: 70px;
         margin: 12px auto;
@@ -114,12 +108,10 @@
     }
 
     .dark-swift-button {
-        /*position: absolute;*/
         margin: 4px 32px;
         border-radius: 20px;
         float: right;
         cursor: pointer;
-        overflow: hidden;
     }
 
     @media screen and (max-width: 768px) {
@@ -134,38 +126,16 @@
 
     .dark-swift-button > label {
         position: relative;
-        /*display: -webkit-box;*/
-        /*display: -ms-flexbox;*/
-        display: flex;
-        /*-webkit-box-pack: center;*/
-        /*-ms-flex-pack: center;*/
-        /*justify-content: center;*/
-        /*-webkit-box-align: center;*/
-        /*-ms-flex-align: center;*/
-        /*align-items: center;*/
-        width: 52px;
-        height: 26px;
+        width: 33px;
+        height: 33px;
         text-indent: -9999px;
         background-color: #f5f5f5;
         background-image: url({{ asset('img/theme/pic_sun.svg') }});
-        background-position: 28px;
+        background-position: 8px;
         background-repeat: no-repeat;
         background-size: 18px 18px;
         border-radius: 100px;
         cursor: pointer;
-    }
-
-    .dark-swift-button > label:after {
-        content: "";
-        position: absolute;
-        top: 4px;
-        left: 6px;
-        /*-webkit-transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;*/
-        transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) 320ms;
-        width: 18px;
-        height: 18px;
-        border-radius: 100px;
-        background-color: #b7b1a9;
     }
 
     .dark-swift-button > input:checked + label {
@@ -175,13 +145,6 @@
         background-repeat: no-repeat;
         background-size: 18px 18px;
         border-radius: 100px;
-    }
-
-    .dark-swift-button > input:checked + label:after {
-        left: calc(100% - 5px);
-        /*-webkit-transform: translateX(-100%);*/
-        transform: translateX(-100%);
-        background-color: #0c2d33;
     }
 </style>
 
