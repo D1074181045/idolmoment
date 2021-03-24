@@ -10,9 +10,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="chat_message in chat_messages">
+            <tr v-for="chat_message in chat_messages" :key="chat_message.name">
                 <td style="width: 150px;">
-                    <a style="font-size: 12px" href="">{{ chat_message.nickname }}</a>
+                    <a style="cursor: pointer;font-size: 12px;color: #3490dc;text-decoration: none;background-color: transparent;"
+                       v-on:click="to_profile(chat_message.name)">{{ chat_message.nickname }}</a>
                 </td>
                 <td>{{ chat_message.message }}</td>
                 <td style="width: 160px;">{{ timeStamp2String(chat_message.created_at) }}</td>
@@ -38,9 +39,8 @@ export default {
         return {
             message: "",
             chat_messages: [],
+            put_bottom: true,
         }
-    },
-    mounted() {
     },
     components: {
         msg
@@ -53,36 +53,24 @@ export default {
             return this.$store.state.ban_type.chat.status;
         },
     },
-    activated() {
-        this.$store.commit('cool_down', 'chat');
-
-        const tbody = $("tbody");
-        var put_bottom = true;
-
+    mounted() {
         Echo.channel('public-chat-channel')
             .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
                 if (this.$route.name === 'chatroom') {
-                    let profile_path = '/profile/'.concat(name);
                     let message_t = message ? message : '';
 
-                    let td = '<td style="width: 150px;"><a style="font-size: 12px" href="' + profile_path + '">' + nickname + '</a></td>';
-                        td += '<td>' + message_t + '</td>';
-                        td += '<td style="width: 160px;">' + chat_created_at + '</td>';
-
-                    $('tbody').append('<tr style="display: table;width: 100%;table-layout: fixed">' + td + '</tr>')
-
-                    if (put_bottom)
-                        $("tbody").scrollTop(tbody.get(0).scrollHeight);
+                    this.chat_messages.push({
+                        name: name,
+                        nickname: nickname,
+                        message: message_t,
+                        created_at: chat_created_at
+                    });
                 }
             });
-
-        tbody.scroll(function () {
-            let last = tbody[0].scrollHeight - tbody.scrollTop();
-
-            put_bottom = last <= tbody.height();
-        });
-
-        tbody.scrollTop(tbody.get(0).scrollHeight);
+    },
+    activated() {
+        document.title = "聊天室";
+        this.$store.commit('cool_down', 'chat');
 
         axios.get(this.api_prefix.concat('chat'))
             .then(({status, chat_messages}) => {
@@ -92,6 +80,9 @@ export default {
             })
     },
     methods: {
+        to_profile: function (name) {
+            this.$router.push({ name: 'profile', params: { name: name }});
+        },
         create_message: function () {
             if (this.create_msg_disabled)
                 return;

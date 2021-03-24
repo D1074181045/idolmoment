@@ -57,15 +57,8 @@ try {
     router.beforeEach((to, from, next) => {
         if (!store.state.IsCreated)
             next({ name: "create-profile" });
-        else {
-            // if (to.name === 'index') {
-            //     Vue.prototype.load_my_profile().then(() => {
-            //         next();
-            //     });
-            // } else {
+        else
             next();
-            // }
-        }
     });
 
 } catch (e) {

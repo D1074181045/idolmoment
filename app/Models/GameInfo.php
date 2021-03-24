@@ -163,16 +163,16 @@ class GameInfo extends Model
         $this->save();
     }
 
-//    public function rebirth($game_character) {
-//        $this->use_character = $game_character->en_name;
-//        $this->popularity = 1;
-//        $this->max_vitality = $game_character->vitality;
-//        $this->current_vitality = $game_character->vitality;
-//        $this->energy = $game_character->energy;
-//        $this->resistance = $game_character->resistance;
-//        $this->charm = $game_character->charm;
-//        $this->rebirth_counter++;
-//        $this->graduate = false;
-//        $this->save();
-//    }
+    public function rebirth($game_character) {
+        $this['use_character'] = $game_character->en_name;
+        $this['popularity'] = 1;
+        $this['max_vitality'] = $game_character->vitality;
+        $this['current_vitality'] = $game_character->vitality;
+        $this['energy'] = $game_character->energy;
+        $this['resistance'] = $game_character->resistance;
+        $this['charm'] = $game_character->charm;
+        $this['rebirth_counter'] += 1;
+        $this['graduate'] = false;
+        $this->save();
+    }
 }

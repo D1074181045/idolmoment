@@ -126,6 +126,8 @@ export default {
         },
     },
     activated() {
+        document.title = "活耀偶像";
+
         if (this.reload()) {
             this.current_popularity = this.$store.state.profile.popularity;
             this.page_num = 1;

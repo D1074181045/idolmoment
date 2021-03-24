@@ -151,6 +151,8 @@ export default {
         this.$store.commit('cool_down', 'signature');
     },
     activated() {
+        document.title = "我的偶像";
+
         if (!this.first_load) {
             this.$store.dispatch('load_my_profile');
         } else {

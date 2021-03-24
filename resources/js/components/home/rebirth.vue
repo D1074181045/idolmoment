@@ -66,6 +66,8 @@
             }
         },
         activated() {
+            document.title = "偶像轉生";
+
             this.get_own_character().then(() => {
                 document.getElementsByClassName('character-frame')[0].firstChild.click();
                 // $('div.character-frame').first().children().trigger('click');

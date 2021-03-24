@@ -583,20 +583,11 @@ class HomeController extends Controller
             ]);
         }
 
-        $self_game_info->use_character = $game_character->en_name;
-        $self_game_info->popularity = 1;
-        $self_game_info->max_vitality = $game_character->vitality;
-        $self_game_info->current_vitality = $game_character->vitality;
-        $self_game_info->energy = $game_character->energy;
-        $self_game_info->resistance = $game_character->resistance;
-        $self_game_info->charm = $game_character->charm;
-        $self_game_info->rebirth_counter++;
-        $self_game_info->graduate = false;
-        $self_game_info->save();
+        $self_game_info->rebirth($game_character);
 
         switch ($self_game_info->rebirth_counter) {
             case 1:
-                $this->unlock_character('Yukihana Lamy')['status'];
+                $this->unlock_character('Yukihana Lamy');
                 break;
         }
 

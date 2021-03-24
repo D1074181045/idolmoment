@@ -27,7 +27,8 @@ const store = new Vuex.Store({
         profile: null,
         cool_down: null,
         teetee_info: null,
-        IsCreated: false
+        IsCreated: false,
+        head_title: ""
     },
     mutations: {
         cool_down: function(state, type) {

@@ -40,6 +40,9 @@ export default {
     components:{
         msg
     },
+    created() {
+        document.title = "創建偶像";
+    },
     computed:{
         error() {
             return this.$store.state.error;

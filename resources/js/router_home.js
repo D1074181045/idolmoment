@@ -9,6 +9,7 @@ export const routes = [
         component: () => import('./components/home/index.vue'),
         name: 'index',
         meta: {
+            title: '我的偶像',
             KeepAlive: true
         }
     },
@@ -17,6 +18,7 @@ export const routes = [
         component: () => import('./components/home/active-idol.vue'),
         name: 'active-idol',
         meta: {
+            title: '活耀偶像',
             KeepAlive: true
         }
     },
@@ -25,6 +27,7 @@ export const routes = [
         component: () => import('./components/home/profile.vue'),
         name: 'profile',
         meta: {
+            title: '偶像個人資料',
             KeepAlive: true
         }
     },
@@ -33,6 +36,7 @@ export const routes = [
         component: () => import('./components/home/rebirth.vue'),
         name: 'rebirth',
         meta: {
+            title: '偶像轉生',
             KeepAlive: true
         }
     },
@@ -41,6 +45,7 @@ export const routes = [
         component: () => import('./components/home/chatroom.vue'),
         name: 'chatroom',
         meta: {
+            title: '聊天室',
             KeepAlive: true
         }
     },
@@ -48,6 +53,9 @@ export const routes = [
         path: '/create-profile',
         component: () => import('./components/home/create-profile.vue'),
         name: 'create-profile',
+        meta: {
+            title: '創建偶像',
+        }
     }
 ];
 

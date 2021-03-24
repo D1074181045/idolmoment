@@ -18,7 +18,6 @@ $dark_theme = Cookie::get('dark_theme', false);
         <meta name="viewport"
               content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet"/>
-        <title>@yield('title')</title>
         @include('home.layouts.style')
     </head>
     <body>

@@ -194,10 +194,13 @@
             }
         },
         activated() {
+            document.title = "玩家資訊";
             axios.get(this.api_prefix.concat('profile/', this.$route.params.name))
                 .then(({status, opposite_profile, operating_time}) => {
-                    if (status)
+                    if (status) {
+                        document.title = "玩家資訊".concat('-', opposite_profile.nickname);
                         this.opposite_profile = opposite_profile;
+                    }
             })
         },
         methods: {
