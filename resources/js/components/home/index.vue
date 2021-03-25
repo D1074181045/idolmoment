@@ -191,7 +191,7 @@ export default {
             });
         },
         ban_signature: function () {
-            if (this.$store.state.ban_type.signature.time)
+            if (this.signature_cool_down.time)
                 return;
 
             if (this.profile.signature.match(legalityKey)) {
@@ -203,7 +203,7 @@ export default {
             }
         },
         do_activity: function (activity_type) {
-            if (this.$store.state.ban_type.activity.time)
+            if (this.activity_cool_down.time)
                 return;
 
             this.$store.state.ban_type.activity.status = true;

@@ -3,13 +3,10 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import login from './components/user/login.vue';
-import register from './components/user/register.vue';
-
 export const routes = [
     {
         path: '/login',
-        component: login,
+        component: () => import('./components/user/login.vue'),
         name: 'login',
         meta: {
             KeepAlive: true
@@ -17,7 +14,7 @@ export const routes = [
     },
     {
         path: '/register',
-        component: register,
+        component: () => import('./components/user/register.vue'),
         name: 'register',
         meta: {
             KeepAlive: true

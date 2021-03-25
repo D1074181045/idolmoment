@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     /**
-     * 建立使用者暱稱頁面
+     * 創建偶像頁面
      *
      *
      * @return RedirectResponse|view

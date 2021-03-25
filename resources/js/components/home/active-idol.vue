@@ -238,14 +238,14 @@ picture img {
 }
 
 .self {
-    background-color: var(--self-bg-color);
+    background-color: var(--self-bg-color) !important;
 }
 
 .teetee {
-    background-color: var(--teetee-bg-color);
+    background-color: var(--teetee-bg-color) !important;
 }
 
 .graduate {
-    color: var(--graduate-color);
+    color: var(--graduate-color) !important;
 }
 </style>

@@ -115,9 +115,9 @@
                     if (danger_msg.length) {
                         clearTimeout(clear_danger_msg);
                         danger_msg.remove();
-                        $('#app').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
+                        $('#danger').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
                     } else {
-                        $('#app').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
+                        $('#danger').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
                     }
 
                     clear_danger_msg = setTimeout(() => {

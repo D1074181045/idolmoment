@@ -21,7 +21,29 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/10.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/10.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/4.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/4.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/5.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/6.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/9.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/9.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/home/active-idol.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/active-idol.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/home/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/router_user.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/router_user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/home/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/script.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/script.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/home/profile.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/layouts/script.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/layouts/script.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/user/layouts/style.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/layouts/style.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.mix.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,14 +204,14 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\home" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
     </key>
   </component>
@@ -219,7 +241,8 @@
       <workItem from="1616584710480" duration="9329000" />
       <workItem from="1616595589327" duration="2190000" />
       <workItem from="1616599469638" duration="5166000" />
-      <workItem from="1616636445092" duration="262000" />
+      <workItem from="1616636445092" duration="494000" />
+      <workItem from="1616656379627" duration="7532000" />
     </task>
     <servers />
   </component>
@@ -271,10 +294,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="51" width="1403" height="702" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1616315542719" />
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1616590491292">
+    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1616662429591">
       <screen x="0" y="0" width="1364" height="728" />
     </state>
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1616590491292" />
+    <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1616662429591" />
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1616324829918" />
     <state x="443" y="158" width="672" height="475" key="search.everywhere.popup" timestamp="1616588899721">
       <screen x="0" y="0" width="1364" height="728" />
