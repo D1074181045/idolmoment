@@ -44,16 +44,21 @@ export default {
         document.title = "創建偶像";
     },
     computed:{
-        error() {
+        error: function () {
             return this.$store.state.error;
-        }
+        },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
     },
     methods: {
         build: function () {
             if (this.build_disabled)
                 return;
 
-            axios.post(this.api_prefix.concat('store-profile'), {
+            const url = this.api_prefix.concat('store-profile');
+
+            axios.post(url, {
                 nickname: this.nickname,
             }).then(({status, message}) => {
                 if (status) {

@@ -27,9 +27,6 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\DangerEvent' => [
             'App\Listeners\DangerListener',
         ],
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\UpdateApiToken',
-        ],
     ];
 
     /**

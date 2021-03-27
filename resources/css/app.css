@@ -67,11 +67,13 @@
     background-image: url('/img/password-toggle-button/hide-v0.0.1.svg');
     background-repeat: no-repeat;
     background-size: 18px 18px;
+    transition: all 0.2s ease 0s;
     cursor: pointer;
 }
 
 .show-hide-toggle-button > input:checked + label {
     background-image: url('/img/password-toggle-button/show-v0.0.1.svg');
+    transition: all 0.2s ease 0s;
 }
 
 *,
@@ -110,6 +112,7 @@ body {
   color: var(--label-color);
   text-align: left;
   background-color: var(--bg-color);
+  touch-action: manipulation;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -751,7 +754,7 @@ pre code {
 .col-xl,
 .col-xl-auto {
   position: relative;
-  width: 100%;
+  width: 90%;
   padding-right: 15px;
   padding-left: 15px;
 }
@@ -5518,6 +5521,7 @@ input[type="button"].btn-block {
 .navbar-light .navbar-nav .active > .nav-link,
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
+    cursor: default;
     background-color: #48ac8c;
     color: rgba(255, 255, 255, 0.9);
 }

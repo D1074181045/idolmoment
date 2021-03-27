@@ -65,12 +65,16 @@
                 own_character_list: [],
             }
         },
+        computed:{
+            api_prefix: function () {
+                return this.$store.state.api_prefix
+            },
+        },
         activated() {
             document.title = "偶像轉生";
 
             this.get_own_character().then(() => {
                 document.getElementsByClassName('character-frame')[0].firstChild.click();
-                // $('div.character-frame').first().children().trigger('click');
             });
         },
         methods: {
@@ -92,7 +96,9 @@
             to_rebirth: function () {
                 this.rebirth_disabled = true;
 
-                axios.patch(this.api_prefix.concat('rebirth'), {
+                const url = this.api_prefix.concat('rebirth');
+
+                axios.patch(url, {
                     character_name: this.selected_character,
                 }).then(({status}) => {
                     if (status) {

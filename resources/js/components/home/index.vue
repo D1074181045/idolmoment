@@ -60,7 +60,7 @@
         </div>
         <div class="tb">
             <h3>個人設定</h3>
-            <msg v-if="signature_cool_down.time">剩餘時間：{{ signature_cool_down.time }}</msg>
+            <msg v-if="signature_ban.time">剩餘時間：{{ signature_ban.time }}</msg>
             <div class="tb-gap">
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">簽名檔</label>
@@ -80,7 +80,7 @@
         </div>
         <div class="tb" v-if="!profile.graduate">
             <h3>進行活動</h3>
-            <msg v-if="activity_cool_down.time">剩餘時間：{{ activity_cool_down.time }}</msg>
+            <msg v-if="activity_ban.time">剩餘時間：{{ activity_ban.time }}</msg>
             <div class="tb-gap" style="margin-left: -10px;">
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
                         v-on:click="do_activity('adult-live')">成人直播</button>
@@ -139,12 +139,15 @@ export default {
         cool_down: function () {
             return this.$store.state.cool_down;
         },
-        signature_cool_down: function () {
+        signature_ban: function () {
             return this.$store.state.ban_type.signature;
         },
-        activity_cool_down: function () {
+        activity_ban: function () {
             return this.$store.state.ban_type.activity;
-        }
+        },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
     },
     mounted() {
         this.$store.commit('cool_down', 'activity');
@@ -164,56 +167,59 @@ export default {
             if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
                 return;
 
-            axios.patch(this.api_prefix.concat('update-teetee'), {
+            const url = this.api_prefix.concat('update-teetee');
+
+            axios.patch(url, {
                 teetee: this.profile.teetee,
             }).then(({teetee_status, teetee_name}) => {
-                this.$store.state.teetee_info.status = teetee_status;
-                this.$store.state.teetee_info.teetee_name = teetee_name;
+                this.teetee_info.status = teetee_status;
+                this.teetee_info.teetee_name = teetee_name;
             })
         },
         set_signature: function () {
-            if (this.signature_disabled || this.signature_cool_down.status)
+            if (this.signature_ban.status)
                 return;
 
-            this.$store.state.ban_type.signature.status = true;
+            const url = this.api_prefix.concat('update-signature');
+            this.signature_ban.status = true;
 
-            axios.patch(this.api_prefix.concat('update-signature'), {
+            axios.patch(url, {
                 signature: this.signature
             }).then(({status, signature_time}) => {
                 if (status) {
-                    this.$store.state.cool_down.signature = signature_time;
+                    this.cool_down.signature = signature_time;
                     this.$store.commit('cool_down', 'signature');
                 } else {
-                    this.$store.state.ban_type.signature.status = false;
+                    this.signature_ban.status = false;
                 }
             }).catch((err) => {
-                this.$store.state.ban_type.signature.status = false;
+                this.signature_ban.status = false;
             });
         },
         ban_signature: function () {
-            if (this.signature_cool_down.time)
+            if (this.signature_ban.status)
                 return;
 
             if (this.profile.signature.match(legalityKey)) {
-                this.$store.state.ban_type.signature.status = this.profile.signature.length > 30;
+                this.signature.status = this.profile.signature.length > 30;
                 this.c_signature_disabled = this.profile.signature.length > 30;
             } else {
-                this.$store.state.ban_type.signature.status  = this.profile.signature.length !== 0;
+                this.signature.status  = this.profile.signature.length !== 0;
                 this.c_signature_disabled = this.profile.signature.length !== 0;
             }
         },
         do_activity: function (activity_type) {
-            if (this.activity_cool_down.time)
+            if (this.activity_ban.status)
                 return;
 
-            this.$store.state.ban_type.activity.status = true;
+            const url = this.api_prefix.concat('activity');
+            this.activity_ban.status = true;
 
-
-            axios.patch(this.api_prefix.concat('activity'), {
+            axios.patch(url, {
                 activity_type: activity_type,
             }).then(({status, ability, activity_time}) => {
                 if (status) {
-                    this.$store.state.cool_down.activity = activity_time;
+                    this.cool_down.activity = activity_time;
                     this.$store.commit('cool_down', 'activity');
 
                     Object.keys(ability).forEach((key) => {
@@ -221,10 +227,10 @@ export default {
                     });
 
                 } else {
-                    this.$store.state.ban_type.activity.status = false;
+                    this.activity_ban.status = false;
                 }
             }).catch((err) => {
-                this.$store.state.ban_type.activity.status = false;
+                this.activity_ban.status = false;
             });
         },
     }

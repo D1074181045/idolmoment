@@ -10,22 +10,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="chat_message in chat_messages" :key="chat_message.name">
+            <tr v-for="chat_message in chat_messages">
                 <td style="width: 150px;">
                     <router-link style="font-size: 12px;" :to="{ name: 'profile', params: { name: chat_message.name } }" exact>{{ chat_message.nickname }}</router-link>
                 </td>
                 <td>{{ chat_message.message }}</td>
-                <td style="width: 160px;">{{ timeStamp2String(chat_message.created_at) }}</td>
+                <td style="width: 160px;">{{ timeStampToDateTime(chat_message.created_at) }}</td>
             </tr>
             </tbody>
         </table>
-        <msg v-if="chat_cool_down.time">剩餘時間：{{ chat_cool_down.time }}</msg>
+        <msg v-if="chat_ban.time" style="margin-bottom: 10px;">剩餘時間：{{ chat_ban.time }}</msg>
         <div class="setting">
             <input type="text" class="form-control" v-model="message"/>
-            <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message"
-                    :disabled="create_msg_disabled">
-                送出
-            </button>
+            <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message" :disabled="create_msg_disabled">送出</button>
         </div>
     </div>
 </template>
@@ -47,27 +44,36 @@ export default {
         msg
     },
     computed: {
-        chat_cool_down: function () {
+        chat_ban: function () {
             return this.$store.state.ban_type.chat;
         },
         create_msg_disabled: function () {
             return this.$store.state.ban_type.chat.status;
         },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
+        cool_down: function () {
+            return this.$store.state.cool_down;
+        },
     },
     updated() {
         if (messages_updated) {
-            if (put_bottom)
-                $('tbody').scrollTop($('tbody')[0].scrollHeight);
+            if (put_bottom) {
+                const tbody = document.getElementsByTagName('tbody')[0];
+
+                tbody.scrollTop = tbody.scrollHeight;
+            }
             messages_updated = false;
         }
     },
     mounted() {
-        const tbody = $('tbody');
+        const tbody = document.getElementsByTagName('tbody')[0];
 
-        tbody.scroll(function () {
-            let last = tbody[0].scrollHeight - tbody.scrollTop();
-            put_bottom = last <= tbody.height();
-        });
+        tbody.onscroll = function () {
+            let last = tbody.scrollHeight - tbody.scrollTop;
+            put_bottom = last <= tbody.offsetHeight;
+        };
 
         Echo.channel('public-chat-channel')
             .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
@@ -86,17 +92,19 @@ export default {
     },
     activated() {
         document.title = "聊天室";
+
+        const url = this.api_prefix.concat('chat');
         this.$store.commit('cool_down', 'chat');
 
-        axios.get(this.api_prefix.concat('chat'))
+        axios.get(url)
             .then(({status, chat_messages}) => {
                 if (status) {
                     this.chat_messages = chat_messages;
                 }
             })
             .then(() => {
-                const tbody = $('tbody');
-                tbody.scrollTop(tbody[0].scrollHeight);
+                const tbody = document.getElementsByTagName('tbody')[0];
+                tbody.scrollTop = tbody.scrollHeight;
             })
     },
     methods: {
@@ -106,21 +114,23 @@ export default {
 
             let url = this.api_prefix.concat('create-message');
 
-            this.$store.state.ban_type.chat.status = true;
+            this.chat_ban.status = true;
 
             axios.post(url, {
                 message: this.message,
             }).then(({status, chat_time}) => {
                 if (status) {
-                    this.$store.state.cool_down.chat = chat_time;
+                    this.cool_down.chat = chat_time;
                     this.$store.commit('cool_down', 'chat');
                 } else {
-                    this.$store.state.ban_type.chat.status = false;
+                    this.chat_ban.status = false;
                 }
-            })
+            }).catch((err) => {
+                this.chat_ban.status = false;
+            });
             this.message = "";
         },
-        timeStamp2String: function (time) {
+        timeStampToDateTime: function (time) {
             let datetime = new Date(time);
 
             let year = datetime.getFullYear();

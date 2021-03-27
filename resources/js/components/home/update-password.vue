@@ -8,27 +8,35 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">舊密碼</label>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
                                        :class="$store.getters.disabled_class(old_password_disabled)" v-model="old_password"
-                                       v-on:input="ban_update_password">
+                                       v-on:input="ban_update_password" :type="pw_type(old_password_show)">
+                            </div>
+                            <div class="show-hide-toggle-button">
+                                <input type="checkbox" id="old_password_toggle_button" v-on:click="old_password_toggle_button">
+                                <label for="old_password_toggle_button" :title="pw_title(old_password_show)" style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">新密碼</label>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)" v-model="new_password"
-                                       v-on:input="ban_update_password">
+                                       v-on:input="ban_update_password" :type="pw_type(new_password_show)">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">確認新密碼</label>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)" v-model="new_password_confirm"
-                                       v-on:input="ban_update_password">
+                                       v-on:input="ban_update_password" :type="pw_type(new_password_show)">
                                 <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間，且無特殊字元</div>
+                            </div>
+                            <div class="show-hide-toggle-button">
+                                <input type="checkbox" id="new_password_toggle_button" v-on:click="new_password_toggle_button">
+                                <label for="new_password_toggle_button" :title="pw_title(new_password_show)" style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
                         <button type="button" disabled class="btn btn-primary btn-block"
@@ -57,7 +65,9 @@ export default {
             new_password_confirm: "",
             new_password_disabled: true,
             old_password_disabled: true,
-            update_password_disabled: true
+            update_password_disabled: true,
+            old_password_show: false,
+            new_password_show: false,
         }
     },
     components:{
@@ -67,11 +77,26 @@ export default {
         document.title = "修改密碼";
     },
     computed:{
-        error() {
+        error: function () {
             return this.$store.state.error;
-        }
+        },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
     },
     methods: {
+        pw_title: function (show) {
+            return show ? '顯示密碼' : '隱藏密碼';
+        },
+        pw_type: function (show) {
+            return show ? 'text' : 'password';
+        },
+        old_password_toggle_button: function (e) {
+            this.old_password_show = e.target.checked;
+        },
+        new_password_toggle_button: function (e) {
+            this.new_password_show = e.target.checked;
+        },
         between: function (int, from, to) {
             return int >= from && int <= to;
         },
@@ -98,7 +123,9 @@ export default {
             if (this.update_password_disabled)
                 return;
 
-            axios.patch(this.api_prefix.concat('update-password'), {
+            const url = this.api_prefix.concat('update-password');
+
+            axios.patch(url, {
                 old_password: this.old_password,
                 new_password: this.new_password,
                 new_password_confirm: this.new_password_confirm,

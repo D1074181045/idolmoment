@@ -15,7 +15,7 @@
                         <td>{{ opposite_profile.nickname }}</td>
                         <td rowspan="2" style="width: 80px;">
                             <div class="img-big">
-                                <picture>
+                                <picture v-if="opposite_loaded">
                                     <source type="image/png"
                                             :srcset="characters_img_path(opposite_profile.use_character.img_file_name)">
                                     <img :src="characters_img_path(opposite_profile.use_character.img_file_name)"
@@ -127,7 +127,7 @@
                     <tr>
                         <td colspan="2" style="width: 80px;">
                             <div class="img-big">
-                                <picture>
+                                <picture v-if="opposite_loaded">
                                     <source type="image/png"
                                             :srcset="characters_img_path(opposite_profile.use_character.img_file_name)">
                                     <img :src="characters_img_path(opposite_profile.use_character.img_file_name)"
@@ -177,12 +177,18 @@
             <div v-if="opposite_profile.graduate">
                 <h3>對方已畢業</h3>
                 <div class="tb-gap" style="margin-left: -10px;">
-                    <button type="button" id="send_blade" class="btn btn-bottom btn-info" disabled>寄刀片</button>
+                    <button type="button" class="btn btn-bottom btn-info" disabled>寄刀片</button>
+                </div>
+            </div>
+            <div v-else-if="self_profile.graduate">
+                <h3>你已畢業</h3>
+                <div class="tb-gap" style="margin-left: -10px;">
+                    <button type="button" class="btn btn-bottom btn-info" disabled>寄刀片</button>
                 </div>
             </div>
             <div v-else>
                 <h3>操作</h3>
-                <msg v-if="operating_cool_down.time">剩餘時間：{{ operating_cool_down.time }}</msg>
+                <msg v-if="operating_ban.time">剩餘時間：{{ operating_ban.time }}</msg>
                 <div class="tb-gap" style="margin-left: -10px;">
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('send-blade')"
                             :disabled="operating_disabled">寄刀片
@@ -212,6 +218,7 @@ export default {
             opposite_profile: {use_character: {}},
             profile_type: localStorage.profile_type ? localStorage.profile_type : 'details',
             opposite_loaded: false,
+            title: null,
         }
     },
     components: {
@@ -221,11 +228,17 @@ export default {
         self_profile: function () {
             return this.$store.state.profile;
         },
-        operating_cool_down: function () {
+        operating_ban: function () {
             return this.$store.state.ban_type.operating;
         },
         operating_disabled: function () {
             return this.$store.state.ban_type.operating.status;
+        },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
+        cool_down: function () {
+            return this.$store.state.cool_down;
         },
     },
     created() {
@@ -245,11 +258,18 @@ export default {
         this.$store.commit('cool_down', 'operating');
     },
     activated() {
-        document.title = "玩家資訊";
-        axios.get(this.api_prefix.concat('profile/', this.$route.params.name))
+        const url = this.api_prefix.concat('profile/', this.$route.params.name);
+
+        if (!this.title)
+            document.title = "玩家資訊";
+        else
+            document.title = this.title;
+
+        axios.get(url)
             .then(({status, opposite_profile}) => {
                 if (status) {
-                    document.title = "玩家資訊".concat('-', opposite_profile.nickname);
+                    if (!this.title)
+                        document.title = this.title = "玩家資訊".concat('-', opposite_profile.nickname);
                     this.opposite_profile = opposite_profile;
                     this.opposite_loaded = true;
                 }
@@ -291,27 +311,35 @@ export default {
             this.profile_type = localStorage.profile_type = 'comparison';
         },
         operating: function (type) {
-            if (this.operating_cool_down.time)
+            if (this.operating_ban.time)
                 return;
 
-            this.$store.state.ban_type.operating.status = true;
+            const url = this.api_prefix.concat('operating');
+            this.operating_ban.status = true;
 
-            axios.patch(this.api_prefix.concat('operating'), {
+            axios.patch(url, {
                 opposite_name: this.$route.params.name,
                 operating_type: type,
             }).then(({status, operating_time, information}) => {
                 if (status) {
-                    this.$store.state.cool_down.operating = operating_time;
+                    this.cool_down.operating = operating_time;
                     this.$store.commit('cool_down', 'operating');
 
                     this.information_list.push(information);
                 } else {
-                    this.$store.state.ban_type.operating.status = false;
+                    this.operating_ban.status = false;
                 }
             }).catch((err) => {
-                this.$store.state.ban_type.operating.status = false;
+                this.operating_ban.status = false;
             });
         }
     }
 }
 </script>
+
+<style scoped>
+.tb .tb-gap {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+</style>

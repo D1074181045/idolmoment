@@ -24,7 +24,7 @@ class RefreshToken
     public function handle(Request $request, Closure $next)
     {
         try {
-            if (JWTAuth::parseToken()->authenticate())
+            if (JWTAuth::parseToken()->authenticate()) // 登入狀態正常
                 return $next($request);
 
             throw new UnauthorizedHttpException('jwt-auth', '未登錄');
@@ -32,7 +32,7 @@ class RefreshToken
             try {
                 $refresh_token = JWTAuth::parseToken()->refresh(); // 刷新 token
 
-            } catch (JWTException $e) {
+            } catch (JWTException $e) { // 無法刷新 token
 
                 throw new UnauthorizedHttpException('jwt-auth', $e->getMessage());
             }

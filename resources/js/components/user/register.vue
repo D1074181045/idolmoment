@@ -72,9 +72,15 @@ export default {
         msg
     },
     computed:{
-        error() {
+        error: function () {
             return this.$store.state.error;
         },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
+    },
+    activated() {
+        document.title = "註冊";
     },
     methods: {
         pw_title: function () {
@@ -117,9 +123,10 @@ export default {
             if (this.register_disabled)
                 return
 
+            const url = this.api_prefix.concat('register');
             this.$refs.register.focus();
 
-            axios.post(this.api_prefix.concat('register'), {
+            axios.post(url, {
                 username: this.username,
                 password: this.password,
                 password_confirm: this.password_confirm

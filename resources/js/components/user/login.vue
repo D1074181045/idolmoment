@@ -60,7 +60,7 @@ export default {
             username: "",
             password: "",
             autologin: false,
-            pw_is_show: false,
+            password_show: false,
             username_disabled: true,
             password_disabled: true,
             login_disabled: true,
@@ -70,19 +70,25 @@ export default {
         msg
     },
     computed:{
-        error() {
+        error: function () {
             return this.$store.state.error;
-        }
+        },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
+    },
+    activated() {
+        document.title = "登入";
     },
     methods: {
         pw_title: function () {
-            return this.pw_is_show ? '顯示密碼' : '隱藏密碼';
+            return this.password_show ? '顯示密碼' : '隱藏密碼';
         },
         pw_type: function () {
-            return this.pw_is_show ? 'text' : 'password';
+            return this.password_show ? 'text' : 'password';
         },
         password_toggle_button: function (e) {
-            this.pw_is_show = e.target.checked;
+            this.password_show = e.target.checked;
         },
         ban_login: function () {
             this.username_disabled = this.username.length <= 0;
@@ -96,9 +102,10 @@ export default {
             if (this.login_disabled)
                 return
 
+            const url = this.api_prefix.concat('login');
             this.$refs.login.focus();
 
-            axios.get(this.api_prefix.concat('login'), {
+            axios.get(url, {
                 params: {
                     username: this.username,
                     password: this.password,

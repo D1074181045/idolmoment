@@ -15,10 +15,10 @@ class CreateCoolDownTable extends Migration
     {
         Schema::create('cool_down', function (Blueprint $table) {
             $table->string('name', 15)->comment('使用者名稱')->primary();
-            $table->dateTime('signature')->nullable()->comment('簽名冷卻時間');
-            $table->dateTime('activity')->nullable()->comment('活動冷卻時間');
-            $table->dateTime('operating')->nullable()->comment('操作冷卻時間');
-            $table->dateTime('chat')->nullable()->comment('聊天冷卻時間');
+            $table->timestamp('signature')->nullable()->comment('簽名冷卻時間');
+            $table->timestamp('activity')->nullable()->comment('活動冷卻時間');
+            $table->timestamp('operating')->nullable()->comment('操作冷卻時間');
+            $table->timestamp('chat')->nullable()->comment('聊天冷卻時間');
 
             $table->foreign('name')->on('game_info')->references('name')->onDelete('cascade');
 

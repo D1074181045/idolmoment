@@ -136,6 +136,7 @@
         background-size: 18px 18px;
         border-radius: 100px;
         cursor: pointer;
+        transition: all 0.4s ease 0s;
     }
 
     .dark-swift-button > input:checked + label {
@@ -145,6 +146,7 @@
         background-repeat: no-repeat;
         background-size: 18px 18px;
         border-radius: 100px;
+        transition: all 0.4s ease 0s;
     }
 </style>
 

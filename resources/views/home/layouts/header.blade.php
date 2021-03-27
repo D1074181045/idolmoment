@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent"
          style="user-select: none;padding-top: 0.5rem;padding-bottom: 0.5rem;">
         <div class="dark-swift-button">
-            <input class="swift-btn_toggle" type="checkbox" id="lightSwitch"
+            <input class="swift-btn_toggle" type="checkbox" id="lightSwitch" v-on:click="this.lightSwitch"
                 {{ $dark_theme === 'true' ? 'checked' : '' }}
             >
             <label for="lightSwitch" style="margin-bottom: 0;">Toggle</label>
@@ -36,11 +36,19 @@
                         {{ $self_name }}
                     </span>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red" :to="{ name: 'update-password' }" exact>修改密碼</router-link>
-                        <span class="dropdown-item nav-link-red" id="logout" style="cursor: pointer;">登出</span>
+                        <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red"
+                                     :to="{ name: 'update-password' }" exact>修改密碼
+                        </router-link>
+                        <span class="dropdown-item nav-link-red" id="logout" style="cursor: pointer;"
+                              v-on:click="this.logout">登出</span>
                     </div>
                 </li>
             </ul>
         @endif
+    </div>
+    <div id="danger" style="position: absolute;bottom: 0;" v-if="this.danger_msg">
+        <div id="danger_msg" class="alert-danger" style="position: fixed;left: 0;right: 0;">
+            <marquee scrollamount="10" behavior="alternate" v-text="this.danger_msg"></marquee>
+        </div>
     </div>
 </nav>

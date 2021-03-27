@@ -124,6 +124,9 @@ export default {
         teetee_info: function () {
             return this.$store.state.teetee_info;
         },
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
     },
     activated() {
         document.title = "活耀偶像";
@@ -139,9 +142,10 @@ export default {
             this.$router.push({ name: 'profile', params: { name: path }});
         },
         get_idol_list: function (page, popularity) {
+            const url = this.api_prefix.concat('change-page');
             this.current_popularity = popularity;
 
-            axios.get(this.api_prefix.concat('change-page'), {
+            axios.get(url, {
                 params: {
                     page: page,
                     popularity: popularity
@@ -174,7 +178,10 @@ export default {
         to_search_name: function () {
             if (!this.search_name)
                 return;
-            axios.get(this.api_prefix.concat('/change-page/'), {
+
+            const url = this.api_prefix.concat('change-page');
+
+            axios.get(url, {
                 params: {
                     search_name: this.search_name,
                 }

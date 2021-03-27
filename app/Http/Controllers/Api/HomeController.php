@@ -182,7 +182,7 @@ class HomeController extends Controller
             $self_game_info = GameInfo::query()
                 ->select('name', 'nickname', 'charm', 'max_vitality', 'current_vitality', 'energy', 'graduate',
                         'popularity', 'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character')
-                ->CurrentLoginUser();
+                ->with('GameCharacter')->CurrentLoginUser();
 
             if (!$self_game_info) {
                 return response()->json([
@@ -531,7 +531,7 @@ class HomeController extends Controller
         switch ($request->post('operating_type')) {
             case 'send-blade':
                 $information = $operating->send_blade();
-                event(new DangerEvent($opposite_name, '你遭受到攻擊了'));
+                event(new DangerEvent($opposite_name, '你收到刀片了'));
                 break;
             default:
                 return response()->json([

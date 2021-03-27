@@ -8,17 +8,11 @@ export const routes = [
         path: '/login',
         component: () => import('./components/user/login.vue'),
         name: 'login',
-        meta: {
-            KeepAlive: true
-        }
     },
     {
         path: '/register',
         component: () => import('./components/user/register.vue'),
         name: 'register',
-        meta: {
-            KeepAlive: true
-        }
     }
 ];
 

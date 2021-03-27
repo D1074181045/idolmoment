@@ -16,6 +16,7 @@ window.axios.interceptors.response.use(
         switch (error.response.status) {
                 case 401:
                     document.location.href = "/logout";
+                    localStorage.removeItem('token');
                     break;
         }
 

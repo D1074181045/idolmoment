@@ -13,12 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\user::factory(10)->create();
-//        $this->call(GameCharactersTableSeeder::class);
-//        $this->call(CharactersUpMagTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
-        $this->call(OwnCharactersTableSeeder::class);
-        $this->call(GameInfoTableSeeder::class);
-        $this->call(OperatingCoolDownSeeder::class);
+        $this->call(GameCharactersTableSeeder::class);
+        $this->call(CharactersUpMagTableSeeder::class);
+//        $this->call(UsersTableSeeder::class);
+//        $this->call(OwnCharactersTableSeeder::class);
+//        $this->call(GameInfoTableSeeder::class);
+//        $this->call(OperatingCoolDownSeeder::class);
     }
 }

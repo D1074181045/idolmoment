@@ -3,26 +3,6 @@
 {{ Html::script( mix('js/manifest.js') ) }}
 
 <script type="text/javascript">
-    $('#lightSwitch').on('click', (e) => {
-        let d = new Date();
-        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
-
-        let link = $('link');
-        let link_swal_style = link[link.length - 1];
-
-        if (e.target.checked) {
-            $('body').prop('class', 'dark');
-            document.cookie = 'dark_theme=true; expires=' + d.toString() + '; path=/';
-            localStorage.dark_theme = true;
-            link_swal_style.href = '{{ asset('css/sweetalert2.dark.theme.css') }}';
-        } else {
-            $('body').prop('class', '');
-            document.cookie = 'dark_theme=false; expires=' + d.toString() + '; path=/';
-            localStorage.dark_theme = false;
-            link_swal_style.href = '{{ asset('css/sweetalert2.default.theme.css') }}';
-        }
-    })
-
     const unlock_character_message = (new_character_name) => {
         let character = '<div style="color: #DC3545;">' + new_character_name + '</div>';
 
@@ -40,23 +20,6 @@
         })
     }
 
-    $("#logout").on('click', () => {
-        Swal.fire({
-            title: "登出",
-            text: "確定登出?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '確定',
-            cancelButtonText: '取消',
-            focusCancel: true,
-        }).then((result) => {
-            if (result.isConfirmed)
-                document.location.href = '{{ Route('home.logout') }}';
-        });
-    })
-
     let key = "";
 
     const surprises = [
@@ -67,7 +30,7 @@
         {'keyCode': "85668566", 'character-name': "Inugami Korone"} // ubub
     ];
 
-    $(document).on('keyup', function (e) {
+    document.addEventListener('keyup', function (e) {
         if (e.keyCode) {
             let t = 0;
 
@@ -87,45 +50,20 @@
             if (surprises.length === t)
                 key = e.keyCode.toString();
         }
-    });
-
-    $(function () {
-        if (localStorage.dark_theme === "true" && {{ $dark_theme }}) {
-            $('body').prop('class', 'dark');
-        } else if (localStorage.dark_theme === "true") {
-            $('#lightSwitch').trigger('click');
-        } else if ({{ $dark_theme }}) {
-            $('body').prop('class', 'dark');
-        }
-
-        Echo.connector.pusher.config.auth.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
-        Echo.private('unlock-character-channel-{{ $self_name_encrypt }}')
-            .listen('.unlock-character-event', ({Character}) => {
-                unlock_character_message(Character);
-            });
-
-        let clear_danger_msg = null;
-
-        Echo.private('danger-channel-{{ $self_name_encrypt }}')
-            .listen('.danger-event', ({message}) => {
-                if (message) {
-                    let danger_msg = $('#danger_msg');
-                    let marquee_message = '<marquee scrollamount="10" behavior="alternate">' + message + '</marquee>';
-
-                    if (danger_msg.length) {
-                        clearTimeout(clear_danger_msg);
-                        danger_msg.remove();
-                        $('#danger').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
-                    } else {
-                        $('#danger').prepend('<div id="danger_msg" class="alert-danger">' + marquee_message + '</div>');
-                    }
-
-                    clear_danger_msg = setTimeout(() => {
-                        $('#danger_msg').remove();
-                    }, 10000);
-                }
-            });
     })
+
+    Echo.private('unlock-character-channel-{{ $self_name_encrypt }}')
+        .listen('.unlock-character-event', ({Character}) => {
+            unlock_character_message(Character);
+        });
+
+    if (localStorage.dark_theme === "true" && {{ $dark_theme }}) {
+        document.getElementsByTagName('body')[0].className = 'dark';
+    } else if (localStorage.dark_theme === "true") {
+        document.getElementById('lightSwitch').click();
+    } else if ({{ $dark_theme }}) {
+        document.getElementsByTagName('body')[0].className = 'dark';
+    }
 </script>
 
 @yield('scripts')

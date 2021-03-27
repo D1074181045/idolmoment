@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-function StringToDate(String) {
+function StringToDateTime(String) {
     const arr = String.split(/[- :]/);
     return new Date(
         parseInt(arr[0]),
@@ -28,14 +28,14 @@ const store = new Vuex.Store({
         cool_down: null,
         teetee_info: null,
         IsCreated: false,
-        head_title: ""
+        api_prefix: '/api/',
     },
     mutations: {
         cool_down: function(state, type) {
             if (state.cool_down[type]) {
                 let time = new Date(state.cool_down[type]).getTime()
                     ? new Date(state.cool_down[type]).getTime()
-                    : new Date(StringToDate(state.cool_down[type])).getTime();
+                    : new Date(StringToDateTime(state.cool_down[type])).getTime();
 
                 if (time > Date.now()) {
                     let Remaining_time = Math.ceil((time - Date.now()) / 1000);
@@ -49,7 +49,6 @@ const store = new Vuex.Store({
                         state.ban_type[type].time = Remaining_time;
 
                         if (Remaining_time < 1) {
-                            // elem[type.concat('_', 'disabled')] = false;
                             state.ban_type[type].status = false;
                             state.ban_type[type].time = null;
                             clearInterval(timeout);
@@ -75,14 +74,16 @@ const store = new Vuex.Store({
                 state.profile = res.profile;
                 state.teetee_info = res.teetee_info;
             }
-        },
-
+        }
     },
     getters: {
         disabled_class: () => (status) => {
             return status ? 'is-invalid' : 'is-valid';
         },
         NumberFormat: () => (number, type = 'en-IN') => {
+            if (!number)
+                return null;
+
             switch (type) {
                case 'zh-TW' :
                    return new Intl.NumberFormat(type, {
@@ -96,10 +97,11 @@ const store = new Vuex.Store({
     },
     actions: {
         load_my_profile: function ({commit}) {
+            const url = this.state.api_prefix.concat('my-profile');
+
             return new Promise(function (resolve, reject) {
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
-
-                axios.get(Vue.prototype.api_prefix.concat('my-profile'))
+                axios.get(url)
                     .then((res) => {
                         commit('load_my_profile', res)
                         resolve()
