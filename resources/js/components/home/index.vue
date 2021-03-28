@@ -65,7 +65,7 @@
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">簽名檔</label>
                     <input placeholder="最多30個字" type="text" class="form-control"
-                           :class="$store.getters.disabled_class(c_signature_disabled)"
+                           :class="$store.getters.disabled_class(class_signature_disabled)"
                            v-model="profile.signature" v-on:input="ban_signature"/>
                     <button type="button" class="btn btn-info"
                             :disabled="signature_disabled" v-on:click="set_signature">更新</button>
@@ -114,7 +114,7 @@ const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
 export default {
     data() {
         return {
-            c_signature_disabled: false,
+            class_signature_disabled: false,
         }
     },
     components: {
@@ -197,16 +197,11 @@ export default {
             });
         },
         ban_signature: function () {
-            if (this.signature_ban.status)
+            if (this.signature_ban.time)
                 return;
 
-            if (this.profile.signature.match(legalityKey)) {
-                this.signature.status = this.profile.signature.length > 30;
-                this.c_signature_disabled = this.profile.signature.length > 30;
-            } else {
-                this.signature.status  = this.profile.signature.length !== 0;
-                this.c_signature_disabled = this.profile.signature.length !== 0;
-            }
+            this.signature_ban.status = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
+            this.class_signature_disabled = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
         },
         do_activity: function (activity_type) {
             if (this.activity_ban.status)

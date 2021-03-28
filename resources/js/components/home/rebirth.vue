@@ -74,7 +74,9 @@
             document.title = "偶像轉生";
 
             this.get_own_character().then(() => {
-                document.getElementsByClassName('character-frame')[0].firstChild.click();
+				if (document.getElementsByClassName('character-frame').length) {
+                    document.getElementsByClassName('character-frame')[0].firstChild.click();
+                }
             });
         },
         methods: {

@@ -101,22 +101,8 @@ export default {
             return int >= from && int <= to;
         },
         ban_update_password: function () {
-            if (!this.old_password.match(legalityKey)) {
-                this.old_password_disabled = true;
-            } else {
-                this.old_password_disabled = !this.between(this.old_password.length, 8, 32);
-            }
-
-            if (this.new_password === this.new_password_confirm) {
-                if (!this.new_password.match(legalityKey)) {
-                    this.new_password_disabled = true;
-                } else {
-                    this.new_password_disabled = !this.between(this.new_password.length, 8, 32);
-                }
-            } else {
-                this.new_password_disabled = true;
-            }
-
+            this.old_password_disabled = !this.old_password.match(legalityKey) || !this.between(this.old_password.length, 8, 32);
+            this.new_password_disabled = this.new_password !== this.new_password_confirm || !this.new_password.match(legalityKey) || !this.between(this.new_password.length, 8, 32);
             this.update_password_disabled = this.old_password_disabled || this.new_password_disabled;
         },
         to_update_password: function () {

@@ -90,11 +90,7 @@ export default {
         ban_build: function () {
             const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9]+$");
 
-            if (this.nickname.match(legalityKey)) {
-                this.build_disabled = this.nickname.length === 0 || this.nickname.length > 12;
-            } else {
-                this.build_disabled = true;
-            }
+            this.build_disabled = !this.nickname.match(legalityKey) || this.nickname.length === 0 || this.nickname.length > 12;
         },
     }
 }

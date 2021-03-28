@@ -113,7 +113,6 @@ export default {
                 return;
 
             let url = this.api_prefix.concat('create-message');
-
             this.chat_ban.status = true;
 
             axios.post(url, {
