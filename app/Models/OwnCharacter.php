@@ -29,9 +29,7 @@ class OwnCharacter extends Model
     }
 
     public function scopeBuildOwnCharacter($query, array $array) {
-        $self_name = Auth::user()->name;
-
-        $username = Arr::get($array, 'username', $self_name);
+        $username = Arr::get($array, 'username');
         $character_name = Arr::get($array, 'character_name');
 
         return $query->firstOrCreate([

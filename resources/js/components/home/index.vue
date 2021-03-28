@@ -25,31 +25,59 @@
                 </tr>
                 <tr>
                     <th class="table-info">人氣</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.popularity) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.popularity) }}
+                        <div style="display: inline" v-if="next_ability.popularity">
+                            → {{ $store.getters.NumberFormat(next_ability.popularity) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-info">名聲</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.reputation) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.reputation) }}
+                        <div style="display: inline" v-if="next_ability.reputation">
+                            → {{ $store.getters.NumberFormat(next_ability.reputation) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-info">最大生命值</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.max_vitality) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.max_vitality) }}
+                        <div style="display: inline" v-if="next_ability.max_vitality">
+                            → {{ $store.getters.NumberFormat(next_ability.max_vitality) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-info">目前生命值</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.current_vitality) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.current_vitality) }}
+                        <div style="display: inline" v-if="next_ability.current_vitality">
+                            → {{ $store.getters.NumberFormat(next_ability.current_vitality) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-info">精力</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.energy) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.energy) }}
+                        <div style="display: inline" v-if="next_ability.energy">
+                            → {{ $store.getters.NumberFormat(next_ability.energy) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-info">抗壓性</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.resistance) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.resistance) }}
+                        <div style="display: inline" v-if="next_ability.resistance">
+                            → {{ $store.getters.NumberFormat(next_ability.resistance) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-info">魅力</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.charm) }}</td>
+                    <td colspan="2">{{ $store.getters.NumberFormat(profile.charm) }}
+                        <div style="display: inline" v-if="next_ability.charm">
+                            → {{ $store.getters.NumberFormat(next_ability.charm) }}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th class="table-secondary">轉生次數</th>
@@ -115,6 +143,7 @@ export default {
     data() {
         return {
             class_signature_disabled: false,
+            next_ability: {}
         }
     },
     components: {
@@ -149,12 +178,22 @@ export default {
             return this.$store.state.api_prefix
         },
     },
+    beforeRouteLeave(to, from, next) {
+        Object.keys(this.next_ability).forEach((key) => {
+            if (this.next_ability[key])
+                this.profile[key] = this.next_ability[key];
+        });
+
+        next();
+    },
     mounted() {
         this.$store.commit('cool_down', 'activity');
         this.$store.commit('cool_down', 'signature');
     },
     activated() {
         document.title = "我的偶像";
+
+        this.next_ability = {};
 
         if (!this.first_load) {
             this.$store.dispatch('load_my_profile');
@@ -218,7 +257,8 @@ export default {
                     this.$store.commit('cool_down', 'activity');
 
                     Object.keys(ability).forEach((key) => {
-                        this.profile[key] = ability[key];
+                        this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
+                        this.next_ability[key] = this.profile[key] !== ability[key] ? ability[key] : null;
                     });
 
                 } else {

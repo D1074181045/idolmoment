@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Session;
 use Vinkla\Hashids\Facades\Hashids;
 
 define('SIGNATURE_DELAY_T', env('SIGNATURE_DELAY_T', 60));
-define('ACTIVITY_DELAY_T', env('ACTIVITY_DELAY_T', 60));
+define('ACTIVITY_DELAY_T', env('ACTIVITY_DELAY_T', 5));
 define('CHAT_DELAY_T', env('CHAT_DELAY_T', 90));
-define('OPERATING_DELAY_T', env('OPERATING_DELAY_T', 180));
+define('OPERATING_DELAY_T', env('OPERATING_DELAY_T', 5));
 
 class Controller extends BaseController
 {

@@ -193,6 +193,12 @@
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('send-blade')"
                             :disabled="operating_disabled">寄刀片
                     </button>
+                    <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('endorse')"
+                            :disabled="operating_disabled">聲援
+                    </button>
+                    <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('donate')"
+                            :disabled="operating_disabled">斗內
+                    </button>
                 </div>
             </div>
         </div>
@@ -320,10 +326,17 @@ export default {
             axios.patch(url, {
                 opposite_name: this.$route.params.name,
                 operating_type: type,
-            }).then(({status, operating_time, information}) => {
+            }).then(({status, opposite_ability, self_ability, operating_time, information}) => {
                 if (status) {
                     this.cool_down.operating = operating_time;
                     this.$store.commit('cool_down', 'operating');
+
+                    Object.keys(opposite_ability).forEach((key) => {
+                        this.opposite_profile[key] = opposite_ability[key];
+                    });
+                    Object.keys(self_ability).forEach((key) => {
+                        this.self_profile[key] = self_ability[key];
+                    });
 
                     this.information_list.push(information);
                 } else {

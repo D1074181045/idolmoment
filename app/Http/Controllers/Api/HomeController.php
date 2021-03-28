@@ -22,19 +22,31 @@ use Illuminate\Validation\ValidationException;
 
 class HomeController extends Controller
 {
-    public array $Character_List = array();
+    public array $self_character_list = array();
+
+    public string $opposite_name;
+    public array $opposite_character_list = array();
 
     /**
      * 解鎖偶像
      *
      * @param $character_name
+     * @param $IsSelf
      * @return array
      */
-    public function unlock_character($character_name)
+    public function unlock_character($character_name, $IsSelf = true)
     {
-        $Character = OwnCharacter::query()->BuildOwnCharacter([
-            'character_name' => $character_name
-        ]);
+        if ($IsSelf) {
+            $Character = OwnCharacter::query()->BuildOwnCharacter([
+                'username' => Auth::user()->name,
+                'character_name' => $character_name
+            ]);
+        } else {
+            $Character = OwnCharacter::query()->BuildOwnCharacter([
+                'username' => $this->opposite_name,
+                'character_name' => $character_name
+            ]);
+        }
 
         if (!$Character->wasRecentlyCreated) {
             return [
@@ -44,7 +56,10 @@ class HomeController extends Controller
         }
 
         $tc_name = $Character->GameCharacter->tc_name;
-        array_push($this->Character_List, $tc_name);
+        if ($IsSelf)
+            array_push($this->self_character_list, $tc_name);
+        else
+            array_push($this->opposite_character_list, $tc_name);
 
         return [
             'status' => 1,
@@ -119,10 +134,27 @@ class HomeController extends Controller
         return response()->json($Json);
     }
 
+    public function ability_upgrade_unlock_character($game_info, $IsSelf = true) {
+        if (GameInfo::query()->orderByDesc('popularity')->first()->nickname == $game_info->nickname)
+            $this->unlock_character('Kiryu Coco', $IsSelf);
+
+        $popularity = $game_info->popularity;
+        switch ($popularity) {
+            case ($popularity >= 100000):
+                $this->unlock_character('Hoshimachi Suisei', $IsSelf);
+                break;
+            case ($popularity >= 50000):
+                $this->unlock_character('Amane Kanata', $IsSelf);
+                break;
+            case ($popularity >= 10000):
+                $this->unlock_character('Nakiri Ayame', $IsSelf);
+                break;
+        }
+    }
+
     public function get_chat() {
 
         $chat_messages = ChatRoom::query()->Chat_info()->get();
-//        $chat_messages = ChatRoom::query()->with('GameInfo')->get();
         $this->UsersNameEncrypt($chat_messages);
 
         return response()->json([
@@ -132,11 +164,7 @@ class HomeController extends Controller
     }
 
     public function profile($name) {
-//        $self_name = Auth::user()->name;
         $opposite_name = $this->UserNameDecrypt($name);
-
-//        $self_game_info = GameInfo::query()->with('GameCharacter')->findOrFail($self_name);
-//        unset($self_game_info->name);
 
         $opposite_game_info = GameInfo::query()->with('GameCharacter')
             ->findOrFail($opposite_name,[
@@ -450,21 +478,7 @@ class HomeController extends Controller
 
         $activity_time = $cool_down->update_activity(ACTIVITY_DELAY_T);
 
-        if (GameInfo::query()->orderByDesc('popularity')->first()->nickname == $self_game_info->nickname)
-            $this->unlock_character('Kiryu Coco');
-
-        $popularity = $self_game_info->popularity;
-        switch ($popularity) {
-            case ($popularity >= 100000):
-                $this->unlock_character('Hoshimachi Suisei');
-                break;
-            case ($popularity >= 50000):
-                $this->unlock_character('Amane Kanata');
-                break;
-            case ($popularity >= 10000):
-                $this->unlock_character('Nakiri Ayame');
-                break;
-        }
+        $this->ability_upgrade_unlock_character($self_game_info);
 
         return response()->json([
             'status' => 1,
@@ -507,7 +521,9 @@ class HomeController extends Controller
         }
 
         $opposite_name = $request->post('opposite_name');
-        $opposite_name_decrypt = $this->UserNameDecrypt($opposite_name);
+        $this->opposite_name = $opposite_name_decrypt = $this->UserNameDecrypt($opposite_name);
+
+
         $opposite_game_info = GameInfo::query()->find($opposite_name_decrypt);
 
         if ($opposite_game_info->graduate) {
@@ -533,6 +549,14 @@ class HomeController extends Controller
                 $information = $operating->send_blade();
                 event(new DangerEvent($opposite_name, '你收到刀片了'));
                 break;
+            case 'endorse':
+                $information = $operating->endorse();
+                event(new DangerEvent($opposite_name, '你受到讚賞了'));
+                break;
+            case 'donate':
+                $information = $operating->donate();
+                event(new DangerEvent($opposite_name, '你接收到了斗內'));
+                break;
             default:
                 return response()->json([
                     'status' => 0,
@@ -544,8 +568,31 @@ class HomeController extends Controller
 
         $operating_time = $cool_down->update_operating(OPERATING_DELAY_T);
 
+        $this->ability_upgrade_unlock_character($self_game_info);
+        $this->ability_upgrade_unlock_character($opposite_game_info, false);
+
         return response()->json([
             'status' => 1,
+            'opposite_ability' => [
+                'popularity' => $opposite_game_info->popularity,
+                'reputation' => $opposite_game_info->reputation,
+                'max_vitality' => $opposite_game_info->max_vitality,
+                'current_vitality' => $opposite_game_info->current_vitality,
+                'energy' => $opposite_game_info->energy,
+                'resistance' => $opposite_game_info->resistance,
+                'charm' => $opposite_game_info->charm,
+                'graduate' => $opposite_game_info->graduate
+            ],
+            'self_ability' => [
+                'popularity' => $self_game_info->popularity,
+                'reputation' => $self_game_info->reputation,
+                'max_vitality' => $self_game_info->max_vitality,
+                'current_vitality' => $self_game_info->current_vitality,
+                'energy' => $self_game_info->energy,
+                'resistance' => $self_game_info->resistance,
+                'charm' => $self_game_info->charm,
+                'graduate' => $self_game_info->graduate
+            ],
             'information' => $information,
             'operating_time' => $operating_time,
             'message' => "操作成功"
@@ -676,8 +723,11 @@ class HomeController extends Controller
     public function __destruct()
     {
         try {
-            if (!empty($this->Character_List)) {
-                event(new UnlockCharacterEvent($this->Character_List));
+            if (!empty($this->self_character_list)) {
+                event(new UnlockCharacterEvent($this->self_character_list, Auth::user()->name));
+            }
+            if (!empty($this->opposite_character_list)) {
+                event(new UnlockCharacterEvent($this->opposite_character_list, $this->opposite_name));
             }
         } catch (Exception $e) {}
     }

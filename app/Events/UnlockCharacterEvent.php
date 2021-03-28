@@ -18,16 +18,18 @@ class UnlockCharacterEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $Character;
+    public $username;
 
     /**
      * Create a new event instance.
      *
      * @param $Character
-     * @param bool $Back
+     * @param $username
      */
-    public function __construct($Character, bool $Back = false)
+    public function __construct($Character, $username)
     {
         $this->Character = $Character;
+        $this->username = $username;
     }
 
     /**
@@ -37,9 +39,7 @@ class UnlockCharacterEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $self_name =  Controller::UserNameEncrypt2(Auth::user()->name);
-
-        return new PrivateChannel('unlock-character-channel-' . $self_name);
+        return new PrivateChannel('unlock-character-channel-' . Controller::UserNameEncrypt2($this->username));
     }
 
     public function broadcastAs()

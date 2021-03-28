@@ -37,14 +37,52 @@ class operating
         return '偶像' . $this->opposite['nickname'] . '因心靈受創，生命值降低了。';
     }
 
-    public function endorse($self_info) {
+    public function endorse() {
+        $popularity_rand = rand(400, 800);
+        $reputation_rand = rand(100, 500);
+        $charm_rand = rand(10, 20);
 
+        $this->self['game_info']->popularity += round($popularity_rand * $this->self['game_info']->charm * 0.01 + $popularity_rand * $this->self['game_info']->energy * 0.005 + $this->self['game_info']->reputation * 0.2);
+        $this->opposite['game_info']->popularity += round($popularity_rand * $this->opposite['game_info']->charm * 0.01 + $popularity_rand * $this->opposite['game_info']->energy * 0.005 + $this->opposite['game_info']->reputation * 0.2);
+
+        $this->self['game_info']->reputation += $reputation_rand;
+        $this->opposite['game_info']->reputation += $reputation_rand;
+
+        $this->self['game_info']->charm -= round($charm_rand * $this->self['character_up_mag']->charm);
+        $this->opposite['game_info']->charm -= round($charm_rand * $this->opposite['character_up_mag']->charm);
+
+        return '你聲援了偶像' . $this->opposite['nickname'] . '，雙方人氣魅力與名聲提升了';
+    }
+
+    public function donate() {
+        $reputation_rand = rand(300, 700);
+
+        $this->opposite['game_info']->energy += round(rand(20, 40) * $this->opposite['character_up_mag']->energy);
+        $this->self['game_info']->reputation += $reputation_rand;
+
+        return '你斗內了偶像' . $this->opposite['nickname'] . '，對方更有精神了';
     }
 
     public function __destruct() {
+        if ($this->self['game_info']->popularity < 1)
+            $this->self['game_info']->popularity = 1;
+        if ($this->self['game_info']->charm < 1)
+            $this->self['game_info']->charm = 1;
+        if ($this->self['game_info']->current_vitality > $this->self['game_info']->max_vitality)
+            $this->self['game_info']->current_vitality = $this->self['game_info']->max_vitality;
+        if ($this->self['game_info']->energy < 1)
+            $this->self['game_info']->energy = 1;
+
+        if ($this->opposite['game_info']->popularity < 1)
+            $this->opposite['game_info']->popularity = 1;
+        if ($this->opposite['game_info']->charm < 1)
+            $this->opposite['game_info']->charm = 1;
+        if ($this->opposite['game_info']->current_vitality > $this->opposite['game_info']->max_vitality)
+            $this->opposite['game_info']->current_vitality = $this->opposite['game_info']->max_vitality;
         if ($this->opposite['game_info']->energy < 1)
             $this->opposite['game_info']->energy = 1;
 
         $this->opposite['game_info']->save();
+        $this->self['game_info']->save();
     }
 }
