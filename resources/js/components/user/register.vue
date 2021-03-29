@@ -39,7 +39,7 @@
 
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-4">
-                        <button id="register" name="register" type="button" disabled class="btn btn-primary"
+                        <button id="register" name="register" type="button" disabled class="btn btn-primary" :class="{ 'btn-loading':registering }"
                                 :disabled="register_disabled" v-on:click="register_click" ref="register">註冊</button>
                         <button id="back" name="back" type="button" class="btn btn-dark" v-on:click="back">返回</button>
                     </div>
@@ -66,6 +66,7 @@ export default {
             username_disabled: true,
             password_disabled: true,
             register_disabled: true,
+            registering: false
         }
     },
     components:{
@@ -109,6 +110,7 @@ export default {
             if (this.register_disabled)
                 return
 
+            this.registering = true;
             const url = this.api_prefix.concat('register');
             this.$refs.register.focus();
 
@@ -126,6 +128,7 @@ export default {
                     this.$router.push({name: 'login'});
                 }
                 else {
+                    this.registering = false;
                     this.$store.commit("show_error", message);
                 }
             }).catch((err) => {
@@ -141,6 +144,7 @@ export default {
                 } else {
                     this.$store.commit("show_error", "發生錯誤: " + err.statusText);
                 }
+                this.registering = false;
             });
         },
     }

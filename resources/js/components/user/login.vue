@@ -37,7 +37,7 @@
 
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-4">
-                        <button type="button" disabled class="btn btn-primary"
+                        <button type="button" disabled class="btn btn-primary" :class="{ 'btn-loading':logging }"
                                 :disabled="login_disabled" v-on:click="login_click" ref="login">登入</button>
                         <button type="button" class="btn btn-dark" v-on:click="to_register">前往註冊</button>
                     </div>
@@ -64,6 +64,7 @@ export default {
             username_disabled: true,
             password_disabled: true,
             login_disabled: true,
+            logging: false
         }
     },
     components:{
@@ -102,6 +103,7 @@ export default {
             if (this.login_disabled)
                 return
 
+            this.logging = true;
             const url = this.api_prefix.concat('login');
             this.$refs.login.focus();
 
@@ -121,6 +123,7 @@ export default {
                     this.password_disabled = true;
                     this.autologin = false;
                     this.login_disabled = true;
+                    this.logging = false;
 
                     this.$store.commit("show_error", message);
                 }
@@ -137,6 +140,7 @@ export default {
                 } else {
                     this.$store.commit("show_error", "發生錯誤: " + err.statusText);
                 }
+                this.logging = false;
             });
         },
         login_enter: function () {

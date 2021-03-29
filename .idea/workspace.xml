@@ -21,16 +21,13 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Events/UnlockCharacterEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/UnlockCharacterEvent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Other/operating.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Other/operating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/OwnCharacter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OwnCharacter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/4.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/4.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/6.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/6.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/7.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/7.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/home/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/11.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/11.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/12.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/12.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/user/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/user/login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/user/register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/user/register.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +231,8 @@
       <workItem from="1616814790733" duration="32871000" />
       <workItem from="1616859877653" duration="393000" />
       <workItem from="1616902638295" duration="3836000" />
-      <workItem from="1616921090046" duration="18144000" />
+      <workItem from="1616921090046" duration="21140000" />
+      <workItem from="1617009306964" duration="1837000" />
     </task>
     <servers />
   </component>
