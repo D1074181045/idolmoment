@@ -24,8 +24,8 @@ class UpdateUserPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password' => ['required', 'regex:/^[0-9A-Za-z]+$/', 'string', 'min:8', 'max:32'],
-            'new_password' => ['required', 'regex:/^[0-9A-Za-z]+$/', 'string', 'min:8', 'max:32'],
+            'old_password' => ['required', 'string', 'min:8', 'max:32'],
+            'new_password' => ['required', 'string', 'min:8', 'max:32'],
             'new_password_confirm' => ['required', 'pwd_equal:new_password']
         ];
     }
@@ -35,11 +35,9 @@ class UpdateUserPasswordRequest extends FormRequest
         return [
             //
             'old_password.required' => '錯誤：舊密碼為空',
-            'old_password.regex' => '錯誤：舊密碼中含有特殊字元',
             'old_password.min' => '錯誤：舊密碼必須介於8~32字元之間',
             'old_password.max' => '錯誤：舊密碼必須介於8~32字元之間',
             'new_password.required' => '錯誤：新密碼為空',
-            'new_password.regex' => '錯誤：新密碼中含有特殊字元',
             'new_password.min' => '錯誤：新密碼必須介於8~32字元之間',
             'new_password.max' => '錯誤：新密碼必須介於8~32字元之間',
             'new_password_confirm.required' => '錯誤：二次密碼為空',

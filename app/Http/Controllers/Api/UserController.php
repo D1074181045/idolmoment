@@ -138,7 +138,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'status' => 0,
-                'message' => "密碼修改失敗"
+                'message' => "密碼修改失敗，舊密碼不正確"
             ]);
         }
     }

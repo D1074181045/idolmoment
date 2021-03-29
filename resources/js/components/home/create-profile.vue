@@ -13,13 +13,13 @@
                                        :class="$store.getters.disabled_class(build_disabled)" v-model="nickname" v-on:input="ban_build">
                                 <div style="font-size: 12px;margin: 4px 8px;">最多12字元，且無特殊字元</div>
                             </div>
-                            <button type="button" disabled class="btn btn-primary" style="width: 60px;height: 1%;"
+                            <button type="button" disabled class="btn btn-primary" style="width: 60px;height: 1%;" :class="{ 'btn-loading':creating }"
                                     v-on:click="build" :disabled="build_disabled">建立</button>
                         </div>
                     </div>
 
                     <div class="card-footer" v-if="error.status">
-                        <msg>{{ error.message }}</msg>
+                        <msg style="text-align: center">{{ error.message }}</msg>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,8 @@ export default {
     data() {
         return {
             nickname: "",
-            build_disabled: true
+            build_disabled: true,
+            creating: false
         }
     },
     components:{
@@ -56,6 +57,7 @@ export default {
             if (this.build_disabled)
                 return;
 
+            this.creating = true;
             const url = this.api_prefix.concat('store-profile');
 
             axios.post(url, {
@@ -70,6 +72,7 @@ export default {
                     this.$store.commit("show_error", message);
                     this.build_disabled = false;
                 }
+                this.creating = false;
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";
@@ -83,6 +86,7 @@ export default {
                 } else {
                     this.$store.commit("show_error","發生錯誤: " + err.statusText);
                 }
+                this.creating = false;
                 this.build_disabled = false;
             });
 

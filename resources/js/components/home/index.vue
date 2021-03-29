@@ -273,13 +273,13 @@ export default {
 </script>
 
 <style scoped>
-.tb .tb-gap {
-    margin-top: 15px;
-    margin-bottom: 10px;
-}
+    .tb .tb-gap {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
 
-button.btn.btn-bottom {
-    margin-bottom: 12px;
-    margin-right: 3px;
-}
+    button.btn.btn-bottom {
+        margin-bottom: 12px;
+        margin-right: 3px;
+    }
 </style>

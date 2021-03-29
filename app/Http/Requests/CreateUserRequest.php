@@ -25,8 +25,8 @@ class CreateUserRequest extends FormRequest
     {
         return [
             //
-            'username' => ['required', 'regex:/^[0-9A-Za-z]+$/', 'string', 'min:5', 'max:15'],
-            'password' => ['required', 'regex:/^[0-9A-Za-z]+$/', 'string', 'min:8', 'max:32'],
+            'username' => ['required', 'string', 'min:5', 'max:15'],
+            'password' => ['required', 'string', 'min:8', 'max:32'],
             'password_confirm' => ['required', 'pwd_equal:password']
         ];
     }
@@ -43,8 +43,6 @@ class CreateUserRequest extends FormRequest
             'password.max' => '錯誤：密碼必須介於8~32字元之間',
             'password_confirm.required' => '錯誤：二次密碼不能為空',
             'password_confirm.pwd_equal' => '錯誤：二次密碼需相同',
-            'username.regex' => '錯誤：使用者名稱中含有特殊字元',
-            'password.regex' => '錯誤：密碼中含有特殊字元',
         ];
     }
 }

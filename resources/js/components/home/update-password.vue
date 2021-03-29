@@ -24,6 +24,7 @@
                                 <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)" v-model="new_password"
                                        v-on:input="ban_update_password" :type="pw_type(new_password_show)">
+                                <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -32,14 +33,13 @@
                                 <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)" v-model="new_password_confirm"
                                        v-on:input="ban_update_password" :type="pw_type(new_password_show)">
-                                <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間，且無特殊字元</div>
                             </div>
                             <div class="show-hide-toggle-button">
                                 <input type="checkbox" id="new_password_toggle_button" v-on:click="new_password_toggle_button">
                                 <label for="new_password_toggle_button" :title="pw_title(new_password_show)" style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
-                        <button type="button" disabled class="btn btn-primary btn-block"
+                        <button type="button" disabled class="btn btn-primary btn-block" :class="{ 'btn-loading':updating }"
                                 style="margin: 0 0;" v-on:click="to_update_password" :disabled="update_password_disabled">修改
                         </button>
                     </div>
@@ -55,7 +55,7 @@
 
 <script>
 import { msg } from '../../styles';
-const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9]+$");
+import store from "../../store";
 
 export default {
     data() {
@@ -68,6 +68,7 @@ export default {
             update_password_disabled: true,
             old_password_show: false,
             new_password_show: false,
+            updating: false
         }
     },
     components:{
@@ -101,14 +102,15 @@ export default {
             return int >= from && int <= to;
         },
         ban_update_password: function () {
-            this.old_password_disabled = !this.old_password.match(legalityKey) || !this.between(this.old_password.length, 8, 32);
-            this.new_password_disabled = this.new_password !== this.new_password_confirm || !this.new_password.match(legalityKey) || !this.between(this.new_password.length, 8, 32);
+            this.old_password_disabled = !this.between(this.old_password.length, 8, 32);
+            this.new_password_disabled = this.new_password !== this.new_password_confirm || !this.between(this.new_password.length, 8, 32);
             this.update_password_disabled = this.old_password_disabled || this.new_password_disabled;
         },
         to_update_password: function () {
             if (this.update_password_disabled)
                 return;
 
+            this.updating = true;
             const url = this.api_prefix.concat('update-password');
 
             axios.patch(url, {
@@ -117,11 +119,12 @@ export default {
                 new_password_confirm: this.new_password_confirm,
             }).then(({status, message}) => {
                 if (status) {
-                    this.$router.push({name: 'index'})
+                    this.$router.push({name: 'index'}).catch(() => {});
                 } else {
                     this.$store.commit("show_error", message);
                     this.update_password_disabled = false;
                 }
+                this.updating = false;
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";
@@ -134,6 +137,7 @@ export default {
                 } else {
                     this.$store.commit("show_error", "發生錯誤: " + err.status);
                 }
+                this.updating = false;
                 this.update_password_disabled = false;
             });
         }

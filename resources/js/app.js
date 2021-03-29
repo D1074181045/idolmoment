@@ -52,19 +52,21 @@ try {
 
                 let clear_danger_msg = null;
 
-                Echo.private('danger-channel-'.concat(this.$store.state.profile.name))
-                    .listen('.danger-event', ({message}) => {
-                        if (message) {
-                            if (this.danger_msg)
-                                clearTimeout(clear_danger_msg);
+                if (this.$store.state.profile) {
+                    Echo.private('danger-channel-'.concat(this.$store.state.profile.name))
+                        .listen('.danger-event', ({message}) => {
+                            if (message) {
+                                if (this.danger_msg)
+                                    clearTimeout(clear_danger_msg);
 
-                            this.danger_msg = message;
+                                this.danger_msg = message;
 
-                            clear_danger_msg = setTimeout(() => {
-                                this.danger_msg = null;
-                            }, 10000);
-                        }
-                    });
+                                clear_danger_msg = setTimeout(() => {
+                                    this.danger_msg = null;
+                                }, 10000);
+                            }
+                        });
+                }
             });
         },
         methods:{
@@ -111,10 +113,14 @@ try {
     });
 
     router.beforeEach((to, from, next) => {
-        if (!store.state.IsCreated)
-            next({ name: "create-profile" });
-        else
+        if (store.state.IsCreated)
             next();
+        else {
+            if (to.name !== "create-profile" && to.name !== "update-password")
+                next({ name:"create-profile" });
+            else
+                next();
+        }
     });
 
 } catch (e) {
