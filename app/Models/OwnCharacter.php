@@ -56,6 +56,6 @@ class OwnCharacter extends Model
     public function scopeOwnCharacterList($query) {
         $self_name = Auth::user()->name;
 
-        $query->orderBy('created_at')->with('GameCharacter')->where('name', $self_name);
+        $query->orderBy('created_at')->with('GameCharacter')->where('name', $self_name)->select('character_name');
     }
 }

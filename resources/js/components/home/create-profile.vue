@@ -70,9 +70,9 @@ export default {
                 }
                 else {
                     this.$store.commit("show_error", message);
+                    this.creating = false;
                     this.build_disabled = false;
                 }
-                this.creating = false;
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";

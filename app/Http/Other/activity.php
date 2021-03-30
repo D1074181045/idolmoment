@@ -14,12 +14,12 @@ class activity
     }
 
     public function adult_live() {
-        $popularity_rand = rand(500, 1000);
+        $popularity_rand = rand(750, 1000);
         $reputation_rand = rand(1000, 2000);
         $resistance_rand = rand(20, 50);
         $charm_rand = rand(10, 20);
 
-        $this->self['game_info']->popularity += round($popularity_rand * $this->self['game_info']->charm * 0.01 + $popularity_rand * $this->self['game_info']->energy * 0.005 + $this->self['game_info']->reputation * 0.2);
+        $this->self['game_info']->popularity += round($popularity_rand * $this->self['game_info']->charm * 0.05 + $popularity_rand * $this->self['game_info']->energy * 0.005 + $this->self['game_info']->reputation * 0.2);
         $this->self['game_info']->reputation -= $reputation_rand;
         $this->self['game_info']->resistance += round($resistance_rand  * $this->self['character_up_mag']->resistance);
         $this->self['game_info']->charm -= round($charm_rand * $this->self['character_up_mag']->charm);

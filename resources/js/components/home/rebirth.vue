@@ -8,7 +8,7 @@
                          v-on:click="select_character(own_character.character_name)">
                         <div class="img-big">
                             <picture>
-                                <source type="image/png" :srcset="characters_img_path(own_character.game_character.img_file_name)">
+                                <source type="image/jpg" :srcset="characters_img_path(own_character.game_character.img_file_name)">
                                 <img
                                     :src="characters_img_path(own_character.game_character.img_file_name)"
                                     :alt="own_character.character_name">

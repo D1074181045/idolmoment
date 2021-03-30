@@ -10,18 +10,18 @@
                     <td rowspan="2" style="width: 80px;">
                         <div class="img-big">
                             <picture>
-                                <source type="image/png"
-                                        :srcset="characters_img_path(profile.use_character.img_file_name)">
+                                <source type="image/jpg"
+                                        :srcset="characters_img_path(profile.game_character.img_file_name)">
                                 <img
-                                    :src="characters_img_path(profile.use_character.img_file_name)"
-                                    :alt="characters_img_path(profile.use_character.tc_name)">
+                                    :src="characters_img_path(profile.game_character.img_file_name)"
+                                    :alt="profile.game_character.tc_name">
                             </picture>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-active">偶像</th>
-                    <td>{{ profile.use_character.tc_name }}</td>
+                    <td>{{ profile.game_character.tc_name }}</td>
                 </tr>
                 <tr>
                     <th class="table-info">人氣</th>

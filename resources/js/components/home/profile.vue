@@ -16,17 +16,17 @@
                         <td rowspan="2" style="width: 80px;">
                             <div class="img-big">
                                 <picture v-if="opposite_loaded">
-                                    <source type="image/png"
-                                            :srcset="characters_img_path(opposite_profile.use_character.img_file_name)">
-                                    <img :src="characters_img_path(opposite_profile.use_character.img_file_name)"
-                                         :alt="opposite_profile.use_character.tc_name">
+                                    <source type="image/jpg"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
+                                    <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
+                                         :alt="opposite_profile.game_character.tc_name">
                                 </picture>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <th class="table-active">偶像</th>
-                        <td>{{ opposite_profile.use_character.tc_name }}</td>
+                        <td>{{ opposite_profile.game_character.tc_name }}</td>
                     </tr>
                     <tr>
                         <th class="table-info">人氣</th>
@@ -75,10 +75,10 @@
                         <td colspan="2" style="width: 80px;">
                             <div class="img-big">
                                 <picture>
-                                    <source type="image/png"
-                                            :srcset="characters_img_path(self_profile.use_character.img_file_name)">
-                                    <img :src="characters_img_path(self_profile.use_character.img_file_name)"
-                                         :alt="self_profile.use_character.tc_name">
+                                    <source type="image/jpg"
+                                            :srcset="characters_img_path(self_profile.game_character.img_file_name)">
+                                    <img :src="characters_img_path(self_profile.game_character.img_file_name)"
+                                         :alt="self_profile.game_character.tc_name">
                                 </picture>
                             </div>
                         </td>
@@ -89,7 +89,7 @@
                     </tr>
                     <tr>
                         <th class="table-active">偶像</th>
-                        <td>{{ self_profile.use_character.tc_name }}</td>
+                        <td>{{ self_profile.game_character.tc_name }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">人氣</th>
@@ -128,10 +128,10 @@
                         <td colspan="2" style="width: 80px;">
                             <div class="img-big">
                                 <picture v-if="opposite_loaded">
-                                    <source type="image/png"
-                                            :srcset="characters_img_path(opposite_profile.use_character.img_file_name)">
-                                    <img :src="characters_img_path(opposite_profile.use_character.img_file_name)"
-                                         :alt="opposite_profile.use_character.tc_name">
+                                    <source type="image/jpg"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
+                                    <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
+                                         :alt="opposite_profile.game_character.tc_name">
                                 </picture>
                             </div>
                         </td>
@@ -142,7 +142,7 @@
                     </tr>
                     <tr>
                         <th class="table-active">偶像</th>
-                        <td>{{ opposite_profile.use_character.tc_name }}</td>
+                        <td>{{ opposite_profile.game_character.tc_name }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">人氣</th>
@@ -221,7 +221,7 @@ export default {
         return {
             information_list: [],
             next_name: null,
-            opposite_profile: {use_character: {}},
+            opposite_profile: {game_character: {}},
             profile_type: localStorage.profile_type ? localStorage.profile_type : 'details',
             opposite_loaded: false,
             title: null,

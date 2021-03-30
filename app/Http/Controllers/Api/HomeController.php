@@ -92,9 +92,6 @@ class HomeController extends Controller
             case substr($string, strpos($string, 'peko')) === 'peko':
                 $this->unlock_character('Usada Pekora');
                 break;
-            case strpos($string, 'ahoy!') !== false:
-                $this->unlock_character('Houshou marine');
-                break;
         }
     }
 
@@ -107,20 +104,14 @@ class HomeController extends Controller
     public function keyup_unlock_character(Request $request)
     {
         switch ($request->post('character_name')) {
-            case 'Gawr Gura':
-                $Json = $this->unlock_character('Gawr Gura');
-                break;
             case 'Akai Haato':
-                $Json = $this->unlock_character('Akai Haato');
-                break;
-            case 'Sakuramiko':
-                $Json = $this->unlock_character('Sakuramiko');
+                $Json = $this->unlock_character("Akai Haato");
                 break;
             case 'Uruha Rushia':
-                $Json = $this->unlock_character('Uruha Rushia');
+                $Json = $this->unlock_character("Uruha Rushia");
                 break;
             case 'Inugami Korone':
-                $Json = $this->unlock_character('Inugami Korone');
+                $Json = $this->unlock_character("Inugami Korone");
                 break;
             default:
                 $Json = [
@@ -136,18 +127,77 @@ class HomeController extends Controller
 
     public function ability_upgrade_unlock_character($game_info, $IsSelf = true) {
         if (GameInfo::query()->orderByDesc('popularity')->first()->nickname == $game_info->nickname)
-            $this->unlock_character('Kiryu Coco', $IsSelf);
+            $this->unlock_character("Kiryu Coco", $IsSelf);
 
         $popularity = $game_info->popularity;
         switch ($popularity) {
+            case ($popularity >= 10000000):
+                $this->unlock_character("Tokino Sora", $IsSelf);
+                break;
+            case ($popularity >= 5000000):
+                $this->unlock_character("Himemori Luna", $IsSelf);
+                break;
+            case ($popularity >= 3000000):
+                $this->unlock_character("Momosuzu Nene", $IsSelf);
+                break;
+            case ($popularity >= 2000000):
+                $this->unlock_character("Ninomae Ina'nis", $IsSelf);
+                break;
+            case ($popularity >= 1000000):
+                $this->unlock_character("AZKi", $IsSelf);
+                break;
+            case ($popularity >= 500000):
+                $this->unlock_character("Shirogane Noel", $IsSelf);
+                break;
             case ($popularity >= 100000):
-                $this->unlock_character('Hoshimachi Suisei', $IsSelf);
+                $this->unlock_character("Hoshimachi Suisei", $IsSelf);
                 break;
             case ($popularity >= 50000):
-                $this->unlock_character('Amane Kanata', $IsSelf);
+                $this->unlock_character("Amane Kanata", $IsSelf);
                 break;
             case ($popularity >= 10000):
-                $this->unlock_character('Nakiri Ayame', $IsSelf);
+                $this->unlock_character("Nakiri Ayame", $IsSelf);
+                break;
+        }
+
+        $reputation = $game_info->reputation;
+        switch ($reputation) {
+            case ($reputation >= 70000):
+                $this->unlock_character('Yozora Mel', $IsSelf);
+                break;
+            case ($reputation >= 65000):
+                $this->unlock_character('Tsukishita Kaoru', $IsSelf);
+                break;
+            case ($reputation >= 50000):
+                $this->unlock_character('Shishiro Botan', $IsSelf);
+                break;
+            case ($reputation >= 30000):
+                $this->unlock_character('Oozora Subaru', $IsSelf);
+                break;
+            case ($reputation >= 15000):
+                $this->unlock_character('Natsuiro Matsuri', $IsSelf);
+                break;
+            case ($reputation >= 5000):
+                $this->unlock_character('Murasaki Shion', $IsSelf);
+                break;
+            case ($reputation >= 1000):
+                $this->unlock_character('Tsunomaki Watame', $IsSelf);
+                break;
+        }
+
+        $charm = $reputation = $game_info->charm;
+        switch ($charm) {
+            case ($charm >= 1000):
+                $this->unlock_character('Pavolia Reine', $IsSelf);
+                break;
+            case ($charm >= 720):
+                $this->unlock_character('Aki Rosenthal', $IsSelf);
+                break;
+            case ($charm >= 430):
+                $this->unlock_character('Ayunda Risu', $IsSelf);
+                break;
+            case ($charm >= 150):
+                $this->unlock_character('Yuzuki Choco', $IsSelf);
                 break;
         }
     }
@@ -166,18 +216,14 @@ class HomeController extends Controller
     public function profile($name) {
         $opposite_name = $this->UserNameDecrypt($name);
 
-        $opposite_game_info = GameInfo::query()->with('GameCharacter')
-            ->findOrFail($opposite_name,[
-                'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
-                'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character'
-            ]);
+        $opposite_game_info = GameInfo::query()->with(['GameCharacter' => function ($query) {
+            $query->select('tc_name', 'en_name', 'img_file_name');
+        }])->findOrFail($opposite_name,[
+            'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
+            'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character'
+        ]);
 
         $opposite_game_info['name'] = $name;
-        $opposite_game_info['use_character'] = [
-            'img_file_name' => $opposite_game_info->GameCharacter->img_file_name,
-            'tc_name' => $opposite_game_info->GameCharacter->tc_name,
-            'en_name' => $opposite_game_info->GameCharacter->en_name
-        ];
 
         return response()->json([
             'status' => 1,
@@ -210,7 +256,9 @@ class HomeController extends Controller
             $self_game_info = GameInfo::query()
                 ->select('name', 'nickname', 'charm', 'max_vitality', 'current_vitality', 'energy', 'graduate',
                         'popularity', 'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character')
-                ->with('GameCharacter')->CurrentLoginUser();
+                ->with(['GameCharacter' => function ($query) {
+                    $query->select('tc_name', 'en_name', 'img_file_name');
+                }])->CurrentLoginUser();
 
             if (!$self_game_info) {
                 return response()->json([
@@ -219,13 +267,7 @@ class HomeController extends Controller
             }
 
             $teetee_info = $this->teetee_info($self_game_info);
-            $self_game_info['use_character'] = [
-                'img_file_name' => $self_game_info->GameCharacter->img_file_name,
-                'tc_name' => $self_game_info->GameCharacter->tc_name,
-                'en_name' => $self_game_info->GameCharacter->en_name
-            ];
             $this->UserNameEncrypt($self_game_info);
-            unset($self_game_info->GameCharacter);
 
             return response()->json([
                 'status' => 1,
@@ -451,15 +493,41 @@ class HomeController extends Controller
             case 'adult-live':
                 $activity->adult_live();
 
-                $this->DrawCharacter(['Watson Amelia'], rand(0, 10));
+                $this->DrawCharacter(['Watson Amelia', 'Houshou marine'], rand(0, 10));
                 break;
             case 'live':
                 $activity->live();
 
-                $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki'], rand(0, 20));
+                switch ($self_game_info->use_character) {
+                    case 'Inugami Korone':
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Nekomata Okaya'], rand(0, 20));
+                        break;
+                    case 'Usada Pekora':
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Sakuramiko', 'Moona Hoshinova'], rand(0, 20));
+                        break;
+                    case 'Shirogane Noel':
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Shiranui Flare'], rand(0, 20));
+                        break;
+                    case 'Mori Calliope':
+                        $this->DrawCharacter(['Takanashi Kiara', 'Shirakami Fubuki'], rand(0, 15));
+                        break;
+                    case 'Watson Amelia':
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Gawr Gura'], rand(0, 15));
+                        break;
+                    default:
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki'], rand(0, 20));
+                        break;
+                }
                 break;
             case 'do-good-things':
                 $activity->do_good_things();
+
+                switch ($self_game_info->use_character){
+                    case 'Amane Kanata':
+                        $this->DrawCharacter(['Tokoyami Towa'], rand(0, 10));
+                        break;
+                }
+
                 break;
             case 'go-to-sleep':
                 $activity->go_to_sleep();

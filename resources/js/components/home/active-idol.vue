@@ -55,11 +55,11 @@
             </thead>
             <tbody>
             <tr style="cursor: pointer;" :class="idol_class(idol)"
-                v-for="idol in idol_list" v-on:click="toProfile(idol.name)" :key="idol.name">
+                v-for="idol in idol_list" v-on:click="toProfile(idol.name)">
                 <td style="padding: 0">
                     <div class="img-small">
                         <picture>
-                            <source type="image/png" :srcset="characters_img_path(idol.img_file_name)">
+                            <source type="image/jpg" :srcset="characters_img_path(idol.img_file_name)">
                             <img :src="characters_img_path(idol.img_file_name)" :alt="idol.use_character">
                         </picture>
                     </div>

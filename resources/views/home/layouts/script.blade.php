@@ -23,9 +23,7 @@
     let key = "";
 
     const surprises = [
-        {'keyCode': "38384040373937396665", 'character-name': "Gawr Gura"}, // 上上下下左右左右BA
         {'keyCode': "383840403737393966656665", 'character-name': "Akai Haato"}, // 上上下下左左右右BABA
-        {'keyCode': "7889657269767679", 'character-name': "Sakuramiko"}, // nyahello
         {'keyCode': "82828282", 'character-name': "Uruha Rushia"}, // rrrr
         {'keyCode': "85668566", 'character-name': "Inugami Korone"} // ubub
     ];

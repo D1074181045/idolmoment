@@ -12046,7 +12046,7 @@ a.text-dark:focus {
     width: 1.2rem;
     height: 1rem;
     text-indent: -9999px;
-    background-image: url('/img/password-toggle-button/hide-v0.0.1.svg');
+    background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/hide-v0.0.1.svg');
     background-repeat: no-repeat;
     background-size: 18px 18px;
     transition: all 0.2s ease 0s;
@@ -12054,6 +12054,6 @@ a.text-dark:focus {
 }
 
 .show-hide-toggle-button > input:checked + label {
-    background-image: url('/img/password-toggle-button/show-v0.0.1.svg');
+    background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/show-v0.0.1.svg');
     transition: all 0.2s ease 0s;
 }

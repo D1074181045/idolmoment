@@ -130,7 +130,7 @@
         height: 33px;
         text-indent: -9999px;
         background-color: #f5f5f5;
-        background-image: url({{ asset('img/theme/pic_sun.svg') }});
+        background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg');
         background-position: 8px;
         background-repeat: no-repeat;
         background-size: 18px 18px;
@@ -141,7 +141,7 @@
 
     .dark-swift-button > input:checked + label {
         background-color: #045667;
-        background-image: url({{ asset('img/theme/pic_moon.svg') }});
+        background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg');
         background-position: 8px;
         background-repeat: no-repeat;
         background-size: 18px 18px;

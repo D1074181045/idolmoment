@@ -122,9 +122,9 @@ export default {
                     this.$router.push({name: 'index'}).catch(() => {});
                 } else {
                     this.$store.commit("show_error", message);
+                    this.updating = false;
                     this.update_password_disabled = false;
                 }
-                this.updating = false;
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";
