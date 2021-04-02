@@ -10,8 +10,9 @@
                     <td rowspan="2" style="width: 80px;">
                         <div class="img-big">
                             <picture>
-                                <source type="image/jpg"
-                                        :srcset="characters_img_path(profile.game_character.img_file_name)">
+                                <source type="image/webp" :srcset="characters_img_path(profile.game_character.img_file_name, 'webp')">
+                                <source type="image/jpeg" :srcset="characters_img_path(profile.game_character.img_file_name)">
+                                <source type="image/png" :srcset="characters_img_path(profile.game_character.img_file_name, 'png')">
                                 <img
                                     :src="characters_img_path(profile.game_character.img_file_name)"
                                     :alt="profile.game_character.tc_name">
@@ -107,7 +108,7 @@
             </div>
         </div>
         <div class="tb" v-if="!profile.graduate">
-            <h3>進行活動</h3>
+            <h3>個人活動</h3>
             <msg v-if="activity_ban.time">剩餘時間：{{ activity_ban.time }}</msg>
             <div class="tb-gap" style="margin-left: -10px;">
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
@@ -121,9 +122,19 @@
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
                         v-on:click="do_activity('meditation')">打坐</button>
             </div>
+            <h3 style="padding-top: 15px;border-top: 1px solid var(--border-color);">合作活動</h3>
+            <msg v-if="cooperation_ban.time">剩餘時間：{{ cooperation_ban.time }}</msg>
+            <div class="tb-gap" style="margin-left: -10px;">
+                <button type="button" class="btn btn-bottom btn-info"
+                        :disabled="cooperation_disabled ||　!teetee_info.status || teetee_info.teetee_graduate"
+                        v-on:click="do_cooperation('play-ordinary-game')">玩普通遊戲</button>
+                <button type="button" class="btn btn-bottom btn-info"
+                        :disabled="cooperation_disabled ||　!teetee_info.status || teetee_info.teetee_graduate"
+                        v-on:click="do_cooperation('play-tacit-game')">玩默契遊戲</button>
+            </div>
         </div>
         <div class="tb" v-else>
-            <h3>已畢業，無法進行活動</h3>
+            <h3>已畢業，無法進行任何活動</h3>
             <div class="tb-gap" style="margin-left: -10px;">
                 <button type="button" class="btn btn-bottom btn-info" disabled>成人直播</button>
                 <button type="button" class="btn btn-bottom btn-info" disabled>直播</button>
@@ -159,6 +170,9 @@ export default {
         activity_disabled: function() {
             return this.$store.state.ban_type.activity.status;
         },
+        cooperation_disabled: function() {
+            return this.$store.state.ban_type.cooperation.status;
+        },
         profile: function () {
             return this.$store.state.profile;
         },
@@ -174,6 +188,9 @@ export default {
         activity_ban: function () {
             return this.$store.state.ban_type.activity;
         },
+        cooperation_ban: function () {
+            return this.$store.state.ban_type.cooperation;
+        },
         api_prefix: function () {
             return this.$store.state.api_prefix
         },
@@ -188,6 +205,7 @@ export default {
     },
     mounted() {
         this.$store.commit('cool_down', 'activity');
+        this.$store.commit('cool_down', 'cooperation');
         this.$store.commit('cool_down', 'signature');
     },
     activated() {
@@ -195,28 +213,28 @@ export default {
 
         this.next_ability = {};
 
-        if (!this.first_load) {
+        if (!this.first_load)
             this.$store.dispatch('load_my_profile');
-        } else {
-            this.first_load = false;
-        }
     },
     methods: {
-        set_teetee: function () {
+        set_teetee: function (e) {
             if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
                 return;
 
             const url = this.api_prefix.concat('update-teetee');
+            e.target.className = "btn btn-info btn-loading";
 
             axios.patch(url, {
                 teetee: this.profile.teetee,
             }).then(({teetee_status, teetee_name}) => {
                 this.teetee_info.status = teetee_status;
                 this.teetee_info.teetee_name = teetee_name;
+            }).finally(() => {
+                e.target.className = "btn btn-info";
             })
         },
         set_signature: function () {
-            if (this.signature_ban.status)
+            if (this.signature_disabled)
                 return;
 
             const url = this.api_prefix.concat('update-signature');
@@ -243,7 +261,7 @@ export default {
             this.class_signature_disabled = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
         },
         do_activity: function (activity_type) {
-            if (this.activity_ban.status)
+            if (this.activity_disabled)
                 return;
 
             const url = this.api_prefix.concat('activity');
@@ -266,6 +284,32 @@ export default {
                 }
             }).catch((err) => {
                 this.activity_ban.status = false;
+            });
+        },
+        do_cooperation: function (cooperation_type) {
+            if (this.cooperation_disabled || !this.teetee_info.status)
+                return;
+
+            const url = this.api_prefix.concat('cooperation');
+            this.cooperation_ban.status = true;
+
+            axios.patch(url, {
+                cooperation_type: cooperation_type,
+            }).then(({status, ability, cooperation_time}) => {
+                if (status) {
+                    this.cool_down.cooperation = cooperation_time;
+                    this.$store.commit('cool_down', 'cooperation');
+
+                    Object.keys(ability).forEach((key) => {
+                        this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
+                        this.next_ability[key] = this.profile[key] !== ability[key] ? ability[key] : null;
+                    });
+
+                } else {
+                    this.cooperation_ban.status = false;
+                }
+            }).catch((err) => {
+                this.cooperation_ban.status = false;
             });
         },
     }

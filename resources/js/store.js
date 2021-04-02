@@ -21,8 +21,9 @@ const store = new Vuex.Store({
         ban_type: {
             signature: { status: false, time: null },
             activity: { status: false, time: null },
+            cooperation: { status: false, time: null },
             operating: { status: false, time: null },
-            chat: { status: false, time: null }
+            chat: { status: false, time: null },
             },
         profile: null,
         cool_down: null,
@@ -81,7 +82,7 @@ const store = new Vuex.Store({
             return status ? 'is-invalid' : 'is-valid';
         },
         NumberFormat: () => (number, type = 'en-IN') => {
-            if (!number)
+            if (number === undefined || number === null)
                 return null;
 
             switch (type) {

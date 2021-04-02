@@ -3,9 +3,6 @@
 
 namespace App\Http\Other;
 
-use App\Models\CharacterUpMag;
-use App\Models\GameInfo;
-
 class operating
 {
     private $self = [];
@@ -23,10 +20,10 @@ class operating
 
     public function send_blade() {
         $resistance = $this->opposite['game_info']->resistance;
-        $attack_vitality_number = round(rand(100, 500) * 10 / $resistance);
+        $attack_vitality_number = ceil(rand(100, 500) * 10 / $resistance);
 
         $this->opposite['game_info']->current_vitality -= $attack_vitality_number;
-        $this->opposite['game_info']->energy -= round(rand(20, 40) * $this->opposite['character_up_mag']->energy);
+        $this->opposite['game_info']->energy -= ceil(rand(20, 40) * $this->opposite['character_up_mag']->energy);
 
         if ($this->opposite['game_info']->current_vitality <= 0) {
             $this->opposite['game_info']->current_vitality = 0;
@@ -42,14 +39,14 @@ class operating
         $reputation_rand = rand(100, 500);
         $charm_rand = rand(10, 20);
 
-        $this->self['game_info']->popularity += round($popularity_rand * $this->self['game_info']->charm * 0.01 + $popularity_rand * $this->self['game_info']->energy * 0.005 + $this->self['game_info']->reputation * 0.2);
-        $this->opposite['game_info']->popularity += round($popularity_rand * $this->opposite['game_info']->charm * 0.01 + $popularity_rand * $this->opposite['game_info']->energy * 0.005 + $this->opposite['game_info']->reputation * 0.2);
+        $this->self['game_info']->popularity += ceil($popularity_rand * $this->self['game_info']->charm * 0.01 + $popularity_rand * $this->self['game_info']->energy * 0.005 + $this->self['game_info']->reputation * 0.2);
+        $this->opposite['game_info']->popularity += ceil($popularity_rand * $this->opposite['game_info']->charm * 0.01 + $popularity_rand * $this->opposite['game_info']->energy * 0.005 + $this->opposite['game_info']->reputation * 0.2);
 
         $this->self['game_info']->reputation += $reputation_rand;
         $this->opposite['game_info']->reputation += $reputation_rand;
 
-        $this->self['game_info']->charm -= round($charm_rand * $this->self['character_up_mag']->charm);
-        $this->opposite['game_info']->charm -= round($charm_rand * $this->opposite['character_up_mag']->charm);
+        $this->self['game_info']->charm -= ceil($charm_rand * $this->self['character_up_mag']->charm);
+        $this->opposite['game_info']->charm -= ceil($charm_rand * $this->opposite['character_up_mag']->charm);
 
         return '你聲援了偶像' . $this->opposite['nickname'] . '，雙方人氣魅力與名聲提升了';
     }
@@ -57,7 +54,7 @@ class operating
     public function donate() {
         $reputation_rand = rand(300, 700);
 
-        $this->opposite['game_info']->energy += round(rand(20, 40) * $this->opposite['character_up_mag']->energy);
+        $this->opposite['game_info']->energy += ceil(rand(20, 40) * $this->opposite['character_up_mag']->energy);
         $this->self['game_info']->reputation += $reputation_rand;
 
         return '你斗內了偶像' . $this->opposite['nickname'] . '，對方更有精神了';

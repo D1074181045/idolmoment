@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Session;
 use Vinkla\Hashids\Facades\Hashids;
 
 define('SIGNATURE_DELAY_T', env('SIGNATURE_DELAY_T', 60));
-define('ACTIVITY_DELAY_T', env('ACTIVITY_DELAY_T', 5));
+define('ACTIVITY_DELAY_T', env('ACTIVITY_DELAY_T', 60));
+define('COOPERATION_DELAY_T', env('COOPERATION_DELAY_T', 90));
 define('CHAT_DELAY_T', env('CHAT_DELAY_T', 90));
-define('OPERATING_DELAY_T', env('OPERATING_DELAY_T', 5));
+define('OPERATING_DELAY_T', env('OPERATING_DELAY_T', 120));
 
 class Controller extends BaseController
 {
@@ -117,10 +118,10 @@ class Controller extends BaseController
                 if ($teetee->name !== $GameInfo->name) {
                     return [
                         'status' => $teetee->teetee === $GameInfo->nickname,
-                        'self_name' => $this->UserNameEncrypt2($GameInfo->name),
-                        'self_character' => $GameInfo->GameCharacter->en_name,
-                        'teetee_name' => $this->UserNameEncrypt2($teetee->name),
-                        'teetee_character' => $teetee->GameCharacter->en_name
+//                        'self_name' => $this->UserNameEncrypt2($GameInfo->name),
+//                        'self_character' => $GameInfo->GameCharacter->en_name,
+                        'teetee_name' => $teetee->teetee === $GameInfo->nickname ? $this->UserNameEncrypt2($teetee->name) : null,
+                        'teetee_graduate' => $teetee->teetee === $GameInfo->nickname ? $teetee->graduate : null,
                     ];
                 }
             }
@@ -128,12 +129,14 @@ class Controller extends BaseController
             return [
                 'status' => 0,
                 'teetee_name' => null,
+                'teetee_graduate' => null,
             ];
         }
 
         return [
             'status' => 0,
             'teetee_name' => null,
+            'teetee_graduate' => null,
         ];
     }
 }

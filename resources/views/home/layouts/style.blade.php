@@ -50,7 +50,7 @@
         position: relative;
         overflow: hidden;
         max-width: 160px;
-
+        background-color: rgb(255, 255, 255);
     }
 
     .img-small {
@@ -59,6 +59,7 @@
         position: relative;
         overflow: hidden;
         max-width: 60px;
+        background-color: rgb(255, 255, 255);
     }
 
     picture img {

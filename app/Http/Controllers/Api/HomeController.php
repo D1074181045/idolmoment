@@ -7,6 +7,7 @@ use App\Events\DangerEvent;
 use App\Events\UnlockCharacterEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Other\activity;
+use App\Http\Other\cooperation;
 use App\Http\Other\operating;
 use App\Models\ChatRoom;
 use App\Models\GameInfo;
@@ -125,6 +126,13 @@ class HomeController extends Controller
         return response()->json($Json);
     }
 
+    /**
+     * 能力提升的解鎖事件
+     *
+     * @param $game_info
+     * @param bool $IsSelf
+     * @return void
+     */
     public function ability_upgrade_unlock_character($game_info, $IsSelf = true) {
         if (GameInfo::query()->orderByDesc('popularity')->first()->nickname == $game_info->nickname)
             $this->unlock_character("Kiryu Coco", $IsSelf);
@@ -162,20 +170,20 @@ class HomeController extends Controller
 
         $reputation = $game_info->reputation;
         switch ($reputation) {
-            case ($reputation >= 70000):
+            case ($reputation >= 45000):
+                $this->unlock_character('Anya Melfissa', $IsSelf);
+                break;
+            case ($reputation >= 40000):
                 $this->unlock_character('Yozora Mel', $IsSelf);
                 break;
-            case ($reputation >= 65000):
-                $this->unlock_character('Tsukishita Kaoru', $IsSelf);
-                break;
-            case ($reputation >= 50000):
+            case ($reputation >= 30000):
                 $this->unlock_character('Shishiro Botan', $IsSelf);
                 break;
-            case ($reputation >= 30000):
+            case ($reputation >= 15000):
                 $this->unlock_character('Oozora Subaru', $IsSelf);
                 break;
-            case ($reputation >= 15000):
-                $this->unlock_character('Natsuiro Matsuri', $IsSelf);
+            case ($reputation >= 10000):
+                $this->unlock_character('Ookami Mio', $IsSelf);
                 break;
             case ($reputation >= 5000):
                 $this->unlock_character('Murasaki Shion', $IsSelf);
@@ -187,21 +195,26 @@ class HomeController extends Controller
 
         $charm = $reputation = $game_info->charm;
         switch ($charm) {
-            case ($charm >= 1000):
+            case ($charm >= 1320):
                 $this->unlock_character('Pavolia Reine', $IsSelf);
                 break;
-            case ($charm >= 720):
+            case ($charm >= 1000):
                 $this->unlock_character('Aki Rosenthal', $IsSelf);
                 break;
-            case ($charm >= 430):
+            case ($charm >= 700):
                 $this->unlock_character('Ayunda Risu', $IsSelf);
                 break;
-            case ($charm >= 150):
+            case ($charm >= 300):
                 $this->unlock_character('Yuzuki Choco', $IsSelf);
                 break;
         }
     }
 
+    /**
+     * 顯示聊天訊息
+     *
+     * @return JsonResponse
+     */
     public function get_chat() {
 
         $chat_messages = ChatRoom::query()->Chat_info()->get();
@@ -213,6 +226,12 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * 對方的個人資料
+     *
+     * @param $name
+     * @return JsonResponse
+     */
     public function profile($name) {
         $opposite_name = $this->UserNameDecrypt($name);
 
@@ -246,7 +265,7 @@ class HomeController extends Controller
                 ]);
             }
 
-            $cool_down = CoolDown::query()->select('signature', 'activity', 'chat', 'operating')->CurrentLoginUser();
+            $cool_down = CoolDown::query()->select('signature', 'activity', 'cooperation', 'chat', 'operating')->CurrentLoginUser();
             if (!$cool_down) {
                 return response()->json([
                     'status' => 0
@@ -402,7 +421,6 @@ class HomeController extends Controller
                 $max_popularity = GameInfo::query()->max('popularity');
 
                 $this->UsersNameEncrypt($idol_list);
-                $this->HtmlSpecialChars_List($idol_list, 'signature');
 
                 return response()->json([
                     'status' => 1,
@@ -430,7 +448,6 @@ class HomeController extends Controller
                 $max_popularity = GameInfo::query()->max('popularity');
 
                 $this->UsersNameEncrypt($idol_list);
-                $this->HtmlSpecialChars_List($idol_list, 'signature');
 
                 return response()->json([
                     'status' => 1,
@@ -493,38 +510,45 @@ class HomeController extends Controller
             case 'adult-live':
                 $activity->adult_live();
 
-                $this->DrawCharacter(['Watson Amelia', 'Houshou marine'], rand(0, 10));
+                $this->DrawCharacter(['Watson Amelia', 'Houshou Marine'], rand(0, 5));
                 break;
             case 'live':
                 $activity->live();
 
                 switch ($self_game_info->use_character) {
                     case 'Inugami Korone':
-                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Nekomata Okaya'], rand(0, 20));
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Nekomata Okayu'], rand(0, 15));
                         break;
                     case 'Usada Pekora':
                         $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Sakuramiko', 'Moona Hoshinova'], rand(0, 20));
                         break;
                     case 'Shirogane Noel':
-                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Shiranui Flare'], rand(0, 20));
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Shiranui Flare'], rand(0, 15));
                         break;
                     case 'Mori Calliope':
-                        $this->DrawCharacter(['Takanashi Kiara', 'Shirakami Fubuki'], rand(0, 15));
+                        $this->DrawCharacter(['Takanashi Kiara', 'Shirakami Fubuki'], rand(0, 10));
                         break;
                     case 'Watson Amelia':
                         $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Gawr Gura'], rand(0, 15));
                         break;
+                    case 'Shirakami Fubuki':
+                        $this->DrawCharacter(['Mori Calliope', 'Natsuiro Matsuri'], rand(0, 10));
+                        break;
+                    case 'Uruha Rushia':
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Kureiji Ollie'], rand(0, 15));
+                        break;
                     default:
-                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki'], rand(0, 20));
+                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki'], rand(0, 10));
                         break;
                 }
+
                 break;
             case 'do-good-things':
                 $activity->do_good_things();
 
                 switch ($self_game_info->use_character){
                     case 'Amane Kanata':
-                        $this->DrawCharacter(['Tokoyami Towa'], rand(0, 10));
+                        $this->DrawCharacter(['Tokoyami Towa'], rand(0, 5));
                         break;
                 }
 
@@ -565,6 +589,96 @@ class HomeController extends Controller
     }
 
     /**
+     * 偶像的合作活動
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function cooperation(Request $request) {
+        if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
+            return response()->json([
+                'status' => 0,
+                'message' => '合作活動進行失敗'
+            ]);
+        }
+
+        $cooperation_time = $cool_down->cooperation;
+
+        if ($cooperation_time > Carbon::now()) {
+            return response()->json([
+                'status' => 0,
+                'message' => '合作活動進行失敗，剩餘時間：' . $this->remain_time($cooperation_time, Carbon::now()) . '秒'
+            ]);
+        }
+
+        $self_game_info = $cool_down->GameInfo;
+
+        if ($self_game_info->graduate) {
+            return response()->json([
+                'status' => 0,
+                'message' => '合作活動進行失敗，你已畢業'
+            ]);
+        }
+
+        $teetee_info = $this->teetee_info($self_game_info);
+
+        if (!$teetee_info['status']) {
+            return response()->json([
+                'status' => 0,
+                'message' => '你沒有貼貼夥伴，無法進行合作活動'
+            ]);
+        }
+
+        if ($teetee_info['teetee_graduate']) {
+            return response()->json([
+                'status' => 0,
+                'message' => '你的貼貼夥伴已畢業'
+            ]);
+        }
+
+        $this->opposite_name = $this->UserNameDecrypt($teetee_info['teetee_name']);
+        $teetee_game_info = GameInfo::query()->find($this->opposite_name);
+
+        $cooperation = new cooperation($self_game_info, $teetee_game_info);
+
+        switch ($request->post('cooperation_type')) {
+            case 'play-ordinary-game':
+                $cooperation->play_ordinary_game();
+                break;
+            case 'play-tacit-game':
+                $cooperation->play_tacit_game();
+                break;
+            default:
+                return response()->json([
+                    'status' => 0,
+                    'message' => '合作活動進行失敗，無此活動'
+                ]);
+        }
+
+        unset($cooperation);
+
+        $cooperation_time = $cool_down->update_cooperation(COOPERATION_DELAY_T);
+
+        $this->ability_upgrade_unlock_character($self_game_info);
+        $this->ability_upgrade_unlock_character($teetee_game_info, false);
+
+        return response()->json([
+            'status' => 1,
+            'cooperation_time' => $cooperation_time,
+            'ability' => [
+                'popularity' => $self_game_info->popularity,
+                'reputation' => $self_game_info->reputation,
+                'max_vitality' => $self_game_info->max_vitality,
+                'current_vitality' => $self_game_info->current_vitality,
+                'energy' => $self_game_info->energy,
+                'resistance' => $self_game_info->resistance,
+                'charm' => $self_game_info->charm,
+            ],
+            'message' => "合作活動進行生效"
+        ]);
+    }
+
+    /**
      * 偶像操作(to 對方)
      *
      * @param Request $request
@@ -579,6 +693,25 @@ class HomeController extends Controller
             ]);
         }
 
+        $opposite_name = $request->post('opposite_name');
+        $self_game_info = $cool_down->GameInfo;
+
+        $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
+
+        if ($self_teetee_name === $opposite_name) {
+            return response()->json([
+                'status' => 0,
+                'message' => '不能寄刀片給你的貼貼'
+            ]);
+        }
+
+        if ($self_game_info->graduate) {
+            return response()->json([
+                'status' => 0,
+                'message' => '操作失敗，你已畢業'
+            ]);
+        }
+
         $operating_time = $cool_down->operating;
 
         if ($operating_time > Carbon::now()) {
@@ -588,9 +721,7 @@ class HomeController extends Controller
             ]);
         }
 
-        $opposite_name = $request->post('opposite_name');
         $this->opposite_name = $opposite_name_decrypt = $this->UserNameDecrypt($opposite_name);
-
 
         $opposite_game_info = GameInfo::query()->find($opposite_name_decrypt);
 
@@ -598,15 +729,6 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '操作失敗，對方已畢業'
-            ]);
-        }
-
-        $self_game_info = $cool_down->GameInfo;
-
-        if ($self_game_info->graduate) {
-            return response()->json([
-                'status' => 0,
-                'message' => '操作失敗，你已畢業'
             ]);
         }
 
@@ -775,6 +897,11 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * 顯示擁有的偶像
+     *
+     * @return JsonResponse
+     */
     public function own_character() {
         $own_character_list = OwnCharacter::query()->OwnCharacterList()->get();
 

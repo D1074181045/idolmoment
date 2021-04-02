@@ -126,7 +126,6 @@ export default {
                     this.$router.push({name: 'login'});
                 }
                 else {
-                    this.registering = false;
                     this.$store.commit("show_error", message);
                 }
             }).catch((err) => {
@@ -142,6 +141,7 @@ export default {
                 } else {
                     this.$store.commit("show_error", "發生錯誤: " + err.statusText);
                 }
+            }).finally(() => {
                 this.registering = false;
             });
         },

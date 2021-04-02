@@ -75,4 +75,11 @@ class CoolDown extends Model
 
         return $this->operating;
     }
+
+    public function update_cooperation($add_time) {
+        $this->cooperation = Carbon::now()->addSeconds($add_time);
+        $this->save();
+
+        return $this->cooperation;
+    }
 }

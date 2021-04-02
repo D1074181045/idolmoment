@@ -8,7 +8,10 @@
                          v-on:click="select_character(own_character.character_name)">
                         <div class="img-big">
                             <picture>
-                                <source type="image/jpg" :srcset="characters_img_path(own_character.game_character.img_file_name)">
+                                <source type="image/webp" :srcset="characters_img_path(own_character.game_character.img_file_name, 'webp')">
+                                <source type="image/jpeg" :srcset="characters_img_path(own_character.game_character.img_file_name)">
+                                <source type="image/png"
+                                        :srcset="characters_img_path(own_character.game_character.img_file_name, 'png')">
                                 <img
                                     :src="characters_img_path(own_character.game_character.img_file_name)"
                                     :alt="own_character.character_name">
@@ -199,5 +202,8 @@
         .character-frame:last-child {
             width: 100%;
         }
+    }
+    table th {
+        width: 120px;
     }
 </style>

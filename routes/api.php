@@ -30,6 +30,7 @@ Route::middleware(['refresh.token'])->group(function(){
     Route::patch('/update-signature', [HomeController::class, 'update_signature'])->name('api.update.signature');
     Route::patch('/update-teetee', [HomeController::class, 'update_teetee'])->name('api.update.teetee');
     Route::patch('/activity', [HomeController::class, 'activity'])->name('api.activity');
+    Route::patch('/cooperation', [HomeController::class, 'cooperation'])->name('api.cooperation');
     Route::patch('/operating', [HomeController::class, 'operating'])->name('api.operating');
     Route::patch('/rebirth', [HomeController::class, 'rebirth'])->name('api.rebirth');
     Route::get('/change-page', [HomeController::class, 'change_page'])->name('api.change_page');

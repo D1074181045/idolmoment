@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(GameCharactersTableSeeder::class);
         $this->call(CharactersUpMagTableSeeder::class);
-//        $this->call(UsersTableSeeder::class);
-//        $this->call(OwnCharactersTableSeeder::class);
-//        $this->call(GameInfoTableSeeder::class);
-//        $this->call(OperatingCoolDownSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        $this->call(OwnCharactersTableSeeder::class);
+        $this->call(GameInfoTableSeeder::class);
+        $this->call(OperatingCoolDownSeeder::class);
     }
 }

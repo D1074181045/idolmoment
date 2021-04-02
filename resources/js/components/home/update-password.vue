@@ -122,7 +122,6 @@ export default {
                     this.$router.push({name: 'index'}).catch(() => {});
                 } else {
                     this.$store.commit("show_error", message);
-                    this.updating = false;
                     this.update_password_disabled = false;
                 }
             }).catch((err) => {
@@ -137,8 +136,9 @@ export default {
                 } else {
                     this.$store.commit("show_error", "發生錯誤: " + err.status);
                 }
-                this.updating = false;
                 this.update_password_disabled = false;
+            }).finally(() => {
+                this.updating = false;
             });
         }
     }

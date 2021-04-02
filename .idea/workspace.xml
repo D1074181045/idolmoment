@@ -21,12 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/csvs/Characters_Up_Mag.csv" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/csvs/Characters_Up_Mag.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/csvs/Game_Characters.csv" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/csvs/Game_Characters.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/style.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/style.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -176,7 +171,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/js/components/home" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Http/Other" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -188,14 +183,15 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\home" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
     </key>
   </component>
@@ -235,7 +231,12 @@
       <workItem from="1617009306964" duration="1837000" />
       <workItem from="1617012956038" duration="5649000" />
       <workItem from="1617097428513" duration="17757000" />
-      <workItem from="1617182068153" duration="1599000" />
+      <workItem from="1617182068153" duration="2046000" />
+      <workItem from="1617269951700" duration="4500000" />
+      <workItem from="1617275952134" duration="9069000" />
+      <workItem from="1617290839885" duration="621000" />
+      <workItem from="1617332079125" duration="12216000" />
+      <workItem from="1617346290301" duration="1805000" />
     </task>
     <servers />
   </component>
@@ -296,11 +297,11 @@
     </state>
     <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1617114808756" />
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1616927991533" />
-    <state x="443" y="158" width="672" height="475" key="search.everywhere.popup" timestamp="1616588899721">
-      <screen x="0" y="0" width="1364" height="728" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1617337739515">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="443" y="158" width="672" height="475" key="search.everywhere.popup/0.0.1364.728@0.0.1364.728" timestamp="1616588899721" />
     <state x="520" y="187" width="789" height="562" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1616561226251" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1616336619003" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1617337739515" />
   </component>
 </project>
