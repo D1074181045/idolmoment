@@ -267,24 +267,24 @@ export default {
         this.$store.commit('cool_down', 'operating');
     },
     activated() {
-        const url = this.api_prefix.concat('profile/', this.$route.params.name);
+        document.title = this.title ? this.title : "玩家資訊";
 
-        if (!this.title)
-            document.title = "玩家資訊";
-        else
-            document.title = this.title;
-
-        axios.get(url)
-            .then(({status, opposite_profile}) => {
-                if (status) {
-                    if (!this.title)
-                        document.title = this.title = "玩家資訊".concat('-', opposite_profile.nickname);
-                    this.opposite_profile = opposite_profile;
-                    this.opposite_loaded = true;
-                }
-            })
+        this.get_opposite_profile();
     },
     methods: {
+        get_opposite_profile: function() {
+            const url = this.api_prefix.concat('profile/', this.$route.params.name);
+
+            axios.get(url)
+                .then(({status, opposite_profile}) => {
+                    if (status) {
+                        if (!this.title)
+                            document.title = this.title = "玩家資訊".concat('-', opposite_profile.nickname);
+                        this.opposite_profile = opposite_profile;
+                        this.opposite_loaded = true;
+                    }
+                })
+        },
         switch_show: function () {
             let next_type = this.get_profile_type();
             switch (next_type) {

@@ -19,12 +19,12 @@ const store = new Vuex.Store({
     state: {
         error: {'status': 0, 'message': null},
         ban_type: {
-            signature: { status: false, time: null },
-            activity: { status: false, time: null },
-            cooperation: { status: false, time: null },
-            operating: { status: false, time: null },
-            chat: { status: false, time: null },
-            },
+            signature: {status: false, time: null},
+            activity: {status: false, time: null},
+            cooperation: {status: false, time: null},
+            operating: {status: false, time: null},
+            chat: {status: false, time: null},
+        },
         profile: null,
         cool_down: null,
         teetee_info: null,

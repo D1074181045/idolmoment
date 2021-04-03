@@ -64,9 +64,7 @@ export default {
                 nickname: this.nickname,
             }).then(({status, message}) => {
                 if (status) {
-                    this.$store.dispatch('load_my_profile').then(() => {
-                        this.$router.push({name: 'index'});
-                    })
+                    document.location.href = '/';
                 }
                 else {
                     this.$store.commit("show_error", message);

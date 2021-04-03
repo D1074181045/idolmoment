@@ -213,8 +213,7 @@ export default {
 
         this.next_ability = {};
 
-        if (!this.first_load)
-            this.$store.dispatch('load_my_profile');
+        if (!this.first_load) this.$store.dispatch('load_my_profile');
     },
     methods: {
         set_teetee: function (e) {

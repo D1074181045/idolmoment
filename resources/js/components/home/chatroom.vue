@@ -60,27 +60,57 @@ export default {
         },
     },
     updated() {
-        if (messages_updated) {
-            if (put_bottom) {
-                const tbody = document.getElementsByTagName('tbody')[0];
-
-                tbody.scrollTop = tbody.scrollHeight;
-            }
-            messages_updated = false;
-        }
+        this.tbody_scroll_bottom();
     },
     mounted() {
-        const tbody = document.getElementsByTagName('tbody')[0];
+        this.tbody_scroll_position();
+    },
+    activated() {
+        document.title = "聊天室";
 
-        tbody.onscroll = function () {
-            let last = tbody.scrollHeight - tbody.scrollTop;
-            put_bottom = last <= tbody.offsetHeight;
-        };
+        this.$store.commit('cool_down', 'chat');
 
-        Echo.channel('public-chat-channel')
-            .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
-                if (this.$route.name === 'chatroom') {
+        this.get_chats();
+        this.websocket_chat_event();
+    },
+    deactivated() {
+        Echo.leave('public-chat-channel');
+    },
+    methods: {
+        tbody_scroll_bottom: function() {
+            if (messages_updated) {
+                if (put_bottom) {
+                    const tbody = document.getElementsByTagName('tbody')[0];
 
+                    tbody.scrollTop = tbody.scrollHeight;
+                }
+                messages_updated = false;
+            }
+        },
+        tbody_scroll_position: function() {
+            const tbody = document.getElementsByTagName('tbody')[0];
+
+            tbody.onscroll = function () {
+                let last = tbody.scrollHeight - tbody.scrollTop;
+                put_bottom = last <= tbody.offsetHeight;
+            };
+        },
+        get_chats: function() {
+            const url = this.api_prefix.concat('get-chats');
+            axios.get(url)
+                .then(({status, chat_messages}) => {
+                    if (status) {
+                        this.chat_messages = chat_messages;
+                    }
+                })
+                .then(() => {
+                    const tbody = document.getElementsByTagName('tbody')[0];
+                    tbody.scrollTop = tbody.scrollHeight;
+                })
+        },
+        websocket_chat_event: function () {
+            Echo.channel('public-chat-channel')
+                .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
                     this.chat_messages.push({
                         name: name,
                         nickname: nickname,
@@ -89,27 +119,8 @@ export default {
                     });
 
                     messages_updated = true;
-                }
-            });
-    },
-    activated() {
-        document.title = "聊天室";
-
-        const url = this.api_prefix.concat('get-chats');
-        this.$store.commit('cool_down', 'chat');
-
-        axios.get(url)
-            .then(({status, chat_messages}) => {
-                if (status) {
-                    this.chat_messages = chat_messages;
-                }
-            })
-            .then(() => {
-                const tbody = document.getElementsByTagName('tbody')[0];
-                tbody.scrollTop = tbody.scrollHeight;
-            })
-    },
-    methods: {
+                });
+        },
         create_message: function () {
             if (this.create_msg_disabled)
                 return;

@@ -1,12 +1,15 @@
-import Vue from 'vue';
-import Router from "vue-router";
-
-Vue.use(Router);
+import index from '../components/home/index.vue';
+import active_idol from '../components/home/active-idol.vue';
+import profile from '../components/home/profile.vue';
+import rebirth from '../components/home/rebirth.vue';
+import chatroom from '../components/home/chatroom.vue';
+import create_profile from '../components/home/create-profile.vue';
+import update_password from '../components/home/update-password.vue';
 
 export const routes = [
     {
         path: '/',
-        component: () => import('./components/home/index.vue'),
+        component: index,
         name: 'index',
         meta: {
             title: '我的偶像',
@@ -15,7 +18,7 @@ export const routes = [
     },
     {
         path: '/active-idol',
-        component: () => import('./components/home/active-idol.vue'),
+        component: active_idol,
         name: 'active-idol',
         meta: {
             title: '活耀偶像',
@@ -24,7 +27,7 @@ export const routes = [
     },
     {
         path: '/profile/:name',
-        component: () => import('./components/home/profile.vue'),
+        component: profile,
         name: 'profile',
         meta: {
             title: '偶像個人資料',
@@ -33,7 +36,7 @@ export const routes = [
     },
     {
         path: '/rebirth',
-        component: () => import('./components/home/rebirth.vue'),
+        component: rebirth,
         name: 'rebirth',
         meta: {
             title: '偶像轉生',
@@ -42,7 +45,7 @@ export const routes = [
     },
     {
         path: '/chatroom',
-        component: () => import('./components/home/chatroom.vue'),
+        component: chatroom,
         name: 'chatroom',
         meta: {
             title: '聊天室',
@@ -51,7 +54,7 @@ export const routes = [
     },
     {
         path: '/create-profile',
-        component: () => import('./components/home/create-profile.vue'),
+        component: create_profile,
         name: 'create-profile',
         meta: {
             title: '創建偶像',
@@ -59,7 +62,7 @@ export const routes = [
     },
     {
         path: '/update-password',
-        component: () => import('./components/home/update-password.vue'),
+        component: update_password,
         name: 'update-password',
         meta: {
             title: '修改密碼',
@@ -67,10 +70,4 @@ export const routes = [
     }
 ];
 
-const router = new Router({
-    mode: 'history',
-    linkActiveClass: 'active',
-    routes
-})
-
-export default router;
+export default routes;
