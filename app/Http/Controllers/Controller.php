@@ -118,8 +118,6 @@ class Controller extends BaseController
                 if ($teetee->name !== $GameInfo->name) {
                     return [
                         'status' => $teetee->teetee === $GameInfo->nickname,
-//                        'self_name' => $this->UserNameEncrypt2($GameInfo->name),
-//                        'self_character' => $GameInfo->GameCharacter->en_name,
                         'teetee_name' => $teetee->teetee === $GameInfo->nickname ? $this->UserNameEncrypt2($teetee->name) : null,
                         'teetee_graduate' => $teetee->teetee === $GameInfo->nickname ? $teetee->graduate : null,
                     ];

@@ -6,22 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
-use App\Models\GameCharacter;
 use App\Models\GameInfo;
-use App\Models\CoolDown;
 use App\Models\OwnCharacter;
 use App\Models\User;
-use Carbon\Carbon;
-use http\Cookie;
-use Illuminate\Cookie\CookieJar;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -41,8 +32,6 @@ class UserController extends Controller
                 'password' => ['required'],
                 'autologin' => ['required']
             ]);
-
-
 
             $username = strtolower($request->get('username'));
             $password = $request->get('password');
@@ -132,7 +121,7 @@ class UserController extends Controller
 
             return response()->json([
                 'status' => 1,
-                'message' => "密碼修改成功，請重新登入"
+                'message' => "密碼修改成功"
             ]);
 
         } else {

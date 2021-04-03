@@ -32,12 +32,12 @@ class HomeController extends Controller
      * 解鎖偶像
      *
      * @param $character_name
-     * @param $IsSelf
+     * @param bool $isSelf
      * @return array
      */
-    public function unlock_character($character_name, $IsSelf = true)
+    public function unlock_character($character_name, $isSelf = true)
     {
-        if ($IsSelf) {
+        if ($isSelf) {
             $Character = OwnCharacter::query()->BuildOwnCharacter([
                 'username' => Auth::user()->name,
                 'character_name' => $character_name
@@ -57,7 +57,7 @@ class HomeController extends Controller
         }
 
         $tc_name = $Character->GameCharacter->tc_name;
-        if ($IsSelf)
+        if ($isSelf)
             array_push($this->self_character_list, $tc_name);
         else
             array_push($this->opposite_character_list, $tc_name);
@@ -139,8 +139,11 @@ class HomeController extends Controller
 
         $popularity = $game_info->popularity;
         switch ($popularity) {
-            case ($popularity >= 10000000):
+            case ($popularity >= 7500000):
                 $this->unlock_character("Tokino Sora", $IsSelf);
+                break;
+            case ($popularity >= 6500000):
+                $this->unlock_character("Airani Iofifteen", $IsSelf);
                 break;
             case ($popularity >= 5000000):
                 $this->unlock_character("Himemori Luna", $IsSelf);
@@ -215,7 +218,7 @@ class HomeController extends Controller
      *
      * @return JsonResponse
      */
-    public function get_chat() {
+    public function get_chats() {
 
         $chat_messages = ChatRoom::query()->Chat_info()->get();
         $this->UsersNameEncrypt($chat_messages);
@@ -237,7 +240,7 @@ class HomeController extends Controller
 
         $opposite_game_info = GameInfo::query()->with(['GameCharacter' => function ($query) {
             $query->select('tc_name', 'en_name', 'img_file_name');
-        }])->findOrFail($opposite_name,[
+        }])->findOrFail($opposite_name, [
             'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
             'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character'
         ]);
@@ -255,7 +258,7 @@ class HomeController extends Controller
      *
      * @return JsonResponse
      */
-    public function MyProfile()
+    public function my_profile()
     {
         try {
             if (!GameInfo::query()->UserGameInfoBuilt(Auth::user()->name)->count()) {
@@ -414,8 +417,6 @@ class HomeController extends Controller
                 ]);
             }
 
-            $teetee_info = $this->teetee_info($self_game_info);
-
             if ($search_name = $request->get('search_name')) {
                 $idol_list = GameInfo::query()->SearchName($search_name)->get();
                 $max_popularity = GameInfo::query()->max('popularity');
@@ -424,7 +425,6 @@ class HomeController extends Controller
 
                 return response()->json([
                     'status' => 1,
-                    'teetee_name' => $teetee_info['teetee_name'],
                     'max_popularity' => $max_popularity,
                     'idol_list' => $idol_list
                 ]);
@@ -451,7 +451,6 @@ class HomeController extends Controller
 
                 return response()->json([
                     'status' => 1,
-                    'teetee_name' => $teetee_info['teetee_name'],
                     'total_pages' => ceil($idol_count / $pageRow_records),
                     'max_popularity' => $max_popularity,
                     'idol_list' => $idol_list

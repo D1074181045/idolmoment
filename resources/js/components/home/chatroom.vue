@@ -1,5 +1,5 @@
 <template>
-    <div class="tb">
+    <div class="tb" v-on:keyup.enter="create_enter">
         <h3>聊天室</h3>
         <table class="table table-hover" style="margin-top: 1rem;">
             <thead class="thead-light">
@@ -12,7 +12,9 @@
             <tbody>
             <tr v-for="chat_message in chat_messages">
                 <td style="width: 150px;">
-                    <router-link style="font-size: 12px;" :to="{ name: 'profile', params: { name: chat_message.name } }" exact>{{ chat_message.nickname }}</router-link>
+                    <router-link style="font-size: 12px;" :to="{ name: 'profile', params: { name: chat_message.name } }" exact>
+                        {{ chat_message.nickname }}
+                    </router-link>
                 </td>
                 <td>{{ chat_message.message }}</td>
                 <td style="width: 160px;">{{ timeStampToDateTime(chat_message.created_at) }}</td>
@@ -93,7 +95,7 @@ export default {
     activated() {
         document.title = "聊天室";
 
-        const url = this.api_prefix.concat('chat');
+        const url = this.api_prefix.concat('get-chats');
         this.$store.commit('cool_down', 'chat');
 
         axios.get(url)
@@ -145,6 +147,12 @@ export default {
                 second = second < 10 ? '0' + second.toString() : second;
 
             return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+        },
+        create_enter: function () {
+            document.onkeydown = (e) => {
+                if (e.keyCode === 13)
+                    this.create_message();
+            }
         }
     }
 }

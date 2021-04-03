@@ -145,8 +145,6 @@ export default {
         },
         login_enter: function () {
             document.onkeydown = (e) => {
-                console.log(e);
-
                 if (e.keyCode === 13)
                     this.login_click();
             }

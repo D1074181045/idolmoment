@@ -21,8 +21,8 @@ Route::post('/register', [UserController::class, 'register'])->name('api.registe
 
 Route::middleware(['refresh.token'])->group(function(){
     Route::get('/profile/{name}', [HomeController::class, 'profile']);
-    Route::get('/chat', [HomeController::class, 'get_chat']);
-    Route::get('/my-profile', [HomeController::class, 'MyProfile']);
+    Route::get('/get-chats', [HomeController::class, 'get_chats']);
+    Route::get('/my-profile', [HomeController::class, 'my_profile']);
     Route::get('/own-character', [HomeController::class, 'own_character'])->name('home.own-character');
     Route::patch('/update-password', [UserController::class, 'update_password'])->name('api.update.password');
     Route::post('/store-profile', [UserController::class, 'store_profile'])->name('api.store.profile');

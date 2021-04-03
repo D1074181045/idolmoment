@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GameInfo;
 use Illuminate\Contracts\View\view;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
