@@ -4,5 +4,6 @@ try {
 
     require('bootstrap');
 
-} catch (e) {}
+} catch (e) {
+}
 

@@ -9,20 +9,26 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">舊密碼</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
-                                       :class="$store.getters.disabled_class(old_password_disabled)" v-model="old_password"
+                                <input type="password" class="form-control" style="width: 100%" autocomplete="off"
+                                       required autofocus
+                                       :class="$store.getters.disabled_class(old_password_disabled)"
+                                       v-model="old_password"
                                        v-on:input="ban_update_password" :type="pw_type(old_password_show)">
                             </div>
                             <div class="show-hide-toggle-button">
-                                <input type="checkbox" id="old_password_toggle_button" v-on:click="old_password_toggle_button">
-                                <label for="old_password_toggle_button" :title="pw_title(old_password_show)" style="margin-bottom: 0;">Toggle</label>
+                                <input type="checkbox" id="old_password_toggle_button"
+                                       v-on:click="old_password_toggle_button">
+                                <label for="old_password_toggle_button" :title="pw_title(old_password_show)"
+                                       style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">新密碼</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
-                                       :class="$store.getters.disabled_class(new_password_disabled)" v-model="new_password"
+                                <input type="password" class="form-control" style="width: 100%" autocomplete="off"
+                                       required autofocus
+                                       :class="$store.getters.disabled_class(new_password_disabled)"
+                                       v-model="new_password"
                                        v-on:input="ban_update_password" :type="pw_type(new_password_show)">
                                 <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                             </div>
@@ -30,17 +36,23 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">確認新密碼</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" style="width: 100%" autocomplete="off" required autofocus
-                                       :class="$store.getters.disabled_class(new_password_disabled)" v-model="new_password_confirm"
+                                <input type="password" class="form-control" style="width: 100%" autocomplete="off"
+                                       required autofocus
+                                       :class="$store.getters.disabled_class(new_password_disabled)"
+                                       v-model="new_password_confirm"
                                        v-on:input="ban_update_password" :type="pw_type(new_password_show)">
                             </div>
                             <div class="show-hide-toggle-button">
-                                <input type="checkbox" id="new_password_toggle_button" v-on:click="new_password_toggle_button">
-                                <label for="new_password_toggle_button" :title="pw_title(new_password_show)" style="margin-bottom: 0;">Toggle</label>
+                                <input type="checkbox" id="new_password_toggle_button"
+                                       v-on:click="new_password_toggle_button">
+                                <label for="new_password_toggle_button" :title="pw_title(new_password_show)"
+                                       style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
-                        <button type="button" disabled class="btn btn-primary btn-block" :class="{ 'btn-loading':updating }"
-                                style="margin: 0 0;" v-on:click="to_update_password" :disabled="update_password_disabled">修改
+                        <button type="button" disabled class="btn btn-primary btn-block"
+                                :class="{ 'btn-loading':updating }"
+                                style="margin: 0 0;" v-on:click="to_update_password"
+                                :disabled="update_password_disabled">修改
                         </button>
                     </div>
 
@@ -54,8 +66,7 @@
 </template>
 
 <script>
-import { msg } from '../../styles';
-import store from "../../store";
+import {msg} from '../../styles';
 
 export default {
     data() {
@@ -71,13 +82,13 @@ export default {
             updating: false
         }
     },
-    components:{
+    components: {
         msg
     },
     created() {
         document.title = "修改密碼";
     },
-    computed:{
+    computed: {
         error: function () {
             return this.$store.state.error;
         },
@@ -119,7 +130,8 @@ export default {
                 new_password_confirm: this.new_password_confirm,
             }).then(({status, message}) => {
                 if (status) {
-                    this.$router.push({name: 'index'}).catch(() => {});
+                    this.$router.push({name: 'index'}).catch(() => {
+                    });
                 } else {
                     this.$store.commit("show_error", message);
                     this.update_password_disabled = false;

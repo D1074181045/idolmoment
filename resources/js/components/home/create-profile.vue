@@ -10,11 +10,14 @@
                             <label class="col-md-3 col-form-label text-md-right">暱稱</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" style="width: 100%" autocomplete="off" autofocus
-                                       :class="$store.getters.disabled_class(build_disabled)" v-model="nickname" v-on:input="ban_build">
+                                       :class="$store.getters.disabled_class(build_disabled)" v-model="nickname"
+                                       v-on:input="ban_build">
                                 <div style="font-size: 12px;margin: 4px 8px;">最多12字元，且無特殊字元</div>
                             </div>
-                            <button type="button" disabled class="btn btn-primary" style="width: 60px;height: 1%;" :class="{ 'btn-loading':creating }"
-                                    v-on:click="build" :disabled="build_disabled">建立</button>
+                            <button type="button" disabled class="btn btn-primary" style="width: 60px;height: 1%;"
+                                    :class="{ 'btn-loading':creating }"
+                                    v-on:click="build" :disabled="build_disabled">建立
+                            </button>
                         </div>
                     </div>
 
@@ -28,7 +31,7 @@
 </template>
 
 <script>
-import { msg } from '../../styles';
+import {msg} from '../../styles';
 
 export default {
     data() {
@@ -38,13 +41,13 @@ export default {
             creating: false
         }
     },
-    components:{
+    components: {
         msg
     },
     created() {
         document.title = "創建偶像";
     },
-    computed:{
+    computed: {
         error: function () {
             return this.$store.state.error;
         },
@@ -65,8 +68,7 @@ export default {
             }).then(({status, message}) => {
                 if (status) {
                     document.location.href = '/';
-                }
-                else {
+                } else {
                     this.$store.commit("show_error", message);
                     this.build_disabled = false;
                     this.creating = false;
@@ -82,7 +84,7 @@ export default {
 
                     this.$store.commit("show_error", s);
                 } else {
-                    this.$store.commit("show_error","發生錯誤: " + err.statusText);
+                    this.$store.commit("show_error", "發生錯誤: " + err.statusText);
                 }
                 this.build_disabled = false;
                 this.creating = false;

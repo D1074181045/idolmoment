@@ -9,7 +9,8 @@
 
                     <div class="col-md-6">
                         <input type="text" class="form-control" autocomplete="off" required autofocus
-                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_register" v-model="username" />
+                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_register"
+                               v-model="username"/>
                         <div style="font-size: 12px;margin: 4px 8px;">請介於5到15字元之間</div>
                     </div>
                 </div>
@@ -19,7 +20,8 @@
 
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
-                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register" :type="pw_type()" v-model="password" />
+                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
+                               :type="pw_type()" v-model="password"/>
                         <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                     </div>
                 </div>
@@ -29,7 +31,8 @@
 
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
-                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register" :type="pw_type()" v-model="password_confirm"/>
+                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
+                               :type="pw_type()" v-model="password_confirm"/>
                     </div>
                     <div class="show-hide-toggle-button">
                         <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
@@ -39,8 +42,10 @@
 
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-4">
-                        <button id="register" name="register" type="button" disabled class="btn btn-primary" :class="{ 'btn-loading':registering }"
-                                :disabled="register_disabled" v-on:click="register_click" ref="register">註冊</button>
+                        <button id="register" name="register" type="button" disabled class="btn btn-primary"
+                                :class="{ 'btn-loading':registering }"
+                                :disabled="register_disabled" v-on:click="register_click" ref="register">註冊
+                        </button>
                         <button id="back" name="back" type="button" class="btn btn-dark" v-on:click="back">返回</button>
                     </div>
                 </div>
@@ -54,7 +59,7 @@
 </template>
 
 <script>
-import { msg } from '../../styles';
+import {msg} from '../../styles';
 
 export default {
     data() {
@@ -69,10 +74,10 @@ export default {
             registering: false
         }
     },
-    components:{
+    components: {
         msg
     },
-    computed:{
+    computed: {
         error: function () {
             return this.$store.state.error;
         },
@@ -101,8 +106,8 @@ export default {
             this.password_disabled = this.password !== this.password_confirm || !this.between(this.password.length, 8, 32);
             this.register_disabled = this.username_disabled || this.password_disabled;
         },
-        back: function (){
-            this.$router.push({ name:'login' });
+        back: function () {
+            this.$router.push({name: 'login'});
         },
         register_click: function () {
             if (this.register_disabled)
@@ -124,8 +129,7 @@ export default {
                     this.username_disabled = true;
                     this.password_disabled = true;
                     this.$router.push({name: 'login'});
-                }
-                else {
+                } else {
                     this.$store.commit("show_error", message);
                 }
             }).catch((err) => {

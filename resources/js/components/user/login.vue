@@ -9,7 +9,8 @@
 
                     <div class="col-md-6">
                         <input type="text" class="form-control" autocomplete="off" autofocus
-                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_login" v-model="username" />
+                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_login"
+                               v-model="username"/>
                     </div>
                 </div>
 
@@ -18,7 +19,8 @@
 
                     <div class="col-md-6">
                         <input class="form-control" required autocomplete="off"
-                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_login" :type="pw_type()" v-model="password">
+                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_login"
+                               :type="pw_type()" v-model="password">
                     </div>
                     <div class="show-hide-toggle-button">
                         <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
@@ -38,7 +40,8 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-4">
                         <button type="button" disabled class="btn btn-primary" :class="{ 'btn-loading':logging }"
-                                :disabled="login_disabled" v-on:click="login_click" ref="login">登入</button>
+                                :disabled="login_disabled" v-on:click="login_click" ref="login">登入
+                        </button>
                         <button type="button" class="btn btn-dark" v-on:click="to_register">前往註冊</button>
                     </div>
                 </div>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import { msg } from '../../styles';
+import {msg} from '../../styles';
 
 export default {
     data() {
@@ -67,10 +70,10 @@ export default {
             logging: false
         }
     },
-    components:{
+    components: {
         msg
     },
-    computed:{
+    computed: {
         error: function () {
             return this.$store.state.error;
         },
@@ -96,8 +99,8 @@ export default {
             this.password_disabled = this.password.length <= 0;
             this.login_disabled = this.username_disabled || this.password_disabled;
         },
-        to_register: function (){
-            this.$router.push({ name:'register' });
+        to_register: function () {
+            this.$router.push({name: 'register'});
         },
         login_click: function () {
             if (this.login_disabled)
@@ -117,8 +120,7 @@ export default {
                 if (status) {
                     localStorage.token = token;
                     document.location.href = "/";
-                }
-                else {
+                } else {
                     this.password = "";
                     this.password_disabled = true;
                     this.autologin = false;

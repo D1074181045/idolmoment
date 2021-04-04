@@ -1,4 +1,6 @@
 const mix = require('laravel-mix');
+require("laravel-mix-vue-css-modules");
+require("laravel-mix-alias");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,9 +13,14 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.options({
+    extractVueStyles: true,
+});
+
 mix
     .js('resources/js/app/home.js', 'public/js/app.home.min.js')
     .js('resources/js/app/user.js', 'public/js/app.user.min.js')
     .extract()
     .styles('resources/css/app.css', 'public/css/app.css')
+    // .vueCssModules()
     .version()

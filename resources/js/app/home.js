@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from "vue-router";
 
 import store from '../store';
-import routes from "../router/home.js";
+import routes from "../router/home";
 
 class vue_global {
     static variables() {
@@ -171,7 +171,7 @@ try {
                     });
             }
         },
-        router,
+        router
     });
 
     router.beforeEach((to, from, next) => {

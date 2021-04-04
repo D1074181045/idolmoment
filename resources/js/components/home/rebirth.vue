@@ -8,8 +8,10 @@
                          v-on:click="select_character(own_character.character_name)">
                         <div class="img-big">
                             <picture>
-                                <source type="image/webp" :srcset="characters_img_path(own_character.game_character.img_file_name, 'webp')">
-                                <source type="image/jpeg" :srcset="characters_img_path(own_character.game_character.img_file_name)">
+                                <source type="image/webp"
+                                        :srcset="characters_img_path(own_character.game_character.img_file_name, 'webp')">
+                                <source type="image/jpeg"
+                                        :srcset="characters_img_path(own_character.game_character.img_file_name)">
                                 <source type="image/png"
                                         :srcset="characters_img_path(own_character.game_character.img_file_name, 'png')">
                                 <img
@@ -17,7 +19,7 @@
                                     :alt="own_character.character_name">
                             </picture>
                         </div>
-                        <div style="flex: 1 1;">
+                        <div style="flex: auto;">
                             <p style="margin-top: 1rem;">
                                 {{ own_character.game_character.introduction }}
                             </p>
@@ -55,155 +57,155 @@
             </div>
         </div>
         <button class="btn btn-primary btn-block" style="margin: 0 0;"
-                :disabled="rebirth_disabled" v-on:click="to_rebirth">轉生</button>
+                :disabled="rebirth_disabled" v-on:click="to_rebirth">轉生
+        </button>
     </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                rebirth_disabled: true,
-                selected_character: "",
-                own_character_list: [],
+export default {
+    data() {
+        return {
+            rebirth_disabled: true,
+            selected_character: "",
+            own_character_list: [],
+        }
+    },
+    computed: {
+        api_prefix: function () {
+            return this.$store.state.api_prefix
+        },
+    },
+    activated() {
+        document.title = "偶像轉生";
+
+        this.get_own_character().then(() => {
+            if (document.getElementsByClassName('character-frame').length) {
+                document.getElementsByClassName('character-frame')[0].firstChild.click();
             }
+        });
+    },
+    methods: {
+        character_select_status: function (character_name) {
+            return this.selected_character === character_name ? 'current-select' : 'not-select';
         },
-        computed:{
-            api_prefix: function () {
-                return this.$store.state.api_prefix
-            },
-        },
-        activated() {
-            document.title = "偶像轉生";
-
-            this.get_own_character().then(() => {
-				if (document.getElementsByClassName('character-frame').length) {
-                    document.getElementsByClassName('character-frame')[0].firstChild.click();
-                }
-            });
-        },
-        methods: {
-            character_select_status: function (character_name) {
-                return this.selected_character === character_name ? 'current-select' : 'not-select';
-            },
-            get_own_character: function () {
-                return axios.get(this.api_prefix.concat('own-character'))
-                    .then(({status, own_character_list}) => {
-                        if (status) {
-                            this.own_character_list = own_character_list;
-                        }
-                    })
-            },
-            select_character: function (character_name) {
-                this.selected_character = character_name;
-                this.rebirth_disabled = false;
-            },
-            to_rebirth: function () {
-                this.rebirth_disabled = true;
-
-                const url = this.api_prefix.concat('rebirth');
-
-                axios.patch(url, {
-                    character_name: this.selected_character,
-                }).then(({status}) => {
+        get_own_character: function () {
+            return axios.get(this.api_prefix.concat('own-character'))
+                .then(({status, own_character_list}) => {
                     if (status) {
-                        this.$router.push({ name:'index' })
-                    } else {
-                        this.rebirth_disabled = false;
+                        this.own_character_list = own_character_list;
                     }
-                }).catch((err) => {
+                })
+        },
+        select_character: function (character_name) {
+            this.selected_character = character_name;
+            this.rebirth_disabled = false;
+        },
+        to_rebirth: function () {
+            this.rebirth_disabled = true;
+
+            const url = this.api_prefix.concat('rebirth');
+
+            axios.patch(url, {
+                character_name: this.selected_character,
+            }).then(({status}) => {
+                if (status) {
+                    this.$router.push({name: 'index'})
+                } else {
                     this.rebirth_disabled = false;
-                });
-            }
+                }
+            }).catch((err) => {
+                this.rebirth_disabled = false;
+            });
         }
     }
+}
 </script>
 
 <style scoped>
-    .table {
-        margin-bottom: 1px;
-    }
 
-    .current-select {
-        border-width: 3px;
-        border-style: solid;
-        border-image: initial;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 2px 4px;
-        transition: all 0.2s ease 0s;
-        cursor: default;
-        border-color: var(--primary-bg-color);
-    }
+.table {
+    margin-bottom: 1px;
+}
 
-    .not-select {
-        border: 3px solid transparent;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 2px 4px;
-        transition: all 0.2s ease 0s;
-    }
+.current-select {
+    border: 3px solid var(--primary-bg-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2px 4px;
+    transition: all 0.2s ease 0s;
+    cursor: default;
+}
 
-    .not-select:hover {
-        border-color: rgb(119, 119, 119);
-    }
+.not-select {
+    border: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2px 4px;
+    transition: all 0.2s ease 0s;
+    cursor: pointer;
+}
 
+.not-select:hover {
+    border-color: rgb(119, 119, 119);
+}
+
+.character-frame {
+    width: 50%;
+}
+
+.character-frame:first-child {
+    width: 50%;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+}
+
+.character-frame:nth-child(2) {
+    width: 50%;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.character-frame:nth-child(odd) {
+    width: 50%;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+}
+
+.character-frame:nth-child(even) {
+    width: 50%;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+@media screen and (max-width: 640px) {
     .character-frame {
-        width: 50%;
-    }
-
-    .character-frame:first-child {
-        width: 50%;
-        border-top: 1px solid var(--border-color);
-        border-bottom: 1px solid var(--border-color);
+        width: 100%;
         border-right: 1px solid var(--border-color);
         border-left: 1px solid var(--border-color);
-    }
-
-    .character-frame:nth-child(2) {
-        width: 50%;
-        border-top: 1px solid var(--border-color);
         border-bottom: 1px solid var(--border-color);
-        border-right: 1px solid var(--border-color);
     }
 
     .character-frame:nth-child(odd) {
-        width: 50%;
-        border-bottom: 1px solid var(--border-color);
-        border-right: 1px solid var(--border-color);
-        border-left: 1px solid var(--border-color);
+        width: 100%;
     }
 
     .character-frame:nth-child(even) {
-        width: 50%;
-        border-bottom: 1px solid var(--border-color);
-        border-right: 1px solid var(--border-color);
+        width: 100%;
     }
 
-    @media screen and (max-width: 640px) {
-        .character-frame {
-            width: 100%;
-            border-right: 1px solid var(--border-color);
-            border-left: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .character-frame:nth-child(odd) {
-            width: 100%;
-        }
-
-        .character-frame:nth-child(even) {
-            width: 100%;
-        }
-
-        .character-frame:last-child {
-            width: 100%;
-        }
+    .character-frame:last-child {
+        width: 100%;
     }
-    table th {
-        width: 120px;
-    }
+}
+
+table th {
+    width: 120px;
+}
 </style>

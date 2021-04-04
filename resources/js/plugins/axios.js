@@ -14,10 +14,10 @@ window.axios.interceptors.response.use(
     },
     function (error) {
         switch (error.response.status) {
-                case 401:
-                    document.location.href = "/logout";
-                    localStorage.removeItem('token');
-                    break;
+            case 401:
+                document.location.href = "/logout";
+                localStorage.removeItem('token');
+                break;
         }
 
         return Promise.reject(error.response);

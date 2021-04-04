@@ -12,7 +12,8 @@
             <tbody>
             <tr v-for="chat_message in chat_messages">
                 <td style="width: 150px;">
-                    <router-link style="font-size: 12px;" :to="{ name: 'profile', params: { name: chat_message.name } }" exact>
+                    <router-link style="font-size: 12px;" :to="{ name: 'profile', params: { name: chat_message.name } }"
+                                 exact>
                         {{ chat_message.nickname }}
                     </router-link>
                 </td>
@@ -24,7 +25,9 @@
         <msg v-if="chat_ban.time" style="margin-bottom: 10px;">剩餘時間：{{ chat_ban.time }}</msg>
         <div class="setting">
             <input type="text" class="form-control" v-model="message"/>
-            <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message" :disabled="create_msg_disabled">送出</button>
+            <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message"
+                    :disabled="create_msg_disabled">送出
+            </button>
         </div>
     </div>
 </template>
@@ -77,7 +80,7 @@ export default {
         Echo.leave('public-chat-channel');
     },
     methods: {
-        tbody_scroll_bottom: function() {
+        tbody_scroll_bottom: function () {
             if (messages_updated) {
                 if (put_bottom) {
                     const tbody = document.getElementsByTagName('tbody')[0];
@@ -87,7 +90,7 @@ export default {
                 messages_updated = false;
             }
         },
-        tbody_scroll_position: function() {
+        tbody_scroll_position: function () {
             const tbody = document.getElementsByTagName('tbody')[0];
 
             tbody.onscroll = function () {
@@ -95,7 +98,7 @@ export default {
                 put_bottom = last <= tbody.offsetHeight;
             };
         },
-        get_chats: function() {
+        get_chats: function () {
             const url = this.api_prefix.concat('get-chats');
             axios.get(url)
                 .then(({status, chat_messages}) => {
@@ -147,15 +150,15 @@ export default {
 
             let year = datetime.getFullYear();
             let month = datetime.getMonth() + 1;
-                month = month < 10 ? '0' + month.toString() : month;
+            month = month < 10 ? '0' + month.toString() : month;
             let date = datetime.getDate();
-                date = date < 10 ? '0' + date.toString() : date;
+            date = date < 10 ? '0' + date.toString() : date;
             let hour = datetime.getHours();
-                hour = hour < 10 ? '0' + hour.toString() : hour;
+            hour = hour < 10 ? '0' + hour.toString() : hour;
             let minute = datetime.getMinutes();
-                minute = minute < 10 ? '0' + minute.toString() : minute;
+            minute = minute < 10 ? '0' + minute.toString() : minute;
             let second = datetime.getSeconds();
-                second = second < 10 ? '0' + second.toString() : second;
+            second = second < 10 ? '0' + second.toString() : second;
 
             return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
         },

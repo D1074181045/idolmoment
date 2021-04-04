@@ -10,9 +10,12 @@
                     <td rowspan="2" style="width: 80px;">
                         <div class="img-big">
                             <picture>
-                                <source type="image/webp" :srcset="characters_img_path(profile.game_character.img_file_name, 'webp')">
-                                <source type="image/jpeg" :srcset="characters_img_path(profile.game_character.img_file_name)">
-                                <source type="image/png" :srcset="characters_img_path(profile.game_character.img_file_name, 'png')">
+                                <source type="image/webp"
+                                        :srcset="characters_img_path(profile.game_character.img_file_name, 'webp')">
+                                <source type="image/jpeg"
+                                        :srcset="characters_img_path(profile.game_character.img_file_name)">
+                                <source type="image/png"
+                                        :srcset="characters_img_path(profile.game_character.img_file_name, 'png')">
                                 <img
                                     :src="characters_img_path(profile.game_character.img_file_name)"
                                     :alt="profile.game_character.tc_name">
@@ -97,12 +100,13 @@
                            :class="$store.getters.disabled_class(class_signature_disabled)"
                            v-model="profile.signature" v-on:input="ban_signature"/>
                     <button type="button" class="btn btn-info"
-                            :disabled="signature_disabled" v-on:click="set_signature">更新</button>
+                            :disabled="signature_disabled" v-on:click="set_signature">更新
+                    </button>
                 </div>
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">貼貼</label>
                     <input type="text" maxlength="12" class="form-control" v-model="profile.teetee"
-                            :class="$store.getters.disabled_class(!teetee_info.status)"/>
+                           :class="$store.getters.disabled_class(!teetee_info.status)"/>
                     <button type="button" class="btn btn-info" v-on:click="set_teetee">設定</button>
                 </div>
             </div>
@@ -112,25 +116,32 @@
             <msg v-if="activity_ban.time">剩餘時間：{{ activity_ban.time }}</msg>
             <div class="tb-gap" style="margin-left: -10px;">
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('adult-live')">成人直播</button>
+                        v-on:click="do_activity('adult-live')">成人直播
+                </button>
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('live')">直播</button>
+                        v-on:click="do_activity('live')">直播
+                </button>
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('do-good-things')">做善事</button>
+                        v-on:click="do_activity('do-good-things')">做善事
+                </button>
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('go-to-sleep')">睡覺</button>
+                        v-on:click="do_activity('go-to-sleep')">睡覺
+                </button>
                 <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('meditation')">打坐</button>
+                        v-on:click="do_activity('meditation')">打坐
+                </button>
             </div>
             <h3 style="padding-top: 15px;border-top: 1px solid var(--border-color);">合作活動</h3>
             <msg v-if="cooperation_ban.time">剩餘時間：{{ cooperation_ban.time }}</msg>
             <div class="tb-gap" style="margin-left: -10px;">
                 <button type="button" class="btn btn-bottom btn-info"
                         :disabled="cooperation_disabled ||　!teetee_info.status || teetee_info.teetee_graduate"
-                        v-on:click="do_cooperation('play-ordinary-game')">玩普通遊戲</button>
+                        v-on:click="do_cooperation('play-ordinary-game')">玩普通遊戲
+                </button>
                 <button type="button" class="btn btn-bottom btn-info"
                         :disabled="cooperation_disabled ||　!teetee_info.status || teetee_info.teetee_graduate"
-                        v-on:click="do_cooperation('play-tacit-game')">玩默契遊戲</button>
+                        v-on:click="do_cooperation('play-tacit-game')">玩默契遊戲
+                </button>
             </div>
         </div>
         <div class="tb" v-else>
@@ -147,7 +158,8 @@
 </template>
 
 <script>
-import { msg } from '../../styles';
+import {msg} from '../../styles';
+
 const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
 
 export default {
@@ -158,19 +170,19 @@ export default {
         }
     },
     components: {
-      msg
+        msg
     },
     computed: {
         signature: function () {
             return this.profile.signature;
         },
-        signature_disabled: function() {
+        signature_disabled: function () {
             return this.$store.state.ban_type.signature.status;
         },
-        activity_disabled: function() {
+        activity_disabled: function () {
             return this.$store.state.ban_type.activity.status;
         },
-        cooperation_disabled: function() {
+        cooperation_disabled: function () {
             return this.$store.state.ban_type.cooperation.status;
         },
         profile: function () {
@@ -213,15 +225,18 @@ export default {
 
         this.next_ability = {};
 
-        if (!this.first_load) this.$store.dispatch('load_my_profile');
+        if (!this.first_load)
+            this.$store.dispatch('load_my_profile');
     },
     methods: {
         set_teetee: function (e) {
-            if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
-                return;
+            if (this.profile.teetee !== null) {
+                if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
+                    return;
+            }
 
             const url = this.api_prefix.concat('update-teetee');
-            e.target.className = "btn btn-info btn-loading";
+            e.target.className += " ".concat("btn-loading");
 
             axios.patch(url, {
                 teetee: this.profile.teetee,
@@ -316,13 +331,8 @@ export default {
 </script>
 
 <style scoped>
-    .tb .tb-gap {
-        margin-top: 15px;
-        margin-bottom: 10px;
-    }
-
-    button.btn.btn-bottom {
-        margin-bottom: 12px;
-        margin-right: 3px;
-    }
+button.btn.btn-bottom {
+    margin-bottom: 12px;
+    margin-right: 3px;
+}
 </style>

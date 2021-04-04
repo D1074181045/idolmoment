@@ -70,8 +70,8 @@
                 <td>{{ $store.getters.NumberFormat(idol.reputation, 'zh-TW') }}</td>
                 <td style="padding: 0;height: 50px;width: 50%;">
                     <div style="height: 100%;">
-                        <div class="nickname_td">{{ idol.nickname }}</div>
-                        <div class="signature_td">{{ idol.signature }}</div>
+                        <div style="padding: 4px 8px;">{{ idol.nickname }}</div>
+                        <div style="border-top: 1px solid var(--border-color);padding: 4px 8px;">{{ idol.signature }}</div>
                     </div>
                 </td>
                 <td>{{ idol.tc_name }}</td>
@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import profile from "./profile";
 
 export default {
     data() {
@@ -141,9 +140,19 @@ export default {
     },
     methods: {
         toProfile: function (path) {
-            this.$router.push({ name: 'profile', params: { name: path }});
+            this.$router.push({name: 'profile', params: {name: path}});
+        },
+        check_page_num: function (page) {
+            if (page > this.total_pages)
+                return this.page_num = this.total_pages;
+            else if (page < 1)
+                return this.page_num = 1;
+            else
+                return page;
         },
         get_idol_list: function (page, popularity) {
+            page = this.check_page_num(page);
+
             const url = this.api_prefix.concat('change-page');
             this.current_popularity = popularity;
 
@@ -232,20 +241,6 @@ export default {
 </script>
 
 <style scoped>
-picture img {
-    height: 60px;
-    width: 60px;
-}
-
-.signature_td {
-    border-top: 1px solid var(--border-color);
-    padding: 4px 8px;
-}
-
-.nickname_td {
-    padding: 4px 8px;
-}
-
 .self {
     background-color: var(--self-bg-color) !important;
 }

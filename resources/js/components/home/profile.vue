@@ -16,9 +16,12 @@
                         <td rowspan="2" style="width: 80px;">
                             <div class="img-big">
                                 <picture v-if="opposite_loaded">
-                                    <source type="image/webp" :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'webp')">
-                                    <source type="image/jpeg" :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
-                                    <source type="image/png" :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
+                                    <source type="image/webp"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'webp')">
+                                    <source type="image/jpeg"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
+                                    <source type="image/png"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
                                     <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
                                          :alt="opposite_profile.game_character.tc_name">
                                 </picture>
@@ -76,9 +79,12 @@
                         <td colspan="2" style="width: 80px;">
                             <div class="img-big">
                                 <picture>
-                                    <source type="image/webp" :srcset="characters_img_path(self_profile.game_character.img_file_name, 'webp')">
-                                    <source type="image/jpeg" :srcset="characters_img_path(self_profile.game_character.img_file_name)">
-                                    <source type="image/png" :srcset="characters_img_path(self_profile.game_character.img_file_name, 'png')">
+                                    <source type="image/webp"
+                                            :srcset="characters_img_path(self_profile.game_character.img_file_name, 'webp')">
+                                    <source type="image/jpeg"
+                                            :srcset="characters_img_path(self_profile.game_character.img_file_name)">
+                                    <source type="image/png"
+                                            :srcset="characters_img_path(self_profile.game_character.img_file_name, 'png')">
                                     <img :src="characters_img_path(self_profile.game_character.img_file_name)"
                                          :alt="self_profile.game_character.tc_name">
                                 </picture>
@@ -130,9 +136,12 @@
                         <td colspan="2" style="width: 80px;">
                             <div class="img-big">
                                 <picture v-if="opposite_loaded">
-                                    <source type="image/webp" :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'webp')">
-                                    <source type="image/jpeg" :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
-                                    <source type="image/png" :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
+                                    <source type="image/webp"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'webp')">
+                                    <source type="image/jpeg"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
+                                    <source type="image/png"
+                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
                                     <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
                                          :alt="opposite_profile.game_character.tc_name">
                                 </picture>
@@ -194,7 +203,8 @@
                 <msg v-if="operating_ban.time">剩餘時間：{{ operating_ban.time }}</msg>
                 <div class="tb-gap" style="margin-left: -10px;">
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('send-blade')"
-                            :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">寄刀片
+                            :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
+                        寄刀片
                     </button>
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('endorse')"
                             :disabled="operating_disabled">聲援
@@ -272,7 +282,7 @@ export default {
         this.get_opposite_profile();
     },
     methods: {
-        get_opposite_profile: function() {
+        get_opposite_profile: function () {
             const url = this.api_prefix.concat('profile/', this.$route.params.name);
 
             axios.get(url)
@@ -354,10 +364,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .tb .tb-gap {
-        margin-top: 15px;
-        margin-bottom: 10px;
-    }
-</style>

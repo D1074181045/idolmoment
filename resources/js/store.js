@@ -32,7 +32,7 @@ const store = new Vuex.Store({
         api_prefix: '/api/',
     },
     mutations: {
-        cool_down: function(state, type) {
+        cool_down: function (state, type) {
             if (state.cool_down[type]) {
                 let time = new Date(state.cool_down[type]).getTime()
                     ? new Date(state.cool_down[type]).getTime()
@@ -86,11 +86,11 @@ const store = new Vuex.Store({
                 return null;
 
             switch (type) {
-               case 'zh-TW' :
-                   return new Intl.NumberFormat(type, {
-                       notation: 'compact',
-                       compactDisplay: "long"
-                   }).format(number);
+                case 'zh-TW' :
+                    return new Intl.NumberFormat(type, {
+                        notation: 'compact',
+                        compactDisplay: "long"
+                    }).format(number);
                 default:
                     return new Intl.NumberFormat().format(number);
             }
@@ -107,8 +107,8 @@ const store = new Vuex.Store({
                         commit('load_my_profile', res)
                         resolve()
                     }).catch(() => {
-                        reject()
-                    })
+                    reject()
+                })
             })
         }
     }

@@ -10,5 +10,6 @@ try {
         forceTLS: true,
     });
 
-} catch (e) {}
+} catch (e) {
+}
 
