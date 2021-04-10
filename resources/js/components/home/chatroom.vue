@@ -18,7 +18,7 @@
                     </router-link>
                 </td>
                 <td>{{ chat_message.message }}</td>
-                <td style="width: 160px;">{{ timeStampToDateTime(chat_message.created_at) }}</td>
+                <td style="width: 160px;">{{ TimeStamp2DateTime(chat_message.created_at) }}</td>
             </tr>
             </tbody>
         </table>
@@ -145,7 +145,7 @@ export default {
             });
             this.message = "";
         },
-        timeStampToDateTime: function (time) {
+        TimeStamp2DateTime: function (time) {
             let datetime = new Date(time);
 
             let year = datetime.getFullYear();

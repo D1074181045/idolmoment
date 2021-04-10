@@ -114,11 +114,11 @@ export default {
         },
         ban_update_password: function () {
             this.old_password_disabled = !this.between(this.old_password.length, 8, 32);
-            this.new_password_disabled = this.new_password !== this.new_password_confirm || !this.between(this.new_password.length, 8, 32);
+            this.new_password_disabled = this.new_password !== this.new_password_confirm || !this.between(this.new_password.length, 8, 32) || this.old_password === this.new_password;
             this.update_password_disabled = this.old_password_disabled || this.new_password_disabled;
         },
         to_update_password: function () {
-            if (this.update_password_disabled)
+            if (this.update_password_disabled || this.old_password === this.new_password)
                 return;
 
             this.updating = true;

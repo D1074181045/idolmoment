@@ -1,5 +1,8 @@
 
-button.btn.btn-bottom[data-v-f3c5a1fe] {
+input[type="text"][data-v-21afe6aa] {
+    width: 80%;
+}
+button.btn.btn-bottom[data-v-21afe6aa] {
     margin-bottom: 12px;
     margin-right: 3px;
 }
@@ -86,25 +89,25 @@ table th[data-v-9f0a3486] {
     width: 120px;
 }
 
-table tbody[data-v-40da2df2] {
+table tbody[data-v-59c852a3] {
     display: block;
     max-height: 500px;
     overflow-y: scroll;
     -webkit-appearance: none;
 }
-table thead[data-v-40da2df2], tbody tr[data-v-40da2df2] {
+table thead[data-v-59c852a3], tbody tr[data-v-59c852a3] {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
-table tbody tr td[data-v-40da2df2] {
+table tbody tr td[data-v-59c852a3] {
     word-break: break-all;
 }
-table thead[data-v-40da2df2] {
+table thead[data-v-59c852a3] {
     width: calc(100% - 1em)
 }
 @media screen and (max-width: 600px) {
-table thead[data-v-40da2df2] {
+table thead[data-v-59c852a3] {
         width: calc(100%)
 }
 }

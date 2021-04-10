@@ -113,23 +113,29 @@ class UserController extends Controller
         $old_password = $request->post('old_password');
         $new_password = $request->post('new_password');
 
-        $user = Auth::user();
-
-        if (Auth::guard('web')->validate(['name' => $user->name, 'password' => $old_password])) {
-            $user->password = Hash::make($new_password);
-            $user->save();
-
+        if ($old_password === $new_password){
             return response()->json([
                 'status' => 1,
-                'message' => "密碼修改成功"
+                'message' => "密碼修改失敗，密碼變更一樣"
             ]);
+        }
 
-        } else {
+        $user = Auth::user();
+
+        if (!Auth::guard('web')->validate(['name' => $user->name, 'password' => $old_password])) {
             return response()->json([
                 'status' => 0,
                 'message' => "密碼修改失敗，舊密碼不正確"
             ]);
         }
+
+        $user->password = Hash::make($new_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 1,
+            'message' => "密碼修改成功"
+        ]);
     }
 
     /**
@@ -140,7 +146,7 @@ class UserController extends Controller
      */
     public function store_profile(CreateProfileRequest $request)
     {
-        if (!Auth::check() && !Auth::viaRemember()) {
+        if (!Auth::check()) {
             return response()->json([
                 'status' => 0,
                 'message' => "錯誤：建立失敗，尚未登入"
@@ -176,7 +182,7 @@ class UserController extends Controller
                 'status' => 0,
                 'message' => "錯誤：建立失敗，已創建角色"
             ]);
-        } else {
+        } else { // 本次有創建遊戲資料
             return response()->json([
                 'status' => 1,
                 'message' => "建立成功"

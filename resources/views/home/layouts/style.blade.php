@@ -73,7 +73,7 @@
         padding: 12px;
     }
 
-    .tb > .tb-gap {
+    .tb .tb-gap {
         margin-top: 15px;
         margin-bottom: 10px;
     }

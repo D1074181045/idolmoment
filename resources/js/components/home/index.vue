@@ -331,6 +331,10 @@ export default {
 </script>
 
 <style scoped>
+input[type="text"] {
+    width: 80%;
+}
+
 button.btn.btn-bottom {
     margin-bottom: 12px;
     margin-right: 3px;

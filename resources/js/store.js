@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-function StringToDateTime(String) {
+function String2DateTime(String) {
     const arr = String.split(/[- :]/);
     return new Date(
         parseInt(arr[0]),
@@ -36,7 +36,7 @@ const store = new Vuex.Store({
             if (state.cool_down[type]) {
                 let time = new Date(state.cool_down[type]).getTime()
                     ? new Date(state.cool_down[type]).getTime()
-                    : new Date(StringToDateTime(state.cool_down[type])).getTime();
+                    : new Date(String2DateTime(state.cool_down[type])).getTime();
 
                 if (time > Date.now()) {
                     let Remaining_time = Math.ceil((time - Date.now()) / 1000);
@@ -101,7 +101,7 @@ const store = new Vuex.Store({
             const url = this.state.api_prefix.concat('my-profile');
 
             return new Promise(function (resolve, reject) {
-                window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
+                // window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
                 axios.get(url)
                     .then((res) => {
                         commit('load_my_profile', res)

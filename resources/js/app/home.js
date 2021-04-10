@@ -51,6 +51,8 @@ try {
             }
         },
         created() {
+            window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
+
             this.$store.dispatch("load_my_profile").then(() => {
                 this.loaded = true;
 
@@ -87,17 +89,10 @@ try {
                 let link_swal_style = link[link.length - 1];
                 let body = document.getElementsByTagName('body')[0];
 
-                if (e.target.checked) {
-                    body.className = 'dark';
-                    document.cookie = 'dark_theme=true; expires=' + d.toString() + '; path=/';
-                    localStorage.dark_theme = true;
-                    link_swal_style.href = '/css/sweetalert2.dark.theme.css';
-                } else {
-                    body.className = '';
-                    document.cookie = 'dark_theme=false; expires=' + d.toString() + '; path=/';
-                    localStorage.dark_theme = false;
-                    link_swal_style.href = '/css/sweetalert2.default.theme.css';
-                }
+                body.className = e.target.checked ? 'dark' : '';
+                document.cookie = 'dark_theme='.concat(e.target.checked.toString()).concat('; expires=' + d.toString() + '; path=/');
+                localStorage.dark_theme = e.target.checked;
+                link_swal_style.href = '/css/sweetalert2.'.concat(e.target.checked ? 'dark' : 'default').concat('.theme.css');
             },
             unlock_character_event: function () {
                 function keyup_unlock_role (character_name) {

@@ -109,7 +109,7 @@ class Controller extends BaseController
      *
      *
      * @param $GameInfo
-     * @return int[]
+     * @return array
      */
     public function teetee_info($GameInfo) {
 

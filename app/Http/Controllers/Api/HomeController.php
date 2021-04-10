@@ -37,17 +37,12 @@ class HomeController extends Controller
      */
     public function unlock_character($character_name, $isSelf = true)
     {
-        if ($isSelf) {
-            $Character = OwnCharacter::query()->BuildOwnCharacter([
-                'username' => Auth::user()->name,
-                'character_name' => $character_name
-            ]);
-        } else {
-            $Character = OwnCharacter::query()->BuildOwnCharacter([
-                'username' => $this->opposite_name,
-                'character_name' => $character_name
-            ]);
-        }
+        $username = $isSelf ? Auth::user()->name :  $this->opposite_name;
+
+        $Character = OwnCharacter::query()->BuildOwnCharacter([
+            'username' => $username,
+            'character_name' => $character_name
+        ]);
 
         if (!$Character->wasRecentlyCreated) {
             return [
@@ -57,6 +52,7 @@ class HomeController extends Controller
         }
 
         $tc_name = $Character->GameCharacter->tc_name;
+
         if ($isSelf)
             array_push($this->self_character_list, $tc_name);
         else
@@ -76,9 +72,8 @@ class HomeController extends Controller
      */
     public function DrawCharacter($character_array, $rand)
     {
-        $i = $rand;
-        if (isset($character_array[$i])) {
-            $this->unlock_character($character_array[$i]);
+        if (isset($character_array[$rand])) { // 表示抽到偶像
+            $this->unlock_character($character_array[$rand]);
         }
     }
 
@@ -90,7 +85,7 @@ class HomeController extends Controller
     public function signature_unlock_character($string)
     {
         switch (true) {
-            case substr($string, strpos($string, 'peko')) === 'peko':
+            case substr($string, strpos($string, 'peko')) === 'peko': // 字尾是 peko
                 $this->unlock_character('Usada Pekora');
                 break;
         }
@@ -134,18 +129,18 @@ class HomeController extends Controller
      * @return void
      */
     public function ability_upgrade_unlock_character($game_info, $IsSelf = true) {
-        if (GameInfo::query()->orderByDesc('popularity')->first()->nickname == $game_info->nickname)
+        if (GameInfo::query()->orderByDesc('popularity')->first()->nickname === $game_info->nickname) // 人氣第一名
             $this->unlock_character("Kiryu Coco", $IsSelf);
 
         $popularity = $game_info->popularity;
         switch ($popularity) {
-            case ($popularity >= 7500000):
+            case ($popularity >= 6500000):
                 $this->unlock_character("Tokino Sora", $IsSelf);
                 break;
-            case ($popularity >= 6500000):
+            case ($popularity >= 5500000):
                 $this->unlock_character("Airani Iofifteen", $IsSelf);
                 break;
-            case ($popularity >= 5000000):
+            case ($popularity >= 4000000):
                 $this->unlock_character("Himemori Luna", $IsSelf);
                 break;
             case ($popularity >= 3000000):
@@ -173,7 +168,7 @@ class HomeController extends Controller
 
         $reputation = $game_info->reputation;
         switch ($reputation) {
-            case ($reputation >= 45000):
+            case ($reputation >= 50000):
                 $this->unlock_character('Anya Melfissa', $IsSelf);
                 break;
             case ($reputation >= 40000):
@@ -198,16 +193,16 @@ class HomeController extends Controller
 
         $charm = $reputation = $game_info->charm;
         switch ($charm) {
-            case ($charm >= 1320):
+            case ($charm >= 4000):
                 $this->unlock_character('Pavolia Reine', $IsSelf);
                 break;
-            case ($charm >= 1000):
+            case ($charm >= 2000):
                 $this->unlock_character('Aki Rosenthal', $IsSelf);
                 break;
-            case ($charm >= 700):
+            case ($charm >= 1000):
                 $this->unlock_character('Ayunda Risu', $IsSelf);
                 break;
-            case ($charm >= 300):
+            case ($charm >= 500):
                 $this->unlock_character('Yuzuki Choco', $IsSelf);
                 break;
         }
@@ -460,11 +455,9 @@ class HomeController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 0,
-                'teetee_name' => '',
-                'teetee_status' => 0,
                 'total_pages' => 0,
                 'max_popularity' => 0,
-                'data' => ""
+                'idol_list' => ""
             ]);
 
         }
@@ -510,6 +503,8 @@ class HomeController extends Controller
                 $activity->adult_live();
 
                 $this->DrawCharacter(['Watson Amelia', 'Houshou Marine'], rand(0, 5));
+
+                $activity_time = $cool_down->update_activity(60);
                 break;
             case 'live':
                 $activity->live();
@@ -541,6 +536,7 @@ class HomeController extends Controller
                         break;
                 }
 
+                $activity_time = $cool_down->update_activity(45);
                 break;
             case 'do-good-things':
                 $activity->do_good_things();
@@ -551,12 +547,17 @@ class HomeController extends Controller
                         break;
                 }
 
+                $activity_time = $cool_down->update_activity(45);
                 break;
             case 'go-to-sleep':
                 $activity->go_to_sleep();
+
+                $activity_time = $cool_down->update_activity(120);
                 break;
             case 'meditation':
                 $activity->meditation();
+
+                $activity_time = $cool_down->update_activity(30);
                 break;
             default:
                 return response()->json([
@@ -566,8 +567,6 @@ class HomeController extends Controller
         }
 
         unset($activity);
-
-        $activity_time = $cool_down->update_activity(ACTIVITY_DELAY_T);
 
         $this->ability_upgrade_unlock_character($self_game_info);
 
@@ -643,9 +642,13 @@ class HomeController extends Controller
         switch ($request->post('cooperation_type')) {
             case 'play-ordinary-game':
                 $cooperation->play_ordinary_game();
+
+                $cooperation_time = $cool_down->update_cooperation(90);
                 break;
             case 'play-tacit-game':
                 $cooperation->play_tacit_game();
+
+                $cooperation_time = $cool_down->update_cooperation(100);
                 break;
             default:
                 return response()->json([
@@ -655,8 +658,6 @@ class HomeController extends Controller
         }
 
         unset($cooperation);
-
-        $cooperation_time = $cool_down->update_cooperation(COOPERATION_DELAY_T);
 
         $this->ability_upgrade_unlock_character($self_game_info);
         $this->ability_upgrade_unlock_character($teetee_game_info, false);
@@ -737,14 +738,20 @@ class HomeController extends Controller
             case 'send-blade':
                 $information = $operating->send_blade();
                 event(new DangerEvent($opposite_name, '你收到刀片了'));
+
+                $operating_time = $cool_down->update_operating(160);
                 break;
             case 'endorse':
                 $information = $operating->endorse();
                 event(new DangerEvent($opposite_name, '你受到讚賞了'));
+
+                $operating_time = $cool_down->update_operating(120);
                 break;
             case 'donate':
                 $information = $operating->donate();
                 event(new DangerEvent($opposite_name, '你接收到了斗內'));
+
+                $operating_time = $cool_down->update_operating(120);
                 break;
             default:
                 return response()->json([
@@ -755,32 +762,32 @@ class HomeController extends Controller
 
         unset($operating);
 
-        $operating_time = $cool_down->update_operating(OPERATING_DELAY_T);
-
         $this->ability_upgrade_unlock_character($self_game_info);
         $this->ability_upgrade_unlock_character($opposite_game_info, false);
 
         return response()->json([
             'status' => 1,
-            'opposite_ability' => [
-                'popularity' => $opposite_game_info->popularity,
-                'reputation' => $opposite_game_info->reputation,
-                'max_vitality' => $opposite_game_info->max_vitality,
-                'current_vitality' => $opposite_game_info->current_vitality,
-                'energy' => $opposite_game_info->energy,
-                'resistance' => $opposite_game_info->resistance,
-                'charm' => $opposite_game_info->charm,
-                'graduate' => $opposite_game_info->graduate
-            ],
-            'self_ability' => [
-                'popularity' => $self_game_info->popularity,
-                'reputation' => $self_game_info->reputation,
-                'max_vitality' => $self_game_info->max_vitality,
-                'current_vitality' => $self_game_info->current_vitality,
-                'energy' => $self_game_info->energy,
-                'resistance' => $self_game_info->resistance,
-                'charm' => $self_game_info->charm,
-                'graduate' => $self_game_info->graduate
+            'ability' => [
+                'opposite' => [
+                    'popularity' => $opposite_game_info->popularity,
+                    'reputation' => $opposite_game_info->reputation,
+                    'max_vitality' => $opposite_game_info->max_vitality,
+                    'current_vitality' => $opposite_game_info->current_vitality,
+                    'energy' => $opposite_game_info->energy,
+                    'resistance' => $opposite_game_info->resistance,
+                    'charm' => $opposite_game_info->charm,
+                    'graduate' => $opposite_game_info->graduate
+                ],
+                'self' => [
+                    'popularity' => $self_game_info->popularity,
+                    'reputation' => $self_game_info->reputation,
+                    'max_vitality' => $self_game_info->max_vitality,
+                    'current_vitality' => $self_game_info->current_vitality,
+                    'energy' => $self_game_info->energy,
+                    'resistance' => $self_game_info->resistance,
+                    'charm' => $self_game_info->charm,
+                    'graduate' => $self_game_info->graduate
+                ],
             ],
             'information' => $information,
             'operating_time' => $operating_time,
