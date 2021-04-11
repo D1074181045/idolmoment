@@ -26,8 +26,7 @@ class CreateUserRequest extends FormRequest
         return [
             //
             'username' => ['required', 'string', 'min:5', 'max:15'],
-            'password' => ['required', 'string', 'min:8', 'max:32'],
-            'password_confirm' => ['required', 'pwd_equal:password']
+            'password' => ['required', 'string', 'min:8', 'max:32', 'confirmed'],
         ];
     }
 
@@ -41,8 +40,7 @@ class CreateUserRequest extends FormRequest
             'password.min' => '錯誤：密碼必須介於8~32字元之間',
             'username.max' => '錯誤：使用者名稱必須介於5~15字元之間',
             'password.max' => '錯誤：密碼必須介於8~32字元之間',
-            'password_confirm.required' => '錯誤：二次密碼不能為空',
-            'password_confirm.pwd_equal' => '錯誤：二次密碼需相同',
+            'password.confirmed' => '錯誤：二次密碼需相同',
         ];
     }
 }

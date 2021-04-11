@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -21,8 +24,7 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Other/cooperation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Other/cooperation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,19 +185,19 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\app" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\plugins" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\style" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\store" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\views\user" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\app" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\plugins" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\style" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\store" />
     </key>
   </component>
   <component name="RunManager">
@@ -251,6 +253,7 @@
       <workItem from="1617801289285" duration="2741000" />
       <workItem from="1618021070817" duration="22868000" />
       <workItem from="1618061177057" duration="10728000" />
+      <workItem from="1618127297920" duration="2048000" />
     </task>
     <servers />
   </component>
@@ -302,10 +305,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="777" y="443" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1616168983783" />
-    <state x="461" y="164" key="SettingsEditor" timestamp="1616927114136">
+    <state x="461" y="164" key="SettingsEditor" timestamp="1618127368283">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1616927114136" />
+    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1618127368283" />
     <state x="233" y="51" width="1403" height="702" key="dock-window-1" timestamp="1616315542719">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
