@@ -161,6 +161,9 @@ class HomeController extends Controller
             case ($popularity >= 50000):
                 $this->unlock_character("Amane Kanata", $IsSelf);
                 break;
+            case ($popularity >= 25000):
+                $this->unlock_character("Kureiji Ollie", $IsSelf);
+                break;
             case ($popularity >= 10000):
                 $this->unlock_character("Nakiri Ayame", $IsSelf);
                 break;
@@ -527,9 +530,6 @@ class HomeController extends Controller
                         break;
                     case 'Shirakami Fubuki':
                         $this->DrawCharacter(['Mori Calliope', 'Natsuiro Matsuri'], rand(0, 10));
-                        break;
-                    case 'Uruha Rushia':
-                        $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki', 'Kureiji Ollie'], rand(0, 15));
                         break;
                     default:
                         $this->DrawCharacter(['Mori Calliope', 'Shirakami Fubuki'], rand(0, 10));
