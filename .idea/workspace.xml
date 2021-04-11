@@ -24,7 +24,10 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Listeners/ChatRoomListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Listeners/ChatRoomListener.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Listeners/DangerListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Listeners/DangerListener.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Listeners/LoginSuccessful.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Listeners/LoginSuccessful.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Listeners/UnlockCharacterListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Listeners/UnlockCharacterListener.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

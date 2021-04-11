@@ -2,9 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Events\ChatRoomEvent;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
-class ChatRoomListener
+class LoginSuccessful
 {
     /**
      * Create the event listener.
@@ -19,11 +20,13 @@ class ChatRoomListener
     /**
      * Handle the event.
      *
-     * @param  ChatRoomEvent  $event
      * @return void
      */
-    public function handle(ChatRoomEvent $event)
+    public function handle()
     {
         //
+        $user = Auth::user();
+        $user->logged_at = Carbon::now();
+        $user->save();
     }
 }
