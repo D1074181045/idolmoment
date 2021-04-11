@@ -25,8 +25,7 @@ class UpdateUserPasswordRequest extends FormRequest
     {
         return [
             'old_password' => ['required', 'string', 'min:8', 'max:32'],
-            'new_password' => ['required', 'string', 'min:8', 'max:32'],
-            'new_password_confirm' => ['required', 'pwd_equal:new_password']
+            'new_password' => ['required', 'string', 'min:8', 'max:32', 'confirmed'],
         ];
     }
 
@@ -40,8 +39,7 @@ class UpdateUserPasswordRequest extends FormRequest
             'new_password.required' => '錯誤：新密碼為空',
             'new_password.min' => '錯誤：新密碼必須介於8~32字元之間',
             'new_password.max' => '錯誤：新密碼必須介於8~32字元之間',
-            'new_password_confirm.required' => '錯誤：二次密碼為空',
-            'new_password_confirm.pwd_equal' => '錯誤：二次密碼需相同',
+            'new_password.confirmed' => '錯誤：二次密碼需相同',
         ];
     }
 }

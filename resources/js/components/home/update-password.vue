@@ -39,7 +39,7 @@
                                 <input type="password" class="form-control" style="width: 100%" autocomplete="off"
                                        required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)"
-                                       v-model="new_password_confirm"
+                                       v-model="new_password_confirmation"
                                        v-on:input="ban_update_password" :type="pw_type(new_password_show)">
                             </div>
                             <div class="show-hide-toggle-button">
@@ -73,7 +73,7 @@ export default {
         return {
             old_password: "",
             new_password: "",
-            new_password_confirm: "",
+            new_password_confirmation: "",
             new_password_disabled: true,
             old_password_disabled: true,
             update_password_disabled: true,
@@ -114,7 +114,7 @@ export default {
         },
         ban_update_password: function () {
             this.old_password_disabled = !this.between(this.old_password.length, 8, 32);
-            this.new_password_disabled = this.new_password !== this.new_password_confirm || !this.between(this.new_password.length, 8, 32) || this.old_password === this.new_password;
+            this.new_password_disabled = this.new_password !== this.new_password_confirmation || !this.between(this.new_password.length, 8, 32) || this.old_password === this.new_password;
             this.update_password_disabled = this.old_password_disabled || this.new_password_disabled;
         },
         to_update_password: function () {
@@ -127,7 +127,7 @@ export default {
             axios.patch(url, {
                 old_password: this.old_password,
                 new_password: this.new_password,
-                new_password_confirm: this.new_password_confirm,
+                new_password_confirmation: this.new_password_confirmation,
             }).then(({status, message}) => {
                 if (status) {
                     this.$router.push({name: 'index'}).catch(() => {

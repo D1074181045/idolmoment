@@ -38,16 +38,5 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') == 'production') {
             URL::forceScheme('https');
         }
-
-
-        Validator::extend('pwd_equal', function ($attribute, $value, $parameters, $validator) {
-            $first_pwd = Arr::get($validator->getData(), $parameters[0]);
-            $last_pwd = $value;
-            return $first_pwd == $last_pwd;
-        });
-
-        Validator::extend('regex2', function ($attribute, $value, $parameters, $validator) {
-            return !preg_match($parameters[0], $value);
-        });
     }
 }

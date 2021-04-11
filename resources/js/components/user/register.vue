@@ -32,7 +32,7 @@
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
                                :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
-                               :type="pw_type()" v-model="password_confirm"/>
+                               :type="pw_type()" v-model="password_confirmation"/>
                     </div>
                     <div class="show-hide-toggle-button">
                         <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
@@ -66,7 +66,7 @@ export default {
         return {
             username: "",
             password: "",
-            password_confirm: "",
+            password_confirmation: "",
             pw_is_show: false,
             username_disabled: true,
             password_disabled: true,
@@ -103,7 +103,7 @@ export default {
         },
         ban_register: function () {
             this.username_disabled = !this.between(this.username.length, 5, 15);
-            this.password_disabled = this.password !== this.password_confirm || !this.between(this.password.length, 8, 32);
+            this.password_disabled = this.password !== this.password_confirmation || !this.between(this.password.length, 8, 32);
             this.register_disabled = this.username_disabled || this.password_disabled;
         },
         back: function () {
@@ -120,12 +120,12 @@ export default {
             axios.post(url, {
                 username: this.username,
                 password: this.password,
-                password_confirm: this.password_confirm
+                password_confirmation: this.password_confirmation
             }).then(({status, message}) => {
                 if (status) {
                     this.username = "";
                     this.password = "";
-                    this.password_confirm = "";
+                    this.password_confirmation = "";
                     this.username_disabled = true;
                     this.password_disabled = true;
                     this.$router.push({name: 'login'});
