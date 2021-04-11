@@ -10,7 +10,7 @@ class cooperation
 
     public function two_judgment($self_character_name, $teetee_character_name, $arr) {
         return ($self_character_name === $arr[0] && $teetee_character_name === $arr[1]) ||
-            ($self_character_name === $arr[1] && $teetee_character_name === $arr[0]);
+            ($self_character_name === $arr[1] && $teetee_character_name === $arr[0]);   
     }
 
     public function isFetters($self_character_name, $teetee_character_name) {
@@ -22,7 +22,6 @@ class cooperation
             case $this->two_judgment($self_character_name, $teetee_character_name, ['Mori Calliope', 'Takanashi Kiara']):
             case $this->two_judgment($self_character_name, $teetee_character_name, ['Watson Amelia', 'Gawr Gura']):
             case $this->two_judgment($self_character_name, $teetee_character_name, ['Shirakami Fubuki', 'Natsuiro Matsuri']):
-            case $this->two_judgment($self_character_name, $teetee_character_name, ['Uruha Rushia', 'Kureiji Ollie']):
                 return true;
         }
         return false;
