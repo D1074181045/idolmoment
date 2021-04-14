@@ -24,6 +24,13 @@ class vue_global {
         Vue.prototype.characters_img_path = (img_file_name, img_type = 'jpg') => {
             return 'https://f000.backblazeb2.com/file/idolmoment/characters/'.concat(img_file_name).concat('.', img_type);
         }
+        Vue.prototype.img_error = function (e) {
+            let source_len = e.target.parentNode.children.length-1
+            for (let i = 0; i < source_len; i++) {
+                e.target.parentNode.children[i].srcset = e.target.parentNode.children[i+1].srcset
+            }
+            e.target.parentNode.children[source_len-1].remove()
+        }
     }
 }
 

@@ -18,7 +18,8 @@
                                         :srcset="characters_img_path(profile.game_character.img_file_name, 'png')">
                                 <img
                                     :src="characters_img_path(profile.game_character.img_file_name)"
-                                    :alt="profile.game_character.tc_name">
+                                    :alt="profile.game_character.tc_name"
+                                    v-on:error="img_error">
                             </picture>
                         </div>
                     </td>
@@ -325,7 +326,7 @@ export default {
             }).catch((err) => {
                 this.cooperation_ban.status = false;
             });
-        },
+        }
     }
 }
 </script>

@@ -23,7 +23,8 @@
                                     <source type="image/png"
                                             :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
                                     <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
-                                         :alt="opposite_profile.game_character.tc_name">
+                                         :alt="opposite_profile.game_character.tc_name"
+                                         v-on:error="img_error">
                                 </picture>
                             </div>
                         </td>
@@ -86,7 +87,8 @@
                                     <source type="image/png"
                                             :srcset="characters_img_path(self_profile.game_character.img_file_name, 'png')">
                                     <img :src="characters_img_path(self_profile.game_character.img_file_name)"
-                                         :alt="self_profile.game_character.tc_name">
+                                         :alt="self_profile.game_character.tc_name"
+                                         v-on:error="img_error">
                                 </picture>
                             </div>
                         </td>
@@ -143,7 +145,8 @@
                                     <source type="image/png"
                                             :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
                                     <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
-                                         :alt="opposite_profile.game_character.tc_name">
+                                         :alt="opposite_profile.game_character.tc_name"
+                                         v-on:error="img_error">
                                 </picture>
                             </div>
                         </td>

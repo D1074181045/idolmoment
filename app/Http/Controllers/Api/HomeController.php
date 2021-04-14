@@ -16,6 +16,7 @@ use App\Models\CoolDown;
 use App\Models\OwnCharacter;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,29 +40,37 @@ class HomeController extends Controller
     {
         $username = $isSelf ? Auth::user()->name :  $this->opposite_name;
 
-        $Character = OwnCharacter::query()->BuildOwnCharacter([
-            'username' => $username,
-            'character_name' => $character_name
-        ]);
+        try {
+            $Character = OwnCharacter::query()->BuildOwnCharacter([
+                'username' => $username,
+                'character_name' => $character_name
+            ]);
 
-        if (!$Character->wasRecentlyCreated) {
+            if (!$Character->wasRecentlyCreated) {
+                return [
+                    'status' => 0,
+                    'message' => '已擁有該偶像'
+                ];
+            }
+
+            $tc_name = $Character->GameCharacter->tc_name;
+
+            if ($isSelf)
+                array_push($this->self_character_list, $tc_name);
+            else
+                array_push($this->opposite_character_list, $tc_name);
+
             return [
-                'status' => 0,
-                'message' => '已擁有該偶像'
+                'status' => 1,
+                'message' => '解鎖新偶像：' . $tc_name
+            ];
+
+        } catch (QueryException $e) {
+            return [
+                'status' => 0
             ];
         }
 
-        $tc_name = $Character->GameCharacter->tc_name;
-
-        if ($isSelf)
-            array_push($this->self_character_list, $tc_name);
-        else
-            array_push($this->opposite_character_list, $tc_name);
-
-        return [
-            'status' => 1,
-            'message' => '解鎖新偶像：' . $tc_name
-        ];
     }
 
     /**
