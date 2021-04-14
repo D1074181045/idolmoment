@@ -16,7 +16,8 @@
                                         :srcset="characters_img_path(own_character.game_character.img_file_name, 'png')">
                                 <img
                                     :src="characters_img_path(own_character.game_character.img_file_name)"
-                                    :alt="own_character.character_name">
+                                    :alt="own_character.character_name"
+                                    v-on:error="img_error">
                             </picture>
                         </div>
                         <div style="flex: auto;">
