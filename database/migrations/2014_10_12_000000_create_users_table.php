@@ -16,7 +16,6 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->string('name', 15)->comment('使用者名稱')->primary();
             $table->string('password')->comment('密碼');
-//            $table->string('api_token', 80)->nullable()->unique()->default(null);
             $table->rememberToken();
 
             $table->dateTime('logged_at')->nullable()->comment('登入時間');

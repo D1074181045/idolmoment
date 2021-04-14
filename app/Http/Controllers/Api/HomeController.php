@@ -696,15 +696,6 @@ class HomeController extends Controller
         $opposite_name = $request->post('opposite_name');
         $self_game_info = $cool_down->GameInfo;
 
-        $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
-
-        if ($self_teetee_name === $opposite_name) {
-            return response()->json([
-                'status' => 0,
-                'message' => '不能寄刀片給你的貼貼'
-            ]);
-        }
-
         if ($self_game_info->graduate) {
             return response()->json([
                 'status' => 0,
@@ -736,6 +727,15 @@ class HomeController extends Controller
 
         switch ($request->post('operating_type')) {
             case 'send-blade':
+                $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
+
+                if ($self_teetee_name === $opposite_name) {
+                    return response()->json([
+                        'status' => 0,
+                        'message' => '不能寄刀片給你的貼貼'
+                    ]);
+                }
+
                 $information = $operating->send_blade();
                 event(new DangerEvent($opposite_name, '你收到刀片了'));
 
