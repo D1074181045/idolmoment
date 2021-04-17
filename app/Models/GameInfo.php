@@ -166,6 +166,7 @@ class GameInfo extends Model
     public function rebirth($game_character) {
         $this['use_character'] = $game_character->en_name;
         $this['popularity'] = ceil($this['popularity'] / 10);
+        $this['reputation'] = ceil($this['reputation'] / 2);
         $this['max_vitality'] = $game_character->vitality;
         $this['current_vitality'] = $game_character->vitality;
         $this['energy'] = $game_character->energy;

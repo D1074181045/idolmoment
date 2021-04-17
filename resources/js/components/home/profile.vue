@@ -189,25 +189,29 @@
         </div>
 
         <div class="tb" v-if="opposite_profile.name !== self_profile.name && opposite_loaded">
-            <div v-if="opposite_profile.graduate">
-                <h3>對方已畢業</h3>
+            <h3 v-if="opposite_profile.graduate">對方已畢業</h3>
+            <h3 v-else-if="self_profile.graduate">你已畢業</h3>
+            <h3 v-else>操作</h3>
+            <div v-if="opposite_profile.graduate || self_profile.graduate">
                 <div class="tb-gap" style="margin-left: -10px;">
                     <button type="button" class="btn btn-bottom btn-info" disabled>寄刀片</button>
-                </div>
-            </div>
-            <div v-else-if="self_profile.graduate">
-                <h3>你已畢業</h3>
-                <div class="tb-gap" style="margin-left: -10px;">
-                    <button type="button" class="btn btn-bottom btn-info" disabled>寄刀片</button>
+                    <button type="button" class="btn btn-bottom btn-info" disabled>抹黑</button>
+                    <button type="button" class="btn btn-bottom btn-info" disabled>聲援</button>
+                    <button type="button" class="btn btn-bottom btn-info" disabled>斗內</button>
                 </div>
             </div>
             <div v-else>
-                <h3>操作</h3>
-                <msg v-if="operating_ban.time">剩餘時間：{{ operating_ban.time }}</msg>
+                <msg v-if="operating_ban.time">
+                    剩餘時間：{{ operating_ban.time }}
+                </msg>
                 <div class="tb-gap" style="margin-left: -10px;">
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('send-blade')"
                             :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
                         寄刀片
+                    </button>
+                    <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('defame')"
+                            :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
+                        抹黑
                     </button>
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('endorse')"
                             :disabled="operating_disabled">聲援

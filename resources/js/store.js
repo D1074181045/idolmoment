@@ -30,6 +30,7 @@ const store = new Vuex.Store({
         teetee_info: null,
         IsCreated: false,
         api_prefix: '/api/',
+        danger_count: 0
     },
     mutations: {
         cool_down: function (state, type) {

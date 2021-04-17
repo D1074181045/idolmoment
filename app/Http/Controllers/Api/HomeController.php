@@ -750,6 +750,21 @@ class HomeController extends Controller
 
                 $operating_time = $cool_down->update_operating(160);
                 break;
+            case 'defame':
+                $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
+
+                if ($self_teetee_name === $opposite_name) {
+                    return response()->json([
+                        'status' => 0,
+                        'message' => '不能抹黑你的貼貼'
+                    ]);
+                }
+
+                $information = $operating->defame();
+                event(new DangerEvent($opposite_name, '你被抹黑了'));
+
+                $operating_time = $cool_down->update_operating(120);
+                break;
             case 'endorse':
                 $information = $operating->endorse();
                 event(new DangerEvent($opposite_name, '你受到讚賞了'));

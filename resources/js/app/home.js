@@ -165,6 +165,9 @@ try {
                                 clearTimeout(clear_danger_msg);
 
                             this.danger_msg = message;
+                            this.$store.dispatch("load_my_profile").then(() => {
+                                store.state.danger_count++;
+                            });
 
                             clear_danger_msg = setTimeout(() => {
                                 this.danger_msg = null;

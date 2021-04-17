@@ -207,6 +207,9 @@ export default {
         api_prefix: function () {
             return this.$store.state.api_prefix
         },
+        Danger: function () {
+            return this.$store.state.danger_count
+        }
     },
     beforeRouteLeave(to, from, next) {
         Object.keys(this.next_ability).forEach((key) => {
@@ -215,6 +218,11 @@ export default {
         });
 
         next();
+    },
+    watch: {
+        Danger: function () {
+            this.next_ability = {};
+        }
     },
     mounted() {
         this.$store.commit('cool_down', 'activity');

@@ -39,11 +39,9 @@ class operating
          * */
 
         $resistance = $this->opposite['game_info']->resistance;
-        $energy = $this->opposite['game_info']->energy;
+        $energy = $this->opposite['game_info']->energy;;
 
-        $attack_vitality_number = ceil(rand(100, 500) * 100 / ($resistance + $energy));
-
-        $this->opposite['game_info']->current_vitality -= $attack_vitality_number;
+        $this->opposite['game_info']->current_vitality -= ceil(rand(100, 150) * 100 / ($resistance + $energy));
         $this->opposite['game_info']->energy -= ceil(rand(20, 40) * $this->opposite['character_up_mag']->energy);
 
         if ($this->opposite['game_info']->current_vitality <= 0) {
@@ -53,6 +51,40 @@ class operating
         }
 
         return '偶像' . $this->opposite['nickname'] . '因心靈受創，生命值降低了。';
+    }
+
+    public function defame() {
+        /*
+         * 能力係數加權
+         * ------------------------------------------------------------------
+         * 名聲為負
+         * 對方人氣：對方人氣 - (對方名聲 * 10)
+         * 對方名聲：對方名聲 - (對方名聲 * 0.1)
+         * ------------------------------------------------------------------
+         * 名聲為正
+         * 對方人氣：對方人氣 - (100000 / 對方名聲)
+         * 對方名聲：對方名聲 - (10000 / 對方名聲)
+         * ------------------------------------------------------------------
+         * 對方抗壓性：對方抗壓性 - ( (150~300) * 100 / ( 對方的抗壓性 + 對方的精力 ) ) * 對方偶像抗壓性成長係數
+         * ------------------------------------------------------------------
+         * */
+
+        $resistance = $this->opposite['game_info']->resistance;
+        $energy = $this->opposite['game_info']->energy;
+        $reputation = $this->opposite['game_info']->reputation ?: -1;
+
+        if ($reputation <= -1) {
+            $this->opposite['game_info']->popularity -= ceil(abs($reputation * 10));
+            $this->opposite['game_info']->reputation -= ceil(abs($reputation * 0.1));
+        }
+        else {
+            $this->opposite['game_info']->popularity -= ceil(100000 / $reputation);
+            $this->opposite['game_info']->reputation -= ceil(10000 / $reputation);
+        }
+
+        $this->opposite['game_info']->resistance -= ceil((rand(150, 300) * 100 / ($resistance + $energy)) * $this->opposite['character_up_mag']->resistance);
+
+        return '偶像' . $this->opposite['nickname'] . '傳出了負面消息';
     }
 
     /**
@@ -121,6 +153,8 @@ class operating
             $this->self['game_info']->charm = 1;
         if ($this->self['game_info']->current_vitality > $this->self['game_info']->max_vitality)
             $this->self['game_info']->current_vitality = $this->self['game_info']->max_vitality;
+        if ($this->self['game_info']->resistance < 1)
+            $this->self['game_info']->resistance = 1;
         if ($this->self['game_info']->energy < 1)
             $this->self['game_info']->energy = 1;
 
@@ -130,6 +164,8 @@ class operating
             $this->opposite['game_info']->charm = 1;
         if ($this->opposite['game_info']->current_vitality > $this->opposite['game_info']->max_vitality)
             $this->opposite['game_info']->current_vitality = $this->opposite['game_info']->max_vitality;
+        if ($this->opposite['game_info']->resistance < 1)
+            $this->opposite['game_info']->resistance = 1;
         if ($this->opposite['game_info']->energy < 1)
             $this->opposite['game_info']->energy = 1;
 
