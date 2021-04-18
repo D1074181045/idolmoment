@@ -339,7 +339,7 @@ export default {
             this.profile_type = localStorage.profile_type = 'comparison';
         },
         operating: function (type) {
-            if (type === 'send-blade' || type === 'defame' && this.$store.state.teetee_info.teetee_name === this.$route.params.name)
+            if ((type === 'send-blade' || type === 'defame') && this.$store.state.teetee_info.teetee_name === this.$route.params.name)
                 return;
             if (this.operating_ban.time)
                 return;
