@@ -207,8 +207,8 @@ export default {
         api_prefix: function () {
             return this.$store.state.api_prefix
         },
-        Danger: function () {
-            return this.$store.state.danger_count
+        Prompt: function () {
+            return this.$store.state.prompt_count
         }
     },
     beforeRouteLeave(to, from, next) {
@@ -220,7 +220,7 @@ export default {
         next();
     },
     watch: {
-        Danger: function () {
+        Prompt: function () {
             this.next_ability = {};
         }
     },

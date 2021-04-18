@@ -30,7 +30,7 @@ const store = new Vuex.Store({
         teetee_info: null,
         IsCreated: false,
         api_prefix: '/api/',
-        danger_count: 0
+        prompt_count: 0
     },
     mutations: {
         cool_down: function (state, type) {
@@ -102,14 +102,13 @@ const store = new Vuex.Store({
             const url = this.state.api_prefix.concat('my-profile');
 
             return new Promise(function (resolve, reject) {
-                // window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
                 axios.get(url)
                     .then((res) => {
                         commit('load_my_profile', res)
                         resolve()
                     }).catch(() => {
-                    reject()
-                })
+                        reject()
+                    })
             })
         }
     }

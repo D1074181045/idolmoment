@@ -54,7 +54,8 @@ try {
         data() {
             return {
                 loaded: false,
-                danger_msg: null,
+                prompt_msg: null,
+                prompt_type: null
             }
         },
         created() {
@@ -156,21 +157,22 @@ try {
                     });
             },
             danger_event: function () {
-                let clear_danger_msg = null;
+                let clear_prompt_msg = null;
 
                 Echo.private('danger-channel-'.concat(this.$store.state.profile.name))
-                    .listen('.danger-event', ({message}) => {
+                    .listen('.danger-event', ({type, message}) => {
                         if (message) {
-                            if (this.danger_msg)
-                                clearTimeout(clear_danger_msg);
+                            if (this.prompt_msg)
+                                clearTimeout(clear_prompt_msg);
 
-                            this.danger_msg = message;
+                            this.prompt_type = type;
+                            this.prompt_msg = message;
                             this.$store.dispatch("load_my_profile").then(() => {
-                                store.state.danger_count++;
+                                store.state.prompt_count++;
                             });
 
-                            clear_danger_msg = setTimeout(() => {
-                                this.danger_msg = null;
+                            clear_prompt_msg = setTimeout(() => {
+                                this.prompt_msg = null;
                             }, 10000);
                         }
                     });

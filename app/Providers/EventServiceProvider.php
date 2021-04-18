@@ -24,8 +24,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UnlockCharacterEvent' => [
             'App\Listeners\UnlockCharacterListener',
         ],
-        'App\Events\DangerEvent' => [
-            'App\Listeners\DangerListener',
+        'App\Events\PromptEvent' => [
+            'App\Listeners\PromptListener',
         ],
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\LoginSuccessful',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\ChatRoomEvent;
-use App\Events\DangerEvent;
+use App\Events\PromptEvent;
 use App\Events\UnlockCharacterEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Other\activity;
@@ -732,12 +732,11 @@ class HomeController extends Controller
             ]);
         }
 
+        $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
         $operating = new operating($opposite_game_info, $self_game_info);
 
         switch ($request->post('operating_type')) {
             case 'send-blade':
-                $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
-
                 if ($self_teetee_name === $opposite_name) {
                     return response()->json([
                         'status' => 0,
@@ -746,13 +745,11 @@ class HomeController extends Controller
                 }
 
                 $information = $operating->send_blade();
-                event(new DangerEvent($opposite_name, '你收到刀片了'));
+                event(new PromptEvent($opposite_name, 'danger', '你收到刀片了'));
 
                 $operating_time = $cool_down->update_operating(160);
                 break;
             case 'defame':
-                $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
-
                 if ($self_teetee_name === $opposite_name) {
                     return response()->json([
                         'status' => 0,
@@ -761,19 +758,19 @@ class HomeController extends Controller
                 }
 
                 $information = $operating->defame();
-                event(new DangerEvent($opposite_name, '你被抹黑了'));
+                event(new PromptEvent($opposite_name, 'danger', '你被抹黑了'));
 
-                $operating_time = $cool_down->update_operating(120);
+                $operating_time = $cool_down->update_operating(160);
                 break;
             case 'endorse':
                 $information = $operating->endorse();
-                event(new DangerEvent($opposite_name, '你受到讚賞了'));
+                event(new PromptEvent($opposite_name, 'success', '你受到偶像 ' . $self_game_info->nickname . ' 的讚賞了'));
 
                 $operating_time = $cool_down->update_operating(120);
                 break;
             case 'donate':
                 $information = $operating->donate();
-                event(new DangerEvent($opposite_name, '你接收到了斗內'));
+                event(new PromptEvent($opposite_name, 'success', '你收到偶像 ' . $self_game_info->nickname . ' 的斗內了'));
 
                 $operating_time = $cool_down->update_operating(120);
                 break;

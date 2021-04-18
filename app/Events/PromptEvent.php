@@ -12,22 +12,26 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
 
-class DangerEvent implements ShouldBroadcast
+class PromptEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+
     public $name;
+    public $type;
     public $message;
 
     /**
      * Create a new event instance.
      *
      * @param $name
+     * @param $type
      * @param $message
      */
-    public function __construct($name, $message)
+    public function __construct($name, $type, $message)
     {
         $this->name = $name;
+        $this->type = $type;
         $this->message = $message;
     }
 

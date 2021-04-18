@@ -6,7 +6,7 @@ namespace App\Http\Other;
 
 class activity
 {
-    private $self = [];
+    public $self = [];
 
     /**
      * 載入自己的資料
@@ -34,7 +34,7 @@ class activity
          * 人氣：人氣 + 人氣產生值 * ( 魅力 * 0.05 + 精力 * 0.005 ) + 名聲 * 0.2
          * 名聲：名聲 - 名聲產生值
          * 抗壓性：抗壓性 + 抗壓性產生值 + 偶像抗壓性成長係數
-         * 魅力：魅力 - 魅力產生值 * 偶像魅力成長係數
+         * 魅力：魅力 - 魅力產生值 / 偶像魅力成長係數
          * ------------------------------------------------------------------
          * */
 
@@ -46,7 +46,7 @@ class activity
         $this->self['game_info']->popularity += ceil($popularity_rand * ( $this->self['game_info']->charm * 0.05 + $this->self['game_info']->energy * 0.005 ) + $this->self['game_info']->reputation * 0.2);
         $this->self['game_info']->reputation -= $reputation_rand;
         $this->self['game_info']->resistance += ceil($resistance_rand * $this->self['character_up_mag']->resistance);
-        $this->self['game_info']->charm -= ceil($charm_rand * $this->self['character_up_mag']->charm);
+        $this->self['game_info']->charm -= ceil($charm_rand / $this->self['character_up_mag']->charm);
     }
 
     /**
@@ -123,7 +123,7 @@ class activity
          * ------------------------------------------------------------------
          * */
 
-        $recover_vitality_rand = ceil(rand(10, 30) + $this->self['character_up_mag']->vitality * $this->self['game_info']->energy * 0.5);
+        $recover_vitality_rand = ceil(rand(10, 30) + $this->self['character_up_mag']->vitality * $this->self['game_info']->energy);
 
         $this->self['game_info']->current_vitality += $recover_vitality_rand;
     }
@@ -142,19 +142,14 @@ class activity
          * ------------------------------------------------------------------
          * */
 
-        $energy_rand = rand(30, 60);
+        $energy_rand = rand(50, 150);
 
         $this->self['game_info']->energy += ceil($energy_rand * $this->self['character_up_mag']->energy);
     }
 
     public function __destruct() {
-        if ($this->self['game_info']->popularity < 1)
-            $this->self['game_info']->popularity = 1;
-        if ($this->self['game_info']->charm < 1)
-            $this->self['game_info']->charm = 1;
-        if ($this->self['game_info']->current_vitality > $this->self['game_info']->max_vitality)
-            $this->self['game_info']->current_vitality = $this->self['game_info']->max_vitality;
+        $arr = ['self'];
 
-        $this->self['game_info']->save();
+        other_fc::patch_save_data($arr, $this);
     }
 }
