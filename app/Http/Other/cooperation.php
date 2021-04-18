@@ -5,14 +5,21 @@ namespace App\Http\Other;
 
 class cooperation
 {
-    private $self = [];
-    private $teetee = [];
+    public $self = [];
+    public $teetee = [];
 
     public function two_judgment($self_character_name, $teetee_character_name, $arr) {
         return ($self_character_name === $arr[0] && $teetee_character_name === $arr[1]) ||
             ($self_character_name === $arr[1] && $teetee_character_name === $arr[0]);
     }
 
+    /**
+     * 羈絆檢查
+     *
+     * @param $self_character_name
+     * @param $teetee_character_name
+     * @return bool
+     */
     public function isFetters($self_character_name, $teetee_character_name) {
         switch (true) {
             case $this->two_judgment($self_character_name, $teetee_character_name, ['Inugami Korone', 'Nekomata Okayu']):
@@ -104,12 +111,8 @@ class cooperation
     }
 
     public function __destruct() {
-        if ($this->self['game_info']->popularity < 1)
-            $this->self['game_info']->popularity = 1;
-        if ($this->teetee['game_info']->popularity < 1)
-            $this->teetee['game_info']->popularity = 1;
+        $arr = ['self', 'teetee'];
 
-        $this->self['game_info']->save();
-        $this->teetee['game_info']->save();
+        other_fc::patch_save_data($arr, $this);
     }
 }

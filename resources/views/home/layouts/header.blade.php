@@ -46,9 +46,11 @@
             </ul>
         @endif
     </div>
-    <div id="danger" style="position: absolute;bottom: 0;" v-if="this.danger_msg">
-        <div id="danger_msg" class="alert-danger" style="position: fixed;left: 0;right: 0;">
-            <marquee scrollamount="10" behavior="alternate" v-text="this.danger_msg"></marquee>
+    <div id="prompt" style="position: absolute;bottom: 0;" v-if="this.prompt_msg">
+        <div id="prompt_msg"style="position: fixed;left: 0;right: 0;"
+             :class="{'alert-danger':this.prompt_type === 'danger',
+                      'alert-success':this.prompt_type === 'success'}">
+            <marquee scrollamount="10" behavior="alternate" v-text="this.prompt_msg"></marquee>
         </div>
     </div>
 </nav>

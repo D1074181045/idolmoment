@@ -2,9 +2,9 @@
 
 namespace App\Listeners;
 
-use App\Events\DangerEvent;
+use App\Events\PromptEvent;
 
-class DangerListener
+class PromptListener
 {
     /**
      * Create the event listener.
@@ -19,10 +19,10 @@ class DangerListener
     /**
      * Handle the event.
      *
-     * @param  DangerEvent  $event
+     * @param  PromptEvent  $event
      * @return void
      */
-    public function handle(DangerEvent $event)
+    public function handle(PromptEvent $event)
     {
         //
     }
