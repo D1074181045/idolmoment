@@ -1,8 +1,8 @@
 
-input[type="text"][data-v-d95df8ae] {
+input[type="text"][data-v-7f6dfead] {
     width: 80%;
 }
-button.btn.btn-bottom[data-v-d95df8ae] {
+button.btn.btn-bottom[data-v-7f6dfead] {
     margin-bottom: 12px;
     margin-right: 3px;
 }
@@ -15,6 +15,11 @@ button.btn.btn-bottom[data-v-d95df8ae] {
 }
 .graduate[data-v-68ac1224] {
     color: var(--graduate-color) !important;
+}
+
+button.btn.btn-bottom[data-v-1a606dde] {
+    margin-bottom: 12px;
+    margin-right: 3px;
 }
 
 .table[data-v-7dac77de] {

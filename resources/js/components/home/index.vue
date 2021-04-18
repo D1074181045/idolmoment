@@ -100,7 +100,7 @@
                     <input placeholder="最多30個字" type="text" class="form-control"
                            :class="$store.getters.disabled_class(class_signature_disabled)"
                            v-model="profile.signature" v-on:input="ban_signature"/>
-                    <button type="button" class="btn btn-info"
+                    <button type="button" class="btn btn-primary"
                             :disabled="signature_disabled" v-on:click="set_signature">更新
                     </button>
                 </div>
@@ -108,7 +108,7 @@
                     <label style="width: 80px;margin-bottom: 0;">貼貼</label>
                     <input type="text" maxlength="12" class="form-control" v-model="profile.teetee"
                            :class="$store.getters.disabled_class(!teetee_info.status)"/>
-                    <button type="button" class="btn btn-info" v-on:click="set_teetee">設定</button>
+                    <button type="button" class="btn btn-primary" v-on:click="set_teetee">設定</button>
                 </div>
             </div>
         </div>
@@ -253,7 +253,7 @@ export default {
                 this.teetee_info.status = teetee_status;
                 this.teetee_info.teetee_name = teetee_name;
             }).finally(() => {
-                e.target.className = "btn btn-info";
+                e.target.className = "btn btn-primary";
             })
         },
         set_signature: function () {

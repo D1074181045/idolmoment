@@ -23,24 +23,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Other/other_fc.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Events/DangerEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/PromptEvent.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Other/activity.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Other/activity.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Other/cooperation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Other/cooperation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Other/operating.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Other/operating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Listeners/DangerListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Listeners/PromptListener.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/vue-styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/vue-styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.home.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.home.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.user.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.user.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/home/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/home/profile.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,6 +268,7 @@
       <workItem from="1618586388523" duration="4733000" />
       <workItem from="1618658088593" duration="11968000" />
       <workItem from="1618713522645" duration="11378000" />
+      <workItem from="1618736950837" duration="6557000" />
     </task>
     <servers />
   </component>
@@ -340,11 +332,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="51" width="1403" height="702" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1616315542719" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1618720822473">
+    <state x="616" y="240" key="run.anything.popup" timestamp="1618745259571">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1618397231488" />
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1618720822473" />
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1618745259571" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1618723668264">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

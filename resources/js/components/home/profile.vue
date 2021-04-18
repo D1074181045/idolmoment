@@ -194,10 +194,10 @@
             <h3 v-else>操作</h3>
             <div v-if="opposite_profile.graduate || self_profile.graduate">
                 <div class="tb-gap" style="margin-left: -10px;">
-                    <button type="button" class="btn btn-bottom btn-info" disabled>寄刀片</button>
-                    <button type="button" class="btn btn-bottom btn-info" disabled>抹黑</button>
-                    <button type="button" class="btn btn-bottom btn-info" disabled>聲援</button>
-                    <button type="button" class="btn btn-bottom btn-info" disabled>斗內</button>
+                    <button type="button" class="btn btn-bottom btn-danger" disabled>寄刀片 👎</button>
+                    <button type="button" class="btn btn-bottom btn-danger" disabled>抹黑 👎</button>
+                    <button type="button" class="btn btn-bottom btn-info" disabled>聲援 👍</button>
+                    <button type="button" class="btn btn-bottom btn-info" disabled>斗內 👍</button>
                 </div>
             </div>
             <div v-else>
@@ -205,19 +205,21 @@
                     剩餘時間：{{ operating_ban.time }}
                 </msg>
                 <div class="tb-gap" style="margin-left: -10px;">
-                    <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('send-blade')"
+                    <button type="button" class="btn btn-bottom btn-danger" v-on:click="operating('send-blade')"
                             :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
-                        寄刀片
+                        寄刀片 👎
                     </button>
-                    <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('defame')"
+                    <button type="button" class="btn btn-bottom btn-danger" v-on:click="operating('defame')"
                             :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
-                        抹黑
+                        抹黑 👎
                     </button>
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('endorse')"
-                            :disabled="operating_disabled">聲援
+                            :disabled="operating_disabled">
+                        聲援 👍
                     </button>
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('donate')"
-                            :disabled="operating_disabled">斗內
+                            :disabled="operating_disabled">
+                        斗內 👍
                     </button>
                 </div>
             </div>
@@ -337,7 +339,7 @@ export default {
             this.profile_type = localStorage.profile_type = 'comparison';
         },
         operating: function (type) {
-            if (type === 'send-blade' && this.$store.state.teetee_info.teetee_name === this.$route.params.name)
+            if (type === 'send-blade' || type === 'defame' && this.$store.state.teetee_info.teetee_name === this.$route.params.name)
                 return;
             if (this.operating_ban.time)
                 return;
@@ -371,3 +373,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+button.btn.btn-bottom {
+    margin-bottom: 12px;
+    margin-right: 3px;
+}
+</style>

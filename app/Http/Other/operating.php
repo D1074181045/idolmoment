@@ -33,7 +33,7 @@ class operating
         /*
          * 能力係數加權
          * ------------------------------------------------------------------
-         * 對方目前生命值：對方目前生命值 - (100~150) * 100 / ( 對方的抗壓性 + 對方的精力 )
+         * 對方目前生命值：對方目前生命值 - (100~300) * 100 / ( 對方的抗壓性 + 對方的精力 )
          * 對方精力：對方精力 - (20~40) / 對方偶像精力成長係數
          * ------------------------------------------------------------------
          * */
@@ -41,7 +41,7 @@ class operating
         $resistance = $this->opposite['game_info']->resistance;
         $energy = $this->opposite['game_info']->energy;
 
-        $this->opposite['game_info']->current_vitality -= ceil(rand(100, 150) * 100 / ($resistance + $energy));
+        $this->opposite['game_info']->current_vitality -= ceil(rand(100, 300) * 100 / ($resistance + $energy));
         $this->opposite['game_info']->energy -= ceil(rand(50, 100) / $this->opposite['character_up_mag']->energy);
 
         if ($this->opposite['game_info']->current_vitality <= 0) {
