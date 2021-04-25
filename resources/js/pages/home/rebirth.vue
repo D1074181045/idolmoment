@@ -91,7 +91,9 @@ export default {
             return this.selected_character === character_name ? 'current-select' : 'not-select';
         },
         get_own_character: function () {
-            return axios.get(this.api_prefix.concat('own-character'))
+            const url = this.api_prefix.concat('own-character');
+
+            return axios.get(url)
                 .then(({status, own_character_list}) => {
                     if (status) {
                         this.own_character_list = own_character_list;

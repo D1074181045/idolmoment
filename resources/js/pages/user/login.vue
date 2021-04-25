@@ -22,6 +22,7 @@
                                :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_login"
                                :type="pw_type()" v-model="password">
                     </div>
+
                     <div class="show-hide-toggle-button">
                         <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
                         <label for="password-toggle-button" :title="pw_title()" style="margin-bottom: 0;">Toggle</label>
@@ -47,15 +48,13 @@
                 </div>
             </div>
 
-            <div class="card-footer" v-if="error.status">
-                <msg style="text-align: center">{{ error.message }}</msg>
-            </div>
+            <CardFooter :error="error" :type="'alert-danger'"></CardFooter>
         </div>
     </div>
 </template>
 
 <script>
-import {msg} from '../../styles';
+import CardFooter from '../../components/CardFooter';
 
 export default {
     data() {
@@ -71,7 +70,7 @@ export default {
         }
     },
     components: {
-        msg
+        CardFooter
     },
     computed: {
         error: function () {

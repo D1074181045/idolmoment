@@ -1,8 +1,7 @@
 import Vue from 'vue';
-import Router from "vue-router";
 
 import store from '../store';
-import routes from "../router/home";
+import router from "../router/home";
 
 class vue_global {
     static variables() {
@@ -25,22 +24,13 @@ class vue_global {
             return 'https://f000.backblazeb2.com/file/idolmoment/characters/'.concat(img_file_name).concat('.', img_type);
         }
         Vue.prototype.img_error = function (e) {
-            let source_len = e.target.parentNode.children.length-1
-            for (let i = 0; i < source_len; i++) {
-                e.target.parentNode.children[i].srcset = e.target.parentNode.children[i+1].srcset
-            }
-            e.target.parentNode.children[source_len-1].remove()
+            e.target.parentNode.children[0].remove();
+
+            let source_len = e.target.parentNode.children.length - 1
+            e.target.parentNode.children[source_len].src = e.target.parentNode.children[0].srcset;
         }
     }
 }
-
-Vue.use(Router);
-
-const router = new Router({
-    mode: 'history',
-    linkActiveClass: 'active',
-    routes
-})
 
 try {
     require('../plugins');
@@ -182,6 +172,8 @@ try {
     });
 
     router.beforeEach((to, from, next) => {
+        store.commit('error_clear');
+
         if (store.state.IsCreated) {
             Vue.prototype.first_load = false;
             next();

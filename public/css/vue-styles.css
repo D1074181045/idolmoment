@@ -1,31 +1,31 @@
 
-input[type="text"][data-v-7f6dfead] {
+input[type="text"][data-v-023e4a4f] {
     width: 80%;
 }
-button.btn.btn-bottom[data-v-7f6dfead] {
+button.btn.btn-bottom[data-v-023e4a4f] {
     margin-bottom: 12px;
     margin-right: 3px;
 }
 
-.self[data-v-68ac1224] {
+.self[data-v-609b9c42] {
     background-color: var(--self-bg-color) !important;
 }
-.teetee[data-v-68ac1224] {
+.teetee[data-v-609b9c42] {
     background-color: var(--teetee-bg-color) !important;
 }
-.graduate[data-v-68ac1224] {
+.graduate[data-v-609b9c42] {
     color: var(--graduate-color) !important;
 }
 
-button.btn.btn-bottom[data-v-5a008a7e] {
+button.btn.btn-bottom[data-v-41e57cfe] {
     margin-bottom: 12px;
     margin-right: 3px;
 }
 
-.table[data-v-7dac77de] {
+.table[data-v-e2d8f156] {
     margin-bottom: 1px;
 }
-.current-select[data-v-7dac77de] {
+.current-select[data-v-e2d8f156] {
     border: 3px solid var(--primary-bg-color);
     display: flex;
     flex-direction: column;
@@ -34,7 +34,7 @@ button.btn.btn-bottom[data-v-5a008a7e] {
     transition: all 0.2s ease 0s;
     cursor: default;
 }
-.not-select[data-v-7dac77de] {
+.not-select[data-v-e2d8f156] {
     border: 3px solid transparent;
     display: flex;
     flex-direction: column;
@@ -43,76 +43,76 @@ button.btn.btn-bottom[data-v-5a008a7e] {
     transition: all 0.2s ease 0s;
     cursor: pointer;
 }
-.not-select[data-v-7dac77de]:hover {
+.not-select[data-v-e2d8f156]:hover {
     border-color: rgb(119, 119, 119);
 }
-.character-frame[data-v-7dac77de] {
+.character-frame[data-v-e2d8f156] {
     width: 50%;
 }
-.character-frame[data-v-7dac77de]:first-child {
+.character-frame[data-v-e2d8f156]:first-child {
     width: 50%;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
     border-left: 1px solid var(--border-color);
 }
-.character-frame[data-v-7dac77de]:nth-child(2) {
+.character-frame[data-v-e2d8f156]:nth-child(2) {
     width: 50%;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
 }
-.character-frame[data-v-7dac77de]:nth-child(odd) {
+.character-frame[data-v-e2d8f156]:nth-child(odd) {
     width: 50%;
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
     border-left: 1px solid var(--border-color);
 }
-.character-frame[data-v-7dac77de]:nth-child(even) {
+.character-frame[data-v-e2d8f156]:nth-child(even) {
     width: 50%;
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
 }
 @media screen and (max-width: 640px) {
-.character-frame[data-v-7dac77de] {
+.character-frame[data-v-e2d8f156] {
         width: 100%;
         border-right: 1px solid var(--border-color);
         border-left: 1px solid var(--border-color);
         border-bottom: 1px solid var(--border-color);
 }
-.character-frame[data-v-7dac77de]:nth-child(odd) {
+.character-frame[data-v-e2d8f156]:nth-child(odd) {
         width: 100%;
 }
-.character-frame[data-v-7dac77de]:nth-child(even) {
+.character-frame[data-v-e2d8f156]:nth-child(even) {
         width: 100%;
 }
-.character-frame[data-v-7dac77de]:last-child {
+.character-frame[data-v-e2d8f156]:last-child {
         width: 100%;
 }
 }
-table th[data-v-7dac77de] {
+table th[data-v-e2d8f156] {
     width: 120px;
 }
 
-table tbody[data-v-59c852a3] {
+table tbody[data-v-584e8841] {
     display: block;
     max-height: 500px;
     overflow-y: scroll;
     -webkit-appearance: none;
 }
-table thead[data-v-59c852a3], tbody tr[data-v-59c852a3] {
+table thead[data-v-584e8841], tbody tr[data-v-584e8841] {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
-table tbody tr td[data-v-59c852a3] {
+table tbody tr td[data-v-584e8841] {
     word-break: break-all;
 }
-table thead[data-v-59c852a3] {
+table thead[data-v-584e8841] {
     width: calc(100% - 1em)
 }
 @media screen and (max-width: 600px) {
-table thead[data-v-59c852a3] {
+table thead[data-v-584e8841] {
         width: calc(100%)
 }
 }

@@ -3350,6 +3350,7 @@ fieldset:disabled a.btn {
 
 .btn-danger.disabled,
 .btn-danger:disabled {
+  cursor: not-allowed;
   color: var(--btn-color);
   background-color: #e3342f;
   border-color: #e3342f;
@@ -3393,6 +3394,7 @@ fieldset:disabled a.btn {
 
 .btn-light.disabled,
 .btn-light:disabled {
+  cursor: not-allowed;
   color: #212529;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
@@ -3436,6 +3438,7 @@ fieldset:disabled a.btn {
 
 .btn-dark.disabled,
 .btn-dark:disabled {
+  cursor: not-allowed;
   color: #fff;
   background-color: #343a40;
   border-color: #343a40;

@@ -350,16 +350,16 @@ export default {
             axios.patch(url, {
                 opposite_name: this.$route.params.name,
                 operating_type: type,
-            }).then(({status, ability, operating_time, information}) => {
+            }).then(({status, ability: {opposite, self}, operating_time, information}) => {
                 if (status) {
                     this.cool_down.operating = operating_time;
                     this.$store.commit('cool_down', 'operating');
 
-                    Object.keys(ability.opposite).forEach((key) => {
-                        this.opposite_profile[key] = ability.opposite[key];
+                    Object.keys(opposite).forEach((key) => {
+                        this.opposite_profile[key] = opposite[key];
                     });
-                    Object.keys(ability.self).forEach((key) => {
-                        this.self_profile[key] = ability.self[key];
+                    Object.keys(self).forEach((key) => {
+                        this.self_profile[key] = self[key];
                     });
 
                     this.information_list.push(information);

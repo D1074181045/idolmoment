@@ -1,7 +1,12 @@
-import login from '../components/user/login.vue';
-import register from '../components/user/register.vue';
+import Vue from 'vue';
+import Router from "vue-router";
 
-export const routes = [
+import login from '../pages/user/login.vue';
+import register from '../pages/user/register.vue';
+
+Vue.use(Router);
+
+const routes = [
     {
         path: '/login',
         component: login,
@@ -14,4 +19,10 @@ export const routes = [
     }
 ];
 
-export default routes;
+const router = new Router({
+    mode: 'history',
+    linkActiveClass: 'active',
+    routes
+})
+
+export default router;

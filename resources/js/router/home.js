@@ -1,12 +1,17 @@
-import index from '../components/home/index.vue';
-import active_idol from '../components/home/active-idol.vue';
-import profile from '../components/home/profile.vue';
-import rebirth from '../components/home/rebirth.vue';
-import chatroom from '../components/home/chatroom.vue';
-import create_profile from '../components/home/create-profile.vue';
-import update_password from '../components/home/update-password.vue';
+import Vue from 'vue';
+import Router from "vue-router";
 
-export const routes = [
+import index from '../pages/home/index.vue';
+import active_idol from '../pages/home/active-idol.vue';
+import profile from '../pages/home/profile.vue';
+import rebirth from '../pages/home/rebirth.vue';
+import chatroom from '../pages/home/chatroom.vue';
+import create_profile from '../pages/home/create-profile.vue';
+import update_password from '../pages/home/update-password.vue';
+
+Vue.use(Router);
+
+const routes = [
     {
         path: '/',
         component: index,
@@ -70,4 +75,10 @@ export const routes = [
     }
 ];
 
-export default routes;
+const router = new Router({
+    mode: 'history',
+    linkActiveClass: 'active',
+    routes
+})
+
+export default router;

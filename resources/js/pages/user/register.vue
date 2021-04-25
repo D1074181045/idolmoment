@@ -51,15 +51,13 @@
                 </div>
             </div>
 
-            <div class="card-footer" v-if="error.status">
-                <msg style="text-align: center">{{ error.message }}</msg>
-            </div>
+            <CardFooter :error="error" :type="'alert-danger'"></CardFooter>
         </div>
     </div>
 </template>
 
 <script>
-import {msg} from '../../styles';
+import CardFooter from "../../components/CardFooter";
 
 export default {
     data() {
@@ -75,7 +73,7 @@ export default {
         }
     },
     components: {
-        msg
+        CardFooter
     },
     computed: {
         error: function () {

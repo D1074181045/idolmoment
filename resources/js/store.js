@@ -15,6 +15,8 @@ function String2DateTime(String) {
     );
 }
 
+let error_clear_timeout = null;
+
 const store = new Vuex.Store({
     state: {
         error: {'status': 0, 'message': null},
@@ -33,6 +35,10 @@ const store = new Vuex.Store({
         prompt_count: 0
     },
     mutations: {
+        error_clear: function (state) {
+            state.error.status = 0;
+            state.error.message = null;
+        },
         cool_down: function (state, type) {
             if (state.cool_down[type]) {
                 let time = new Date(state.cool_down[type]).getTime()
@@ -63,9 +69,11 @@ const store = new Vuex.Store({
             state.error.status = true;
             state.error.message = message;
 
-            setTimeout(() => {
-                state.error.status = 0;
-                state.error.message = null;
+            if (error_clear_timeout)
+                clearTimeout(error_clear_timeout);
+
+            error_clear_timeout = setTimeout(() => {
+                store.commit('error_clear');
             }, 3000)
         },
         load_my_profile: function (state, res) {

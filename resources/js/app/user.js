@@ -1,16 +1,7 @@
 import Vue from 'vue';
-import Router from "vue-router";
 
 import store from '../store';
-import routes from '../router/user';
-
-Vue.use(Router);
-
-const router = new Router({
-    mode: 'history',
-    linkActiveClass: 'active',
-    routes
-})
+import router from '../router/user';
 
 try {
     require('../plugins/bootstrap');
@@ -20,6 +11,12 @@ try {
         el: '#app',
         store,
         router
+    });
+
+    router.beforeEach((to, from, next) => {
+        store.commit('error_clear');
+
+        next();
     });
 
 } catch (e) {
