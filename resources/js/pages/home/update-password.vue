@@ -13,12 +13,12 @@
                                        required autofocus
                                        :class="$store.getters.disabled_class(old_password_disabled)"
                                        v-model="old_password"
-                                       v-on:input="ban_update_password" :type="pw_type(old_password_show)">
+                                       v-on:input="ban_update_password" :type="$store.getters.pw_toggle(old_password_show).type">
                             </div>
                             <div class="show-hide-toggle-button">
                                 <input type="checkbox" id="old_password_toggle_button"
                                        v-on:click="old_password_toggle_button">
-                                <label for="old_password_toggle_button" :title="pw_title(old_password_show)"
+                                <label for="old_password_toggle_button" :title="$store.getters.pw_toggle(old_password_show).title"
                                        style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                                        required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)"
                                        v-model="new_password"
-                                       v-on:input="ban_update_password" :type="pw_type(new_password_show)">
+                                       v-on:input="ban_update_password" :type="$store.getters.pw_toggle(new_password_show).type">
                                 <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                             </div>
                         </div>
@@ -40,12 +40,12 @@
                                        required autofocus
                                        :class="$store.getters.disabled_class(new_password_disabled)"
                                        v-model="new_password_confirmation"
-                                       v-on:input="ban_update_password" :type="pw_type(new_password_show)">
+                                       v-on:input="ban_update_password" :type="$store.getters.pw_toggle(new_password_show).type">
                             </div>
                             <div class="show-hide-toggle-button">
                                 <input type="checkbox" id="new_password_toggle_button"
                                        v-on:click="new_password_toggle_button">
-                                <label for="new_password_toggle_button" :title="pw_title(new_password_show)"
+                                <label for="new_password_toggle_button" :title="$store.getters.pw_toggle(new_password_show).title"
                                        style="margin-bottom: 0;">Toggle</label>
                             </div>
                         </div>
@@ -65,9 +65,10 @@
 
 <script>
 import CardFooter from "../../components/CardFooter";
+import {mapState} from "vuex";
 
 export default {
-    data() {
+    data: function () {
         return {
             old_password: "",
             new_password: "",
@@ -83,24 +84,14 @@ export default {
     components: {
         CardFooter
     },
-    created() {
+    created: function () {
         document.title = "修改密碼";
     },
-    computed: {
-        error: function () {
-            return this.$store.state.error;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-    },
+    computed: mapState([
+        'error',
+        'api_prefix'
+    ]),
     methods: {
-        pw_title: function (show) {
-            return show ? '顯示密碼' : '隱藏密碼';
-        },
-        pw_type: function (show) {
-            return show ? 'text' : 'password';
-        },
         old_password_toggle_button: function (e) {
             this.old_password_show = e.target.checked;
         },
@@ -126,12 +117,11 @@ export default {
                 old_password: this.old_password,
                 new_password: this.new_password,
                 new_password_confirmation: this.new_password_confirmation,
-            }).then(({status, message}) => {
-                if (status) {
-                    this.$router.push({name: 'index'}).catch(() => {
-                    });
+            }).then((res) => {
+                if (res.status) {
+                    this.$router.push({name: 'index'}).catch(() => {});
                 } else {
-                    this.$store.commit("show_error", message);
+                    this.$store.commit("show_error", res.message);
                     this.update_password_disabled = false;
                 }
             }).catch((err) => {

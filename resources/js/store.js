@@ -87,9 +87,8 @@ const store = new Vuex.Store({
         }
     },
     getters: {
-        disabled_class: () => (status) => {
-            return status ? 'is-invalid' : 'is-valid';
-        },
+        disabled_class: () => status => status ? 'is-invalid' : 'is-valid',
+        pw_toggle: () => show => show ? {title: '顯示密碼', type: 'text'} : {title: '隱藏密碼', type: 'password'},
         NumberFormat: () => (number, type = 'en-IN') => {
             if (number === undefined || number === null)
                 return null;

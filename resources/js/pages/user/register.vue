@@ -21,7 +21,7 @@
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
                                :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
-                               :type="pw_type()" v-model="password"/>
+                               :type="$store.getters.pw_toggle(password_show).type" v-model="password"/>
                         <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                     </div>
                 </div>
@@ -32,11 +32,11 @@
                     <div class="col-md-6">
                         <input type="password" class="form-control" autocomplete="off" required
                                :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
-                               :type="pw_type()" v-model="password_confirmation"/>
+                               :type="$store.getters.pw_toggle(password_show).type" v-model="password_confirmation"/>
                     </div>
                     <div class="show-hide-toggle-button">
                         <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
-                        <label for="password-toggle-button" :title="pw_title()" style="margin-bottom: 0;">Toggle</label>
+                        <label for="password-toggle-button" :title="$store.getters.pw_toggle(password_show).title" style="margin-bottom: 0;">Toggle</label>
                     </div>
                 </div>
 
@@ -58,14 +58,15 @@
 
 <script>
 import CardFooter from "../../components/CardFooter";
+import {mapState} from "vuex";
 
 export default {
-    data() {
+    data: function () {
         return {
             username: "",
             password: "",
             password_confirmation: "",
-            pw_is_show: false,
+            password_show: false,
             username_disabled: true,
             password_disabled: true,
             register_disabled: true,
@@ -75,26 +76,16 @@ export default {
     components: {
         CardFooter
     },
-    computed: {
-        error: function () {
-            return this.$store.state.error;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-    },
-    activated() {
+    computed: mapState([
+        'error',
+        'api_prefix'
+    ]),
+    activated: function () {
         document.title = "註冊";
     },
     methods: {
-        pw_title: function () {
-            return this.pw_is_show ? '顯示密碼' : '隱藏密碼';
-        },
-        pw_type: function () {
-            return this.pw_is_show ? 'text' : 'password';
-        },
         password_toggle_button: function (e) {
-            this.pw_is_show = e.target.checked;
+            this.password_show = e.target.checked;
         },
         between: function (int, from, to) {
             return int >= from && int <= to;
@@ -119,8 +110,8 @@ export default {
                 username: this.username,
                 password: this.password,
                 password_confirmation: this.password_confirmation
-            }).then(({status, message}) => {
-                if (status) {
+            }).then((res) => {
+                if (res.status) {
                     this.username = "";
                     this.password = "";
                     this.password_confirmation = "";
@@ -128,7 +119,7 @@ export default {
                     this.password_disabled = true;
                     this.$router.push({name: 'login'});
                 } else {
-                    this.$store.commit("show_error", message);
+                    this.$store.commit("show_error", res.message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {

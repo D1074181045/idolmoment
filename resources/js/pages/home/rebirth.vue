@@ -64,26 +64,35 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-    data() {
+    data: function () {
         return {
             rebirth_disabled: true,
             selected_character: "",
             own_character_list: [],
         }
     },
-    computed: {
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
+    computed: mapState([
+        'api_prefix'
+    ]),
+    beforeRouteLeave: function (to, from, next) {
+        let character_frame = document.getElementsByClassName('character-frame');
+
+        if (character_frame.length)
+            character_frame[0].firstChild.click();
+
+        next();
     },
-    activated() {
+    activated: function () {
         document.title = "偶像轉生";
 
         this.get_own_character().then(() => {
-            if (document.getElementsByClassName('character-frame').length) {
-                document.getElementsByClassName('character-frame')[0].firstChild.click();
-            }
+            let character_frame = document.getElementsByClassName('character-frame');
+
+            if (character_frame.length)
+                character_frame[0].firstChild.click();
         });
     },
     methods: {
@@ -94,9 +103,9 @@ export default {
             const url = this.api_prefix.concat('own-character');
 
             return axios.get(url)
-                .then(({status, own_character_list}) => {
-                    if (status) {
-                        this.own_character_list = own_character_list;
+                .then((res) => {
+                    if (res.status) {
+                        this.own_character_list = res.own_character_list;
                     }
                 })
         },
@@ -111,8 +120,8 @@ export default {
 
             axios.patch(url, {
                 character_name: this.selected_character,
-            }).then(({status}) => {
-                if (status) {
+            }).then((res) => {
+                if (res.status) {
                     this.$router.push({name: 'index'})
                 } else {
                     this.rebirth_disabled = false;

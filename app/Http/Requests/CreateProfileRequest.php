@@ -25,7 +25,7 @@ class CreateProfileRequest extends FormRequest
     {
         return [
             //
-            'nickname' => ['required', 'regex:/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', 'string', 'max:12']
+            'nickname' => ['required', 'regex:/^[\x{3100}-\x{312f}\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', 'string', 'max:12']
         ];
     }
 

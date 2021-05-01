@@ -30,9 +30,10 @@
 
 <script>
 import CardFooter from "../../components/CardFooter";
+import {mapState} from "vuex";
 
 export default {
-    data() {
+    data: function () {
         return {
             nickname: "",
             build_disabled: true,
@@ -42,17 +43,13 @@ export default {
     components: {
         CardFooter
     },
-    created() {
+    created: function () {
         document.title = "創建偶像";
     },
-    computed: {
-        error: function () {
-            return this.$store.state.error;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-    },
+    computed: mapState([
+        'error',
+        'api_prefix'
+    ]),
     methods: {
         build: function () {
             if (this.build_disabled)
@@ -63,11 +60,11 @@ export default {
 
             axios.post(url, {
                 nickname: this.nickname,
-            }).then(({status, message}) => {
-                if (status) {
+            }).then((res) => {
+                if (res.status) {
                     document.location.href = '/';
                 } else {
-                    this.$store.commit("show_error", message);
+                    this.$store.commit("show_error", res.message);
                     this.build_disabled = false;
                     this.creating = false;
                 }

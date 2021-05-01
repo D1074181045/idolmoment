@@ -495,6 +495,7 @@ class HomeController extends Controller
         if ($activity_time > Carbon::now()) {
             return response()->json([
                 'status' => 0,
+                'activity_time' => $activity_time,
                 'message' => '活動進行失敗，剩餘時間：' . $this->remain_time($activity_time, Carbon::now()) . '秒'
             ]);
         }
@@ -614,6 +615,7 @@ class HomeController extends Controller
         if ($cooperation_time > Carbon::now()) {
             return response()->json([
                 'status' => 0,
+                'cooperation_time' => $cooperation_time,
                 'message' => '合作活動進行失敗，剩餘時間：' . $this->remain_time($cooperation_time, Carbon::now()) . '秒'
             ]);
         }
@@ -717,6 +719,7 @@ class HomeController extends Controller
         if ($operating_time > Carbon::now()) {
             return response()->json([
                 'status' => 0,
+                'operating_time' => $operating_time,
                 'message' => '操作失敗，剩餘時間：' . $this->remain_time($operating_time, Carbon::now()) . '秒'
             ]);
         }
@@ -887,6 +890,7 @@ class HomeController extends Controller
             if ($chat_time > Carbon::now()) {
                 return response()->json([
                     'status' => 0,
+                    'chat_time' => $chat_time,
                     'message' => '送出失敗，剩餘時間：' . $this->remain_time($chat_time, Carbon::now()) . '秒'
                 ]);
             }

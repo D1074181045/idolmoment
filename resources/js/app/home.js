@@ -181,9 +181,8 @@ try {
         else {
             if (to.name !== "create-profile" && to.name !== "update-password")
                 next({ name:"create-profile" });
-            else {
+            else
                 next();
-            }
         }
     });
 

@@ -5,7 +5,7 @@
             <div class="offset-0" style="margin-right: 0;">
                 <label class="col-md-2 col-form-label text-md-right" for="name" style="padding-top: calc(.7rem + 1px);">搜尋暱稱</label>
                 <div class="col-md-6 row" style="display: inline;">
-                    <input class="form-control" type="text" id="name" name="name"
+                    <input class="form-control" type="text" id="name" name="name" autocomplete="off"
                            style="width: 200px; margin: 6px 2px;display: inline;" v-model="search_name">
                     <button id="search-name" name="search-name" type="button" class="btn btn-info"
                             style="margin-top: -6px;height: 36px;" v-on:click="to_search_name">搜尋
@@ -21,23 +21,23 @@
                 <div class="col-md-6 row" style="display: inline;">
                     <input class="form-control" type="number" id="search-popularity" min="1" name="search-popularity"
                            style="width: 100px;margin: 6px 2px;display: inline;"
-                           v-model="current_popularity" v-on:change="search_popularity">
+                           v-model="current_popularity" v-on:change="switch_page(page_num = 1, current_popularity)">
                 </div>
             </div>
             <div class="offset-0">
-                <button type="button" class="btn btn-info" value="1" v-on:click="first_page"
+                <button type="button" class="btn btn-info" v-on:click="switch_page(page_num = 1, max_popularity)"
                         :disabled="first_page_disabled">第一頁
                 </button>
-                <button type="button" disabled class="btn btn-info" value="1" v-on:click="up_page"
+                <button type="button" disabled class="btn btn-info" v-on:click="switch_page(--page_num, current_popularity)"
                         :disabled="up_page_disabled">上一頁
                 </button>
                 <input type="number" min="1" :max="total_pages" value="1" class="form-control"
                        style="width: 70px; margin: 6px 2px;display: inline;"
-                       v-model="page_num" v-on:change="page">
-                <button type="button" class="btn btn-info" v-on:click="down_page"
+                       v-model="page_num" v-on:change="switch_page(page_num, current_popularity)">
+                <button type="button" class="btn btn-info" v-on:click="switch_page(++page_num, current_popularity)"
                         :disabled="down_page_disabled">下一頁
                 </button>
-                <button type="button" class="btn btn-info" v-on:click="last_page"
+                <button type="button" class="btn btn-info" v-on:click="switch_page(page_num = total_pages, current_popularity)"
                         :disabled="last_page_disabled">最後一頁
                 </button>
             </div>
@@ -85,19 +85,19 @@
         </table>
         <div class="form-group mb-0">
             <div class="offset-0">
-                <button type="button" class="btn btn-info" value="1" v-on:click="first_page"
+                <button type="button" class="btn btn-info" v-on:click="switch_page(page_num = 1, max_popularity)"
                         :disabled="first_page_disabled">第一頁
                 </button>
-                <button type="button" disabled class="btn btn-info" value="1" v-on:click="up_page"
+                <button type="button" disabled class="btn btn-info" v-on:click="switch_page(--page_num, current_popularity)"
                         :disabled="up_page_disabled">上一頁
                 </button>
                 <input type="number" min="1" :max="total_pages" value="1" class="form-control"
                        style="width: 70px; margin: 6px 2px;display: inline;"
-                       v-model="page_num" v-on:change="page">
-                <button type="button" class="btn btn-info" v-on:click="down_page"
+                       v-model="page_num" v-on:change="switch_page(page_num, current_popularity)">
+                <button type="button" class="btn btn-info" v-on:click="switch_page(++page_num, current_popularity)"
                         :disabled="total_pages <= 1 || down_page_disabled">下一頁
                 </button>
-                <button type="button" class="btn btn-info" v-on:click="last_page"
+                <button type="button" class="btn btn-info" v-on:click="switch_page(page_num = total_pages, current_popularity)"
                         :disabled="total_pages <= 1 || last_page_disabled">最後一頁
                 </button>
             </div>
@@ -107,8 +107,10 @@
 
 <script>
 
+import {mapState} from "vuex";
+
 export default {
-    data() {
+    data: function () {
         return {
             search_name: null,
             page_num: 1,
@@ -123,18 +125,12 @@ export default {
             down_page_disabled: false,
         }
     },
-    computed: {
-        name: function () {
-            return this.$store.state.profile.name;
-        },
-        teetee_info: function () {
-            return this.$store.state.teetee_info;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-    },
-    activated() {
+    computed: mapState({
+        name: state => state.profile.name,
+        teetee_info: 'teetee_info',
+        api_prefix: 'api_prefix',
+    }),
+    activated: function () {
         document.title = "活耀偶像";
 
         if (this.reload()) {
@@ -166,30 +162,24 @@ export default {
                     page: page,
                     popularity: popularity
                 }
-            }).then(({status, idol_list, max_popularity, total_pages}) => {
-                if (status) {
-                    this.total_pages = total_pages;
-                    this.max_popularity = max_popularity;
-                    this.idol_list = idol_list;
+            }).then((res) => {
+                if (res.status) {
+                    this.total_pages = res.total_pages;
+                    this.max_popularity = res.max_popularity;
+                    this.idol_list = res.idol_list;
 
-                    this.down_page_disabled = this.page_num >= total_pages;
-                    this.last_page_disabled = this.page_num >= total_pages;
+                    this.down_page_disabled = this.page_num >= res.total_pages;
+                    this.last_page_disabled = this.page_num >= res.total_pages;
 
                     if (this.page_num <= 1) {
                         this.up_page_disabled = true;
-                        this.first_page_disabled = this.current_popularity >= max_popularity;
+                        this.first_page_disabled = this.current_popularity >= res.max_popularity;
                     } else {
                         this.first_page_disabled = false;
                         this.up_page_disabled = false;
                     }
                 }
             })
-        },
-        page: function () {
-            if (this.page_num <= 0)
-                this.page_num = 1;
-
-            this.get_idol_list(this.page_num, this.current_popularity);
         },
         to_search_name: function () {
             if (!this.search_name)
@@ -201,34 +191,22 @@ export default {
                 params: {
                     search_name: this.search_name,
                 }
-            }).then(({status, idol_list}) => {
-                if (status) {
-                    this.idol_list = idol_list;
+            }).then((res) => {
+                if (res.status) {
+                    this.idol_list = res.idol_list;
                 }
             })
         },
         default_load: function () {
             this.get_idol_list(this.page_num, this.current_popularity);
         },
-        first_page: function () {
-            this.page_num = 1;
-            this.get_idol_list(this.page_num, this.max_popularity);
-        },
-        last_page: function () {
-            this.page_num = this.total_pages;
-            this.get_idol_list(this.page_num, this.current_popularity);
-        },
-        up_page: function () {
-            this.page_num -= 1;
-            this.get_idol_list(this.page_num, this.current_popularity);
-        },
-        down_page: function () {
-            this.page_num += 1;
-            this.get_idol_list(this.page_num, this.current_popularity);
-        },
-        search_popularity: function () {
-            this.page_num = 1;
-            this.get_idol_list(this.page_num, this.current_popularity);
+        switch_page: function (page, popularity) {
+            if (popularity <= 0)
+                popularity = this.current_popularity = 1;
+            if (page <= 0)
+                page = this.page_num = 1;
+
+            this.get_idol_list(page, popularity);
         },
         clear_search: function () {
             this.default_load();

@@ -34,12 +34,13 @@
 
 <script>
 import {msg} from '../../styles';
+import {mapState} from "vuex";
 
 var put_bottom = true;
 var messages_updated = false;
 
 export default {
-    data() {
+    data: function () {
         return {
             message: "",
             chat_messages: [],
@@ -48,27 +49,19 @@ export default {
     components: {
         msg
     },
-    computed: {
-        chat_ban: function () {
-            return this.$store.state.ban_type.chat;
-        },
-        create_msg_disabled: function () {
-            return this.$store.state.ban_type.chat.status;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-        cool_down: function () {
-            return this.$store.state.cool_down;
-        },
-    },
-    updated() {
+    computed: mapState({
+        api_prefix: 'api_prefix',
+        cool_down: 'cool_down',
+        chat_ban: state => state.ban_type.chat,
+        create_msg_disabled: state => state.ban_type.chat.status
+    }),
+    updated: function () {
         this.tbody_scroll_bottom();
     },
-    mounted() {
+    mounted: function () {
         this.tbody_scroll_position();
     },
-    activated() {
+    activated: function () {
         document.title = "聊天室";
 
         this.$store.commit('cool_down', 'chat');
@@ -76,7 +69,7 @@ export default {
         this.get_chats();
         this.websocket_chat_event();
     },
-    deactivated() {
+    deactivated: function () {
         Echo.leave('public-chat-channel');
     },
     methods: {
@@ -101,9 +94,9 @@ export default {
         get_chats: function () {
             const url = this.api_prefix.concat('get-chats');
             axios.get(url)
-                .then(({status, chat_messages}) => {
-                    if (status) {
-                        this.chat_messages = chat_messages;
+                .then((res) => {
+                    if (res.status) {
+                        this.chat_messages = res.chat_messages;
                     }
                 })
                 .then(() => {
@@ -133,9 +126,9 @@ export default {
 
             axios.post(url, {
                 message: this.message,
-            }).then(({status, chat_time}) => {
-                if (status) {
-                    this.cool_down.chat = chat_time;
+            }).then((res) => {
+                if (res.chat_time) {
+                    this.cool_down.chat = res.chat_time;
                     this.$store.commit('cool_down', 'chat');
                 } else {
                     this.chat_ban.status = false;

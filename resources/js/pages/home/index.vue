@@ -99,16 +99,18 @@
                     <label style="width: 80px;margin-bottom: 0;">簽名檔</label>
                     <input placeholder="最多30個字" type="text" class="form-control"
                            :class="$store.getters.disabled_class(class_signature_disabled)"
-                           v-model="profile.signature" v-on:input="ban_signature"/>
+                           v-model="signature" v-on:input="ban_signature"/>
                     <button type="button" class="btn btn-primary"
                             :disabled="signature_disabled" v-on:click="set_signature">更新
                     </button>
                 </div>
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">貼貼</label>
-                    <input type="text" maxlength="12" class="form-control" v-model="profile.teetee"
+                    <input type="text" maxlength="12" class="form-control" v-model="teetee"
                            :class="$store.getters.disabled_class(!teetee_info.status)"/>
-                    <button type="button" class="btn btn-primary" v-on:click="set_teetee">設定</button>
+                    <button type="button" class="btn btn-primary" :class="{ 'btn-loading':teetee_updating }"
+                            v-on:click="set_teetee">設定
+                    </button>
                 </div>
             </div>
         </div>
@@ -160,58 +162,38 @@
 
 <script>
 import {msg} from '../../styles';
+import {mapState} from "vuex";
 
 const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
 
 export default {
-    data() {
+    data: function () {
         return {
             class_signature_disabled: false,
+            teetee_updating: false,
+            signature: null,
+            teetee: null,
             next_ability: {}
         }
     },
     components: {
         msg
     },
-    computed: {
-        signature: function () {
-            return this.profile.signature;
-        },
-        signature_disabled: function () {
-            return this.$store.state.ban_type.signature.status;
-        },
-        activity_disabled: function () {
-            return this.$store.state.ban_type.activity.status;
-        },
-        cooperation_disabled: function () {
-            return this.$store.state.ban_type.cooperation.status;
-        },
-        profile: function () {
-            return this.$store.state.profile;
-        },
-        teetee_info: function () {
-            return this.$store.state.teetee_info;
-        },
-        cool_down: function () {
-            return this.$store.state.cool_down;
-        },
-        signature_ban: function () {
-            return this.$store.state.ban_type.signature;
-        },
-        activity_ban: function () {
-            return this.$store.state.ban_type.activity;
-        },
-        cooperation_ban: function () {
-            return this.$store.state.ban_type.cooperation;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-        Prompt: function () {
-            return this.$store.state.prompt_count
-        }
-    },
-    beforeRouteLeave(to, from, next) {
+
+    computed: mapState({
+        profile: "profile",
+        teetee_info: "teetee_info",
+        cool_down: "cool_down",
+        api_prefix: "api_prefix",
+        Prompt: "Prompt",
+        signature_disabled: state => state.ban_type.signature.status,
+        activity_disabled: state => state.ban_type.activity.status,
+        cooperation_disabled: state => state.ban_type.cooperation.status,
+        signature_ban: state => state.ban_type.signature,
+        activity_ban: state => state.ban_type.activity,
+        cooperation_ban: state => state.ban_type.cooperation
+    }),
+    beforeRouteLeave: function (to, from, next) {
         Object.keys(this.next_ability).forEach((key) => {
             if (this.next_ability[key])
                 this.profile[key] = this.next_ability[key];
@@ -224,36 +206,47 @@ export default {
             this.next_ability = {};
         }
     },
-    mounted() {
-        this.$store.commit('cool_down', 'activity');
-        this.$store.commit('cool_down', 'cooperation');
-        this.$store.commit('cool_down', 'signature');
-    },
-    activated() {
+    activated: function () {
         document.title = "我的偶像";
 
         this.next_ability = {};
 
-        if (!this.first_load)
-            this.$store.dispatch('load_my_profile');
+        this.signature = this.profile.signature;
+        this.teetee = this.profile.teetee;
+
+        if (!this.first_load) {
+            this.$store.dispatch('load_my_profile').then(() => {
+                this.signature = this.profile.signature;
+                this.teetee = this.profile.teetee;
+
+                this.$store.commit('cool_down', 'activity');
+                this.$store.commit('cool_down', 'cooperation');
+                this.$store.commit('cool_down', 'signature');
+            });
+        } else {
+            this.$store.commit('cool_down', 'activity');
+            this.$store.commit('cool_down', 'cooperation');
+            this.$store.commit('cool_down', 'signature');
+        }
     },
     methods: {
-        set_teetee: function (e) {
+        set_teetee: function () {
             if (this.profile.teetee !== null) {
                 if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
                     return;
             }
 
             const url = this.api_prefix.concat('update-teetee');
-            e.target.className += " ".concat("btn-loading");
+
+            this.teetee_updating = true;
 
             axios.patch(url, {
                 teetee: this.profile.teetee,
-            }).then(({teetee_status, teetee_name}) => {
-                this.teetee_info.status = teetee_status;
-                this.teetee_info.teetee_name = teetee_name;
+            }).then((res) => {
+                this.teetee_info.status = res.teetee_status;
+                this.teetee_info.teetee_name = res.teetee_name;
             }).finally(() => {
-                e.target.className = "btn btn-primary";
+                this.teetee_updating = false;
             })
         },
         set_signature: function () {
@@ -265,14 +258,14 @@ export default {
 
             axios.patch(url, {
                 signature: this.signature
-            }).then(({status, signature_time}) => {
-                if (status) {
-                    this.cool_down.signature = signature_time;
+            }).then((res) => {
+                if (res.signature_time) {
+                    this.cool_down.signature = res.signature_time;
                     this.$store.commit('cool_down', 'signature');
                 } else {
                     this.signature_ban.status = false;
                 }
-            }).catch((err) => {
+            }).catch(() => {
                 this.signature_ban.status = false;
             });
         },
@@ -280,8 +273,7 @@ export default {
             if (this.signature_ban.time)
                 return;
 
-            this.signature_ban.status = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
-            this.class_signature_disabled = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
+            this.signature_ban.status = this.class_signature_disabled = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
         },
         do_activity: function (activity_type) {
             if (this.activity_disabled)
@@ -292,18 +284,19 @@ export default {
 
             axios.patch(url, {
                 activity_type: activity_type,
-            }).then(({status, ability, activity_time}) => {
-                if (status) {
-                    this.cool_down.activity = activity_time;
+            }).then((res) => {
+                if (res.activity_time) {
+                    this.cool_down.activity = res.activity_time;
                     this.$store.commit('cool_down', 'activity');
-
-                    Object.keys(ability).forEach((key) => {
-                        this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
-                        this.next_ability[key] = this.profile[key] !== ability[key] ? ability[key] : null;
-                    });
-
                 } else {
                     this.activity_ban.status = false;
+                }
+
+                if (res.status) {
+                    Object.keys(res.ability).forEach((key) => {
+                        this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
+                        this.next_ability[key] = this.profile[key] !== res.ability[key] ? res.ability[key] : null;
+                    });
                 }
             }).catch((err) => {
                 this.activity_ban.status = false;
@@ -318,20 +311,21 @@ export default {
 
             axios.patch(url, {
                 cooperation_type: cooperation_type,
-            }).then(({status, ability, cooperation_time}) => {
-                if (status) {
-                    this.cool_down.cooperation = cooperation_time;
+            }).then((res) => {
+                if (res.cooperation_time) {
+                    this.cool_down.cooperation = res.cooperation_time;
                     this.$store.commit('cool_down', 'cooperation');
-
-                    Object.keys(ability).forEach((key) => {
-                        this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
-                        this.next_ability[key] = this.profile[key] !== ability[key] ? ability[key] : null;
-                    });
-
                 } else {
                     this.cooperation_ban.status = false;
                 }
-            }).catch((err) => {
+
+                if (res.status) {
+                    Object.keys(res.ability).forEach((key) => {
+                        this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
+                        this.next_ability[key] = this.profile[key] !== res.ability[key] ? res.ability[key] : null;
+                    });
+                }
+            }).catch(() => {
                 this.cooperation_ban.status = false;
             });
         }

@@ -237,9 +237,10 @@
 
 <script>
 import {msg} from '../../styles';
+import {mapState} from "vuex";
 
 export default {
-    data() {
+    data: function () {
         return {
             information_list: [],
             next_name: null,
@@ -252,24 +253,14 @@ export default {
     components: {
         msg
     },
-    computed: {
-        self_profile: function () {
-            return this.$store.state.profile;
-        },
-        operating_ban: function () {
-            return this.$store.state.ban_type.operating;
-        },
-        operating_disabled: function () {
-            return this.$store.state.ban_type.operating.status;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-        cool_down: function () {
-            return this.$store.state.cool_down;
-        },
-    },
-    created() {
+    computed: mapState({
+        api_prefix: 'api_prefix',
+        cool_down: 'cool_down',
+        self_profile: 'profile',
+        operating_ban: state => state.ban_type.operating,
+        operating_disabled: state => state.ban_type.operating.status
+    }),
+    created: function () {
         switch (localStorage.profile_type) {
             case 'details':
                 this.details();
@@ -282,10 +273,10 @@ export default {
                 break;
         }
     },
-    mounted() {
+    mounted: function () {
         this.$store.commit('cool_down', 'operating');
     },
-    activated() {
+    activated: function () {
         document.title = this.title ? this.title : "玩家資訊";
 
         this.get_opposite_profile();
@@ -294,7 +285,7 @@ export default {
         get_opposite_profile: function () {
             const url = this.api_prefix.concat('profile/', this.$route.params.name);
 
-            axios.get(url)
+            return axios.get(url)
                 .then(({status, opposite_profile}) => {
                     if (status) {
                         if (!this.title)
@@ -350,23 +341,25 @@ export default {
             axios.patch(url, {
                 opposite_name: this.$route.params.name,
                 operating_type: type,
-            }).then(({status, ability: {opposite, self}, operating_time, information}) => {
-                if (status) {
-                    this.cool_down.operating = operating_time;
+            }).then((res) => {
+                if (res.operating_time) {
+                    this.cool_down.operating = res.operating_time;
                     this.$store.commit('cool_down', 'operating');
-
-                    Object.keys(opposite).forEach((key) => {
-                        this.opposite_profile[key] = opposite[key];
-                    });
-                    Object.keys(self).forEach((key) => {
-                        this.self_profile[key] = self[key];
-                    });
-
-                    this.information_list.push(information);
                 } else {
                     this.operating_ban.status = false;
                 }
-            }).catch((err) => {
+
+                if (res.status) {
+                    Object.keys(res.ability.opposite).forEach((key) => {
+                        this.opposite_profile[key] = res.ability.opposite[key];
+                    });
+                    Object.keys(res.ability.self).forEach((key) => {
+                        this.self_profile[key] = res.ability.self[key];
+                    });
+
+                    this.information_list.push(res.information);
+                }
+            }).catch(() => {
                 this.operating_ban.status = false;
             });
         }

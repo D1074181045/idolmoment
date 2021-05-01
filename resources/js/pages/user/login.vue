@@ -20,12 +20,12 @@
                     <div class="col-md-6">
                         <input class="form-control" required autocomplete="off"
                                :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_login"
-                               :type="pw_type()" v-model="password">
+                               :type="$store.getters.pw_toggle(password_show).type" v-model="password">
                     </div>
 
                     <div class="show-hide-toggle-button">
                         <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
-                        <label for="password-toggle-button" :title="pw_title()" style="margin-bottom: 0;">Toggle</label>
+                        <label for="password-toggle-button" :title="$store.getters.pw_toggle(password_show).title" style="margin-bottom: 0;">Toggle</label>
                     </div>
                 </div>
 
@@ -55,9 +55,10 @@
 
 <script>
 import CardFooter from '../../components/CardFooter';
+import {mapState} from "vuex";
 
 export default {
-    data() {
+    data: function () {
         return {
             username: "",
             password: "",
@@ -72,24 +73,14 @@ export default {
     components: {
         CardFooter
     },
-    computed: {
-        error: function () {
-            return this.$store.state.error;
-        },
-        api_prefix: function () {
-            return this.$store.state.api_prefix
-        },
-    },
-    activated() {
+    computed: mapState([
+        'error',
+        'api_prefix'
+    ]),
+    activated: function () {
         document.title = "登入";
     },
     methods: {
-        pw_title: function () {
-            return this.password_show ? '顯示密碼' : '隱藏密碼';
-        },
-        pw_type: function () {
-            return this.password_show ? 'text' : 'password';
-        },
         password_toggle_button: function (e) {
             this.password_show = e.target.checked;
         },
@@ -115,9 +106,9 @@ export default {
                     password: this.password,
                     autologin: this.autologin
                 }
-            }).then(({status, message, token}) => {
-                if (status) {
-                    localStorage.token = token;
+            }).then((res) => {
+                if (res.status) {
+                    localStorage.token = res.token;
                     document.location.href = "/";
                 } else {
                     this.password = "";
@@ -126,7 +117,7 @@ export default {
                     this.login_disabled = true;
                     this.logging = false;
 
-                    this.$store.commit("show_error", message);
+                    this.$store.commit("show_error", res.message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {
