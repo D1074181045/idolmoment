@@ -5,14 +5,8 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent"
-         style="user-select: none;padding-top: 0.5rem;padding-bottom: 0.5rem;">
-        <div class="dark-swift-button">
-            <input class="swift-btn_toggle" type="checkbox" id="lightSwitch" v-on:click="this.lightSwitch"
-                {{ $dark_theme === 'true' ? 'checked' : '' }}
-            >
-            <label for="lightSwitch" style="margin-bottom: 0;">Toggle</label>
-        </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="user-select: none;padding-top: 0.5rem;padding-bottom: 0.5rem;">
+        <lightswitch></lightswitch>
         <ul class="nav navbar-nav navbar-brand" style="margin: auto;">
             <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'index' }" exact>我的偶像</router-link>
@@ -47,7 +41,7 @@
         @endif
     </div>
     <div id="prompt" style="position: absolute;bottom: 0;" v-if="this.prompt_msg">
-        <div id="prompt_msg"style="position: fixed;left: 0;right: 0;"
+        <div id="prompt_msg" style="position: fixed;left: 0;right: 0;"
              :class="{'alert-danger':this.prompt_type === 'danger',
                       'alert-success':this.prompt_type === 'success'}">
             <marquee scrollamount="10" behavior="alternate" v-text="this.prompt_msg"></marquee>

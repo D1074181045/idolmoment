@@ -57,22 +57,14 @@
             <tr style="cursor: pointer;" :class="idol_class(idol)"
                 v-for="idol in idol_list" v-on:click="toProfile(idol.name)" :key="idol.name">
                 <td style="padding: 0;">
-                    <div class="img-small">
-                        <picture>
-                            <source type="image/webp"
-                                    :srcset="characters_img_path(idol.img_file_name, 'webp')">
-                            <source type="image/jpeg"
-                                    :srcset="characters_img_path(idol.img_file_name)">
-                            <source type="image/png"
-                                    :srcset="characters_img_path(idol.img_file_name, 'png')">
-                            <img :src="characters_img_path(idol.img_file_name)"
-                                 :alt="idol.use_character"
-                                 v-on:error="img_error">
-                        </picture>
-                    </div>
+                    <Avatar
+                        :class_name="'img-small'"
+                        :img_file_name="idol.img_file_name"
+                        :img_name="idol.use_character"
+                    />
                 </td>
-                <td>{{ $store.getters.NumberFormat(idol.popularity, 'zh-TW') }}</td>
-                <td>{{ $store.getters.NumberFormat(idol.reputation, 'zh-TW') }}</td>
+                <td>{{ NumberFormat(idol.popularity, 'zh-TW') }}</td>
+                <td>{{ NumberFormat(idol.reputation, 'zh-TW') }}</td>
                 <td style="padding: 0;height: 50px;width: 50%;">
                     <div style="height: 100%;">
                         <div style="padding: 4px 8px;">{{ idol.nickname }}</div>
@@ -106,8 +98,9 @@
 </template>
 
 <script>
+import {mapState, mapGetters} from "vuex";
 
-import {mapState} from "vuex";
+import Avatar from "../../components/Avatar";
 
 export default {
     data: function () {
@@ -125,16 +118,25 @@ export default {
             down_page_disabled: false,
         }
     },
-    computed: mapState({
-        name: state => state.profile.name,
-        teetee_info: 'teetee_info',
-        api_prefix: 'api_prefix',
-    }),
+    computed: {
+        ...mapState([
+            'teetee_info',
+            'api_prefix',
+            'profile'
+        ]),
+        ...mapState({
+            name: state => state.profile.name,
+        }),
+        ...mapGetters([
+            'NumberFormat'
+        ]),
+    },
+    components: {
+        Avatar
+    },
     activated: function () {
-        document.title = "活耀偶像";
-
         if (this.reload()) {
-            this.current_popularity = this.$store.state.profile.popularity;
+            this.current_popularity = this.profile.popularity;
             this.page_num = 1;
             this.default_load();
         }

@@ -11,11 +11,17 @@ const routes = [
         path: '/login',
         component: login,
         name: 'login',
+        meta: {
+            title: '登入',
+        }
     },
     {
         path: '/register',
         component: register,
         name: 'register',
+        meta: {
+            title: '註冊',
+        }
     }
 ];
 

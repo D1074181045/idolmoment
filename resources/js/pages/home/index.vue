@@ -8,20 +8,11 @@
                     <th class="table-active">暱稱</th>
                     <td>{{ profile.nickname }}</td>
                     <td rowspan="2" style="width: 80px;">
-                        <div class="img-big">
-                            <picture>
-                                <source type="image/webp"
-                                        :srcset="characters_img_path(profile.game_character.img_file_name, 'webp')">
-                                <source type="image/jpeg"
-                                        :srcset="characters_img_path(profile.game_character.img_file_name)">
-                                <source type="image/png"
-                                        :srcset="characters_img_path(profile.game_character.img_file_name, 'png')">
-                                <img
-                                    :src="characters_img_path(profile.game_character.img_file_name)"
-                                    :alt="profile.game_character.tc_name"
-                                    v-on:error="img_error">
-                            </picture>
-                        </div>
+                        <Avatar
+                            :class_name="'img-big'"
+                            :img_file_name="profile.game_character.img_file_name"
+                            :img_name="profile.game_character.tc_name"
+                        />
                     </td>
                 </tr>
                 <tr>
@@ -30,63 +21,63 @@
                 </tr>
                 <tr>
                     <th class="table-info">人氣</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.popularity) }}
+                    <td colspan="2">{{ NumberFormat(profile.popularity) }}
                         <div style="display: inline" v-if="next_ability.popularity">
-                            → {{ $store.getters.NumberFormat(next_ability.popularity) }}
+                            → {{ NumberFormat(next_ability.popularity) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-info">名聲</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.reputation) }}
+                    <td colspan="2">{{ NumberFormat(profile.reputation) }}
                         <div style="display: inline" v-if="next_ability.reputation">
-                            → {{ $store.getters.NumberFormat(next_ability.reputation) }}
+                            → {{ NumberFormat(next_ability.reputation) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-info">最大生命值</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.max_vitality) }}
+                    <td colspan="2">{{ NumberFormat(profile.max_vitality) }}
                         <div style="display: inline" v-if="next_ability.max_vitality">
-                            → {{ $store.getters.NumberFormat(next_ability.max_vitality) }}
+                            → {{ NumberFormat(next_ability.max_vitality) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-info">目前生命值</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.current_vitality) }}
+                    <td colspan="2">{{ NumberFormat(profile.current_vitality) }}
                         <div style="display: inline" v-if="next_ability.current_vitality">
-                            → {{ $store.getters.NumberFormat(next_ability.current_vitality) }}
+                            → {{ NumberFormat(next_ability.current_vitality) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-info">精力</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.energy) }}
+                    <td colspan="2">{{ NumberFormat(profile.energy) }}
                         <div style="display: inline" v-if="next_ability.energy">
-                            → {{ $store.getters.NumberFormat(next_ability.energy) }}
+                            → {{ NumberFormat(next_ability.energy) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-info">抗壓性</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.resistance) }}
+                    <td colspan="2">{{ NumberFormat(profile.resistance) }}
                         <div style="display: inline" v-if="next_ability.resistance">
-                            → {{ $store.getters.NumberFormat(next_ability.resistance) }}
+                            → {{ NumberFormat(next_ability.resistance) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-info">魅力</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.charm) }}
+                    <td colspan="2">{{ NumberFormat(profile.charm) }}
                         <div style="display: inline" v-if="next_ability.charm">
-                            → {{ $store.getters.NumberFormat(next_ability.charm) }}
+                            → {{ NumberFormat(next_ability.charm) }}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <th class="table-secondary">轉生次數</th>
-                    <td colspan="2">{{ $store.getters.NumberFormat(profile.rebirth_counter) }}</td>
+                    <td colspan="2">{{ NumberFormat(profile.rebirth_counter) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -97,8 +88,8 @@
             <div class="tb-gap">
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">簽名檔</label>
-                    <input placeholder="最多30個字" type="text" class="form-control"
-                           :class="$store.getters.disabled_class(class_signature_disabled)"
+                    <input placeholder="最多30個字" type="text" class="form-control" maxlength="30"
+                           :class="disabled_class(class_signature_disabled)"
                            v-model="signature" v-on:input="ban_signature"/>
                     <button type="button" class="btn btn-primary"
                             :disabled="signature_disabled" v-on:click="set_signature">更新
@@ -106,8 +97,8 @@
                 </div>
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">貼貼</label>
-                    <input type="text" maxlength="12" class="form-control" v-model="teetee"
-                           :class="$store.getters.disabled_class(!teetee_info.status)"/>
+                    <input type="text" maxlength="12" class="form-control" style="transition: all 0.2s ease 0s;"
+                           :class="disabled_class(!teetee_info.status)" v-model="teetee" />
                     <button type="button" class="btn btn-primary" :class="{ 'btn-loading':teetee_updating }"
                             v-on:click="set_teetee">設定
                     </button>
@@ -162,7 +153,8 @@
 
 <script>
 import {msg} from '../../styles';
-import {mapState} from "vuex";
+import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
+import Avatar from "../../components/Avatar";
 
 const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
 
@@ -177,22 +169,30 @@ export default {
         }
     },
     components: {
-        msg
+        msg,
+        Avatar
     },
-
-    computed: mapState({
-        profile: "profile",
-        teetee_info: "teetee_info",
-        cool_down: "cool_down",
-        api_prefix: "api_prefix",
-        Prompt: "Prompt",
-        signature_disabled: state => state.ban_type.signature.status,
-        activity_disabled: state => state.ban_type.activity.status,
-        cooperation_disabled: state => state.ban_type.cooperation.status,
-        signature_ban: state => state.ban_type.signature,
-        activity_ban: state => state.ban_type.activity,
-        cooperation_ban: state => state.ban_type.cooperation
-    }),
+    computed: {
+        ...mapState([
+            "profile",
+            "teetee_info",
+            "cool_down",
+            "api_prefix",
+            "prompt_count",
+        ]),
+        ...mapState({
+            signature_disabled: state => state.ban_type.signature.status,
+            activity_disabled: state => state.ban_type.activity.status,
+            cooperation_disabled: state => state.ban_type.cooperation.status,
+            signature_ban: state => state.ban_type.signature,
+            activity_ban: state => state.ban_type.activity,
+            cooperation_ban: state => state.ban_type.cooperation
+        }),
+        ...mapGetters([
+            'NumberFormat',
+            'disabled_class'
+        ])
+    },
     beforeRouteLeave: function (to, from, next) {
         Object.keys(this.next_ability).forEach((key) => {
             if (this.next_ability[key])
@@ -202,34 +202,38 @@ export default {
         next();
     },
     watch: {
-        Prompt: function () {
+        prompt_count: function () {
             this.next_ability = {};
         }
     },
     activated: function () {
-        document.title = "我的偶像";
-
         this.next_ability = {};
 
         this.signature = this.profile.signature;
         this.teetee = this.profile.teetee;
 
         if (!this.first_load) {
-            this.$store.dispatch('load_my_profile').then(() => {
+            this.load_my_profile().then(() => {
                 this.signature = this.profile.signature;
                 this.teetee = this.profile.teetee;
 
-                this.$store.commit('cool_down', 'activity');
-                this.$store.commit('cool_down', 'cooperation');
-                this.$store.commit('cool_down', 'signature');
+                this.cool_down_func('activity');
+                this.cool_down_func('cooperation');
+                this.cool_down_func('signature');
             });
         } else {
-            this.$store.commit('cool_down', 'activity');
-            this.$store.commit('cool_down', 'cooperation');
-            this.$store.commit('cool_down', 'signature');
+            this.cool_down_func('activity');
+            this.cool_down_func('cooperation');
+            this.cool_down_func('signature');
         }
     },
     methods: {
+        ...mapMutations({
+            cool_down_func: 'cool_down'
+        }),
+        ...mapActions([
+            'load_my_profile'
+        ]),
         set_teetee: function () {
             if (this.profile.teetee !== null) {
                 if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
@@ -241,10 +245,13 @@ export default {
             this.teetee_updating = true;
 
             axios.patch(url, {
-                teetee: this.profile.teetee,
+                teetee: this.teetee,
             }).then((res) => {
-                this.teetee_info.status = res.teetee_status;
-                this.teetee_info.teetee_name = res.teetee_name;
+                if (res.status) {
+                    this.profile.teetee = this.teetee;
+                    this.teetee_info.status = res.teetee_status;
+                    this.teetee_info.teetee_name = res.teetee_name;
+                }
             }).finally(() => {
                 this.teetee_updating = false;
             })
@@ -260,8 +267,9 @@ export default {
                 signature: this.signature
             }).then((res) => {
                 if (res.signature_time) {
+                    this.profile.signature = this.signature;
                     this.cool_down.signature = res.signature_time;
-                    this.$store.commit('cool_down', 'signature');
+                    this.cool_down_func('signature');
                 } else {
                     this.signature_ban.status = false;
                 }
@@ -287,7 +295,7 @@ export default {
             }).then((res) => {
                 if (res.activity_time) {
                     this.cool_down.activity = res.activity_time;
-                    this.$store.commit('cool_down', 'activity');
+                    this.cool_down_func('activity');
                 } else {
                     this.activity_ban.status = false;
                 }
@@ -314,7 +322,7 @@ export default {
             }).then((res) => {
                 if (res.cooperation_time) {
                     this.cool_down.cooperation = res.cooperation_time;
-                    this.$store.commit('cool_down', 'cooperation');
+                    this.cool_down_func('cooperation');
                 } else {
                     this.cooperation_ban.status = false;
                 }

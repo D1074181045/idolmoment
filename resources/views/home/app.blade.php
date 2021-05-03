@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Cookie;
 $self_name = Auth::user()->name;
 $self_name_encrypt = Controller::UserNameEncrypt2($self_name);
 
-$dark_theme = Cookie::get('dark_theme', 'false');
-
 ?>
 
 <html lang="zh-tw">

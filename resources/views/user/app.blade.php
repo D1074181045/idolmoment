@@ -13,9 +13,9 @@
     <div class="py-4">
         <div class="container">
             <div class="row justify-content-center">
-                <keep-alive>
+                <div class="col-md-8">
                     <router-view></router-view>
-                </keep-alive>
+                </div>
             </div>
         </div>
     </div>

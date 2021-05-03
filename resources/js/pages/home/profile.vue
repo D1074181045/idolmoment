@@ -14,19 +14,11 @@
                         <th class="table-active">暱稱</th>
                         <td>{{ opposite_profile.nickname }}</td>
                         <td rowspan="2" style="width: 80px;">
-                            <div class="img-big">
-                                <picture v-if="opposite_loaded">
-                                    <source type="image/webp"
-                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'webp')">
-                                    <source type="image/jpeg"
-                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
-                                    <source type="image/png"
-                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
-                                    <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
-                                         :alt="opposite_profile.game_character.tc_name"
-                                         v-on:error="img_error">
-                                </picture>
-                            </div>
+                            <Avatar
+                                :class_name="'img-big'"
+                                :img_file_name="opposite_profile.game_character.img_file_name"
+                                :img_name="opposite_profile.game_character.tc_name"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -35,27 +27,27 @@
                     </tr>
                     <tr>
                         <th class="table-info">人氣</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.popularity) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.popularity) }}</td>
                     </tr>
                     <tr>
                         <th class="table-info">名聲</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.reputation) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.reputation) }}</td>
                     </tr>
                     <tr>
                         <th class="table-info">最大生命值</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.max_vitality) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.max_vitality) }}</td>
                     </tr>
                     <tr>
                         <th class="table-info">精力</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.energy) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.energy) }}</td>
                     </tr>
                     <tr>
                         <th class="table-info">抗壓性</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.resistance) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.resistance) }}</td>
                     </tr>
                     <tr>
                         <th class="table-info">魅力</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.charm) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.charm) }}</td>
                     </tr>
                     <tr>
                         <th class="table-primary">簽名檔</th>
@@ -63,7 +55,7 @@
                     </tr>
                     <tr>
                         <th class="table-secondary">轉生次數</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.rebirth_counter) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.rebirth_counter) }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -78,19 +70,11 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="width: 80px;">
-                            <div class="img-big">
-                                <picture>
-                                    <source type="image/webp"
-                                            :srcset="characters_img_path(self_profile.game_character.img_file_name, 'webp')">
-                                    <source type="image/jpeg"
-                                            :srcset="characters_img_path(self_profile.game_character.img_file_name)">
-                                    <source type="image/png"
-                                            :srcset="characters_img_path(self_profile.game_character.img_file_name, 'png')">
-                                    <img :src="characters_img_path(self_profile.game_character.img_file_name)"
-                                         :alt="self_profile.game_character.tc_name"
-                                         v-on:error="img_error">
-                                </picture>
-                            </div>
+                            <Avatar
+                                :class_name="'img-big'"
+                                :img_file_name="self_profile.game_character.img_file_name"
+                                :img_name="self_profile.game_character.tc_name"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -103,27 +87,27 @@
                     </tr>
                     <tr>
                         <th class="table-active">人氣</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(self_profile.popularity) }}</td>
+                        <td colspan="2">{{ NumberFormat(self_profile.popularity) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">名聲</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(self_profile.reputation) }}</td>
+                        <td colspan="2">{{ NumberFormat(self_profile.reputation) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">最大生命值</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(self_profile.max_vitality) }}</td>
+                        <td colspan="2">{{ NumberFormat(self_profile.max_vitality) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">精力</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(self_profile.energy) }}</td>
+                        <td colspan="2">{{ NumberFormat(self_profile.energy) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">抗壓性</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(self_profile.resistance) }}</td>
+                        <td colspan="2">{{ NumberFormat(self_profile.resistance) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">魅力</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(self_profile.charm) }}</td>
+                        <td colspan="2">{{ NumberFormat(self_profile.charm) }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -136,19 +120,11 @@
                     </tr>
                     <tr>
                         <td colspan="2" style="width: 80px;">
-                            <div class="img-big">
-                                <picture v-if="opposite_loaded">
-                                    <source type="image/webp"
-                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'webp')">
-                                    <source type="image/jpeg"
-                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name)">
-                                    <source type="image/png"
-                                            :srcset="characters_img_path(opposite_profile.game_character.img_file_name, 'png')">
-                                    <img :src="characters_img_path(opposite_profile.game_character.img_file_name)"
-                                         :alt="opposite_profile.game_character.tc_name"
-                                         v-on:error="img_error">
-                                </picture>
-                            </div>
+                            <Avatar
+                                :class_name="'img-big'"
+                                :img_file_name="opposite_profile.game_character.img_file_name"
+                                :img_name="opposite_profile.game_character.tc_name"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -161,27 +137,27 @@
                     </tr>
                     <tr>
                         <th class="table-active">人氣</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.popularity) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.popularity) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">名聲</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.reputation) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.reputation) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">最大生命值</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.max_vitality) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.max_vitality) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">精力</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.energy) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.energy) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">抗壓性</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.resistance) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.resistance) }}</td>
                     </tr>
                     <tr>
                         <th class="table-active">魅力</th>
-                        <td colspan="2">{{ $store.getters.NumberFormat(opposite_profile.charm) }}</td>
+                        <td colspan="2">{{ NumberFormat(opposite_profile.charm) }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -206,11 +182,11 @@
                 </msg>
                 <div class="tb-gap" style="margin-left: -10px;">
                     <button type="button" class="btn btn-bottom btn-danger" v-on:click="operating('send-blade')"
-                            :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
+                            :disabled="operating_disabled || teetee_info.teetee_name === $route.params.name">
                         寄刀片 👎
                     </button>
                     <button type="button" class="btn btn-bottom btn-danger" v-on:click="operating('defame')"
-                            :disabled="operating_disabled || $store.state.teetee_info.teetee_name === $route.params.name">
+                            :disabled="operating_disabled || teetee_info.teetee_name === $route.params.name">
                         抹黑 👎
                     </button>
                     <button type="button" class="btn btn-bottom btn-info" v-on:click="operating('endorse')"
@@ -237,7 +213,8 @@
 
 <script>
 import {msg} from '../../styles';
-import {mapState} from "vuex";
+import {mapGetters, mapMutations, mapState} from "vuex";
+import Avatar from "../../components/Avatar";
 
 export default {
     data: function () {
@@ -251,15 +228,24 @@ export default {
         }
     },
     components: {
-        msg
+        msg,
+        Avatar
     },
-    computed: mapState({
-        api_prefix: 'api_prefix',
-        cool_down: 'cool_down',
-        self_profile: 'profile',
-        operating_ban: state => state.ban_type.operating,
-        operating_disabled: state => state.ban_type.operating.status
-    }),
+    computed: {
+        ...mapState([
+            'api_prefix',
+            'cool_down',
+            'teetee_info'
+        ]),
+        ...mapState({
+            self_profile: 'profile',
+            operating_ban: state => state.ban_type.operating,
+            operating_disabled: state => state.ban_type.operating.status
+        }),
+        ...mapGetters([
+            'NumberFormat',
+        ])
+    },
     created: function () {
         switch (localStorage.profile_type) {
             case 'details':
@@ -274,14 +260,18 @@ export default {
         }
     },
     mounted: function () {
-        this.$store.commit('cool_down', 'operating');
+        this.cool_down_func('operating');
     },
     activated: function () {
-        document.title = this.title ? this.title : "玩家資訊";
+        if (this.title)
+            document.title = this.title;
 
         this.get_opposite_profile();
     },
     methods: {
+        ...mapMutations({
+            cool_down_func: 'cool_down'
+        }),
         get_opposite_profile: function () {
             const url = this.api_prefix.concat('profile/', this.$route.params.name);
 
@@ -289,7 +279,7 @@ export default {
                 .then(({status, opposite_profile}) => {
                     if (status) {
                         if (!this.title)
-                            document.title = this.title = "玩家資訊".concat('-', opposite_profile.nickname);
+                            document.title = this.title = "偶像資訊".concat('-', opposite_profile.nickname);
                         this.opposite_profile = opposite_profile;
                         this.opposite_loaded = true;
                     }
@@ -330,7 +320,7 @@ export default {
             this.profile_type = localStorage.profile_type = 'comparison';
         },
         operating: function (type) {
-            if ((type === 'send-blade' || type === 'defame') && this.$store.state.teetee_info.teetee_name === this.$route.params.name)
+            if ((type === 'send-blade' || type === 'defame') && this.teetee_info.teetee_name === this.$route.params.name)
                 return;
             if (this.operating_ban.time)
                 return;
@@ -344,7 +334,7 @@ export default {
             }).then((res) => {
                 if (res.operating_time) {
                     this.cool_down.operating = res.operating_time;
-                    this.$store.commit('cool_down', 'operating');
+                    this.cool_down_func('operating');
                 } else {
                     this.operating_ban.status = false;
                 }

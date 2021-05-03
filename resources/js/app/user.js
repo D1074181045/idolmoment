@@ -7,16 +7,16 @@ try {
     require('../plugins/bootstrap');
     require('../plugins/axios');
 
+    router.beforeEach((to, from, next) => {
+        document.title = to.meta.title;
+        store.commit('error_clear');
+        next();
+    });
+
     new Vue({
         el: '#app',
         store,
         router
-    });
-
-    router.beforeEach((to, from, next) => {
-        store.commit('error_clear');
-
-        next();
     });
 
 } catch (e) {

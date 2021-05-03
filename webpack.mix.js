@@ -13,9 +13,26 @@ require("laravel-mix-alias");
  |
  */
 
-mix.options({
-    extractVueStyles: true,
-});
+// mix.options({
+//     extractVueStyles: true,
+// });
+
+if (mix.inProduction()) {
+    mix.options({
+        terser: {
+            terserOptions: {
+                compress: {
+                    warnings: false,
+                    drop_console: true // 去除控制台输出代码
+                },
+                output: {
+                    comments: false // 去除所有注释
+                }
+            }
+        }
+    });
+}
+
 
 mix
     .js('resources/js/app/home.js', 'public/js/app.home.min.js')

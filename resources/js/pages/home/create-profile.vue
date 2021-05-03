@@ -10,7 +10,7 @@
                             <label class="col-md-3 col-form-label text-md-right">暱稱</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" style="width: 100%" autocomplete="off" autofocus
-                                       :class="$store.getters.disabled_class(build_disabled)" v-model="nickname"
+                                       :class="disabled_class(build_disabled)" v-model="nickname"
                                        v-on:input="ban_build">
                                 <div style="font-size: 12px;margin: 4px 8px;">最多12字元，且無特殊字元</div>
                             </div>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
 
-                    <CardFooter :error="error" :type="'alert-danger'"></CardFooter>
+                    <CardFooter :error="error" :type="'alert-danger'" />
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
 
 <script>
 import CardFooter from "../../components/CardFooter";
-import {mapState} from "vuex";
+import {mapGetters, mapMutations, mapState} from "vuex";
 
 export default {
     data: function () {
@@ -43,14 +43,19 @@ export default {
     components: {
         CardFooter
     },
-    created: function () {
-        document.title = "創建偶像";
+    computed: {
+        ...mapState([
+            'error',
+            'api_prefix'
+        ]),
+        ...mapGetters([
+            'disabled_class'
+        ])
     },
-    computed: mapState([
-        'error',
-        'api_prefix'
-    ]),
     methods: {
+        ...mapMutations([
+            'show_error'
+        ]),
         build: function () {
             if (this.build_disabled)
                 return;
@@ -64,7 +69,7 @@ export default {
                 if (res.status) {
                     document.location.href = '/';
                 } else {
-                    this.$store.commit("show_error", res.message);
+                    this.show_error(res.message);
                     this.build_disabled = false;
                     this.creating = false;
                 }
@@ -77,9 +82,9 @@ export default {
                         s += errors[error] + '\n';
                     });
 
-                    this.$store.commit("show_error", s);
+                    this.show_error(s);
                 } else {
-                    this.$store.commit("show_error", "發生錯誤: " + err.statusText);
+                    this.show_error("發生錯誤: " + err.statusText);
                 }
                 this.build_disabled = false;
                 this.creating = false;

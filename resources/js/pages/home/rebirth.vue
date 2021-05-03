@@ -5,21 +5,13 @@
             <div style="display: flex;flex-wrap: wrap;">
                 <div class="character-frame" v-for="own_character in own_character_list">
                     <div :class="character_select_status(own_character.character_name)"
-                         v-on:click="select_character(own_character.character_name)">
-                        <div class="img-big">
-                            <picture>
-                                <source type="image/webp"
-                                        :srcset="characters_img_path(own_character.game_character.img_file_name, 'webp')">
-                                <source type="image/jpeg"
-                                        :srcset="characters_img_path(own_character.game_character.img_file_name)">
-                                <source type="image/png"
-                                        :srcset="characters_img_path(own_character.game_character.img_file_name, 'png')">
-                                <img
-                                    :src="characters_img_path(own_character.game_character.img_file_name)"
-                                    :alt="own_character.character_name"
-                                    v-on:error="img_error">
-                            </picture>
-                        </div>
+                         v-on:click="select_character(own_character.character_name)"
+                    >
+                        <Avatar
+                            :class_name="'img-big'"
+                            :img_file_name="own_character.game_character.img_file_name"
+                            :img_name="own_character.character_name"
+                        />
                         <div style="flex: auto;">
                             <p style="margin-top: 1rem;">
                                 {{ own_character.game_character.introduction }}
@@ -65,6 +57,7 @@
 
 <script>
 import { mapState } from "vuex";
+import Avatar from "../../components/Avatar";
 
 export default {
     data: function () {
@@ -77,25 +70,16 @@ export default {
     computed: mapState([
         'api_prefix'
     ]),
-    beforeRouteLeave: function (to, from, next) {
-        let character_frame = document.getElementsByClassName('character-frame');
-
-        if (character_frame.length)
-            character_frame[0].firstChild.click();
-
-        next();
+    components: {
+        Avatar
     },
     activated: function () {
-        document.title = "偶像轉生";
-
-        this.get_own_character().then(() => {
-            let character_frame = document.getElementsByClassName('character-frame');
-
-            if (character_frame.length)
-                character_frame[0].firstChild.click();
-        });
+        this.get_own_character();
     },
     methods: {
+        default_select: function (item = 0) {
+            this.selected_character = this.own_character_list[item].character_name;
+        },
         character_select_status: function (character_name) {
             return this.selected_character === character_name ? 'current-select' : 'not-select';
         },
@@ -106,6 +90,7 @@ export default {
                 .then((res) => {
                     if (res.status) {
                         this.own_character_list = res.own_character_list;
+                        this.default_select();
                     }
                 })
         },

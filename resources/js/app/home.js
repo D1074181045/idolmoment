@@ -1,7 +1,10 @@
 import Vue from 'vue';
+import {mapActions} from "vuex";
 
 import store from '../store';
 import router from "../router/home";
+
+import LightSwitch from "../components/LightSwitch";
 
 class vue_global {
     static variables() {
@@ -20,15 +23,6 @@ class vue_global {
                 return false;
             }
         }
-        Vue.prototype.characters_img_path = (img_file_name, img_type = 'jpg') => {
-            return 'https://f000.backblazeb2.com/file/idolmoment/characters/'.concat(img_file_name).concat('.', img_type);
-        }
-        Vue.prototype.img_error = function (e) {
-            e.target.parentNode.children[0].remove();
-
-            let source_len = e.target.parentNode.children.length - 1
-            e.target.parentNode.children[source_len].src = e.target.parentNode.children[0].srcset;
-        }
     }
 }
 
@@ -38,8 +32,16 @@ try {
     vue_global.variables();
     vue_global.methods();
 
+    router.beforeEach((to, from, next) => {
+        document.title = to.meta.title;
+        next();
+    });
+
     new Vue({
         el: '#app',
+        components: {
+            lightswitch: LightSwitch
+        },
         store,
         data() {
             return {
@@ -51,7 +53,7 @@ try {
         created() {
             window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
 
-            this.$store.dispatch("load_my_profile").then(() => {
+            this.load_my_profile().then(() => {
                 this.loaded = true;
 
                 if (store.state.IsCreated) {
@@ -61,6 +63,9 @@ try {
             });
         },
         methods:{
+            ...mapActions([
+                'load_my_profile'
+            ]),
             logout: function () {
                 Swal.fire({
                     title: "登出",
@@ -78,19 +83,6 @@ try {
                         localStorage.removeItem('token');
                     }
                 });
-            },
-            lightSwitch: function (e) {
-                let d = new Date();
-                d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
-
-                let link = document.getElementsByTagName('link');
-                let link_swal_style = link[link.length - 1];
-                let body = document.getElementsByTagName('body')[0];
-
-                body.className = e.target.checked ? 'dark' : '';
-                document.cookie = 'dark_theme='.concat(e.target.checked.toString()).concat('; expires=' + d.toString() + '; path=/');
-                localStorage.dark_theme = e.target.checked;
-                link_swal_style.href = '/css/sweetalert2.'.concat(e.target.checked ? 'dark' : 'default').concat('.theme.css');
             },
             unlock_character_event: function () {
                 function keyup_unlock_role (character_name) {
@@ -141,7 +133,7 @@ try {
                     }
                 })
 
-                Echo.private('unlock-character-channel-'.concat(this.$store.state.profile.name))
+                Echo.private('unlock-character-channel-'.concat(store.state.profile.name))
                     .listen('.unlock-character-event', ({Character}) => {
                         unlock_character_message(Character);
                     });
@@ -149,7 +141,7 @@ try {
             danger_event: function () {
                 let clear_prompt_msg = null;
 
-                Echo.private('danger-channel-'.concat(this.$store.state.profile.name))
+                Echo.private('danger-channel-'.concat(store.state.profile.name))
                     .listen('.danger-event', ({type, message}) => {
                         if (message) {
                             if (this.prompt_msg)
@@ -157,7 +149,7 @@ try {
 
                             this.prompt_type = type;
                             this.prompt_msg = message;
-                            this.$store.dispatch("load_my_profile").then(() => {
+                            this.load_my_profile().then(() => {
                                 store.state.prompt_count++;
                             });
 
@@ -177,10 +169,9 @@ try {
         if (store.state.IsCreated) {
             Vue.prototype.first_load = false;
             next();
-        }
-        else {
+        } else {
             if (to.name !== "create-profile" && to.name !== "update-password")
-                next({ name:"create-profile" });
+                next({name: "create-profile"});
             else
                 next();
         }

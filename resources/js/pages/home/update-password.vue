@@ -9,45 +9,45 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">舊密碼</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" style="width: 100%" autocomplete="off"
+                                <input type="password" class="form-control" style="width: 100%" autocomplete="off" maxlength="32"
                                        required autofocus
-                                       :class="$store.getters.disabled_class(old_password_disabled)"
+                                       :class="disabled_class(old_password_disabled)"
                                        v-model="old_password"
-                                       v-on:input="ban_update_password" :type="$store.getters.pw_toggle(old_password_show).type">
+                                       v-on:input="ban_update_password" :type="pw_toggle(old_password_show).type"
+                                />
                             </div>
-                            <div class="show-hide-toggle-button">
-                                <input type="checkbox" id="old_password_toggle_button"
-                                       v-on:click="old_password_toggle_button">
-                                <label for="old_password_toggle_button" :title="$store.getters.pw_toggle(old_password_show).title"
-                                       style="margin-bottom: 0;">Toggle</label>
-                            </div>
+                            <PasswordToggleButton
+                                :click_event="old_password_toggle_button"
+                                :show="old_password_show"
+                                :id_name="'old_password_toggle_button'"
+                            />
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">新密碼</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" style="width: 100%" autocomplete="off"
+                                <input type="password" class="form-control" style="width: 100%" autocomplete="off" maxlength="32"
                                        required autofocus
-                                       :class="$store.getters.disabled_class(new_password_disabled)"
+                                       :class="disabled_class(new_password_disabled)"
                                        v-model="new_password"
-                                       v-on:input="ban_update_password" :type="$store.getters.pw_toggle(new_password_show).type">
+                                       v-on:input="ban_update_password" :type="pw_toggle(new_password_show).type"
+                                />
                                 <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label text-md-right">確認新密碼</label>
                             <div class="col-md-8">
-                                <input type="password" class="form-control" style="width: 100%" autocomplete="off"
+                                <input type="password" class="form-control" style="width: 100%" autocomplete="off" maxlength="32"
                                        required autofocus
-                                       :class="$store.getters.disabled_class(new_password_disabled)"
+                                       :class="disabled_class(new_password_disabled)"
                                        v-model="new_password_confirmation"
-                                       v-on:input="ban_update_password" :type="$store.getters.pw_toggle(new_password_show).type">
+                                       v-on:input="ban_update_password" :type="pw_toggle(new_password_show).type">
                             </div>
-                            <div class="show-hide-toggle-button">
-                                <input type="checkbox" id="new_password_toggle_button"
-                                       v-on:click="new_password_toggle_button">
-                                <label for="new_password_toggle_button" :title="$store.getters.pw_toggle(new_password_show).title"
-                                       style="margin-bottom: 0;">Toggle</label>
-                            </div>
+                            <PasswordToggleButton
+                                :click_event="new_password_toggle_button"
+                                :show="new_password_show"
+                                :id_name="'new_password_toggle_button'"
+                            />
                         </div>
                         <button type="button" disabled class="btn btn-primary btn-block"
                                 :class="{ 'btn-loading':updating }"
@@ -56,7 +56,7 @@
                         </button>
                     </div>
 
-                    <CardFooter :error="error" :type="'alert-danger'"></CardFooter>
+                    <CardFooter :error="error" :type="'alert-danger'" />
                 </div>
             </div>
         </div>
@@ -65,7 +65,9 @@
 
 <script>
 import CardFooter from "../../components/CardFooter";
-import {mapState} from "vuex";
+import PasswordToggleButton from "../../components/PasswordToggleButton";
+
+import {mapGetters, mapMutations, mapState} from "vuex";
 
 export default {
     data: function () {
@@ -82,24 +84,29 @@ export default {
         }
     },
     components: {
-        CardFooter
+        CardFooter,
+        PasswordToggleButton
     },
-    created: function () {
-        document.title = "修改密碼";
+    computed: {
+        ...mapState([
+            'error',
+            'api_prefix'
+        ]),
+        ...mapGetters([
+            'between',
+            'pw_toggle',
+            'disabled_class'
+        ])
     },
-    computed: mapState([
-        'error',
-        'api_prefix'
-    ]),
     methods: {
+        ...mapMutations([
+            'show_error'
+        ]),
         old_password_toggle_button: function (e) {
             this.old_password_show = e.target.checked;
         },
         new_password_toggle_button: function (e) {
             this.new_password_show = e.target.checked;
-        },
-        between: function (int, from, to) {
-            return int >= from && int <= to;
         },
         ban_update_password: function () {
             this.old_password_disabled = !this.between(this.old_password.length, 8, 32);
@@ -121,7 +128,7 @@ export default {
                 if (res.status) {
                     this.$router.push({name: 'index'}).catch(() => {});
                 } else {
-                    this.$store.commit("show_error", res.message);
+                    this.show_error(res.message);
                     this.update_password_disabled = false;
                 }
             }).catch((err) => {
@@ -132,9 +139,10 @@ export default {
                     Object.keys(errors).forEach((error) => {
                         s += errors[error] + '\n';
                     });
-                    this.$store.commit("show_error", s);
+
+                    this.show_error(s);
                 } else {
-                    this.$store.commit("show_error", "發生錯誤: " + err.status);
+                    this.show_error(err.statusText);
                 }
                 this.update_password_disabled = false;
             }).finally(() => {

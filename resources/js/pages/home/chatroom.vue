@@ -34,7 +34,7 @@
 
 <script>
 import {msg} from '../../styles';
-import {mapState} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 var put_bottom = true;
 var messages_updated = false;
@@ -49,12 +49,16 @@ export default {
     components: {
         msg
     },
-    computed: mapState({
-        api_prefix: 'api_prefix',
-        cool_down: 'cool_down',
-        chat_ban: state => state.ban_type.chat,
-        create_msg_disabled: state => state.ban_type.chat.status
-    }),
+    computed: {
+        ...mapState([
+            'api_prefix',
+            'cool_down',
+        ]),
+        ...mapState({
+            chat_ban: state => state.ban_type.chat,
+            create_msg_disabled: state => state.ban_type.chat.status
+        })
+    },
     updated: function () {
         this.tbody_scroll_bottom();
     },
@@ -62,10 +66,7 @@ export default {
         this.tbody_scroll_position();
     },
     activated: function () {
-        document.title = "聊天室";
-
-        this.$store.commit('cool_down', 'chat');
-
+        this.cool_down_func('chat');
         this.get_chats();
         this.websocket_chat_event();
     },
@@ -73,6 +74,9 @@ export default {
         Echo.leave('public-chat-channel');
     },
     methods: {
+        ...mapMutations({
+            cool_down_func: 'cool_down'
+        }),
         tbody_scroll_bottom: function () {
             if (messages_updated) {
                 if (put_bottom) {
@@ -129,7 +133,7 @@ export default {
             }).then((res) => {
                 if (res.chat_time) {
                     this.cool_down.chat = res.chat_time;
-                    this.$store.commit('cool_down', 'chat');
+                    this.cool_down_func('chat');
                 } else {
                     this.chat_ban.status = false;
                 }

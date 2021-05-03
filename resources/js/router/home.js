@@ -35,7 +35,7 @@ const routes = [
         component: profile,
         name: 'profile',
         meta: {
-            title: '偶像個人資料',
+            title: '偶像資訊',
             KeepAlive: true
         }
     },

@@ -87,6 +87,7 @@ const store = new Vuex.Store({
         }
     },
     getters: {
+        characters_img_path: () => (img_file_name, img_type = 'jpg') => 'https://f000.backblazeb2.com/file/idolmoment/characters/'.concat(img_file_name).concat('.', img_type),
         disabled_class: () => status => status ? 'is-invalid' : 'is-valid',
         pw_toggle: () => show => show ? {title: '顯示密碼', type: 'text'} : {title: '隱藏密碼', type: 'password'},
         NumberFormat: () => (number, type = 'en-IN') => {
@@ -102,7 +103,8 @@ const store = new Vuex.Store({
                 default:
                     return new Intl.NumberFormat().format(number);
             }
-        }
+        },
+        between: () => (int, from, to) => int >= from && int <= to
     },
     actions: {
         load_my_profile: function ({commit}) {

@@ -1,11 +1,5 @@
 {{ Html::style( mix('css/app.css')) }}
-{{ Html::style( mix('css/vue-styles.css')) }}
-
-@if ($dark_theme === 'true')
-    {{ Html::style( asset('css/sweetalert2.dark.theme.css')) }}
-@else
-    {{ Html::style( asset('css/sweetalert2.default.theme.css')) }}
-@endif
+{{ Html::style( asset('css/sweetalert2.default.theme.css')) }}
 
 <style type="text/css">
     button {
@@ -23,34 +17,6 @@
         align-items: center;
         display: flex;
         margin-bottom: 6px;
-    }
-
-    .img-big {
-        margin: 0 auto;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        max-width: 160px;
-        background-color: rgb(255, 255, 255);
-    }
-
-    .img-small {
-        margin: 0 auto;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        max-width: 60px;
-        background-color: rgb(255, 255, 255);
-    }
-
-    .img-big > picture img {
-        height: 160px;
-        width: 160px;
-    }
-
-    .img-small > picture img {
-        height: 60px;
-        width: 60px;
     }
 
     .center {

@@ -379,6 +379,7 @@ class HomeController extends Controller
 
             if (!$self_game_info = GameInfo::query()->CurrentLoginUser()) {
                 return response()->json([
+                    'status' => 0,
                     'teetee_status' => 0,
                     'teetee_name' => null,
                     'message' => '更新失敗'
@@ -390,6 +391,7 @@ class HomeController extends Controller
             $teetee_info = $this->teetee_info($self_game_info);
 
             return response()->json([
+                'status' => 1,
                 'teetee_status' => $teetee_info['status'],
                 'teetee_name' => $teetee_info['teetee_name'],
                 'message' => '更新成功'
@@ -397,6 +399,7 @@ class HomeController extends Controller
 
         } catch (ValidationException $e) {
             return response()->json([
+                'status' => 0,
                 'teetee_status' => 0,
                 'teetee_name' => null,
                 'message' => '更新失敗，無效的暱稱格式'

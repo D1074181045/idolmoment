@@ -1,64 +1,70 @@
 <template>
-    <div class="col-md-8" v-on:keyup.enter="register_click">
-        <div class="card">
-            <div class="card-header">Register</div>
+    <div class="card" v-on:keyup.enter="register_click">
+        <div class="card-header">
+            Register
+            <LightSwitch />
+        </div>
 
-            <div class="card-body">
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-md-right">使用者名稱</label>
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label text-md-right">使用者名稱</label>
 
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" autocomplete="off" required autofocus
-                               :class="$store.getters.disabled_class(username_disabled)" v-on:input="ban_register"
-                               v-model="username"/>
-                        <div style="font-size: 12px;margin: 4px 8px;">請介於5到15字元之間</div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-md-right">密碼</label>
-
-                    <div class="col-md-6">
-                        <input type="password" class="form-control" autocomplete="off" required
-                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
-                               :type="$store.getters.pw_toggle(password_show).type" v-model="password"/>
-                        <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label text-md-right">確認密碼</label>
-
-                    <div class="col-md-6">
-                        <input type="password" class="form-control" autocomplete="off" required
-                               :class="$store.getters.disabled_class(password_disabled)" v-on:input="ban_register"
-                               :type="$store.getters.pw_toggle(password_show).type" v-model="password_confirmation"/>
-                    </div>
-                    <div class="show-hide-toggle-button">
-                        <input type="checkbox" id="password-toggle-button" v-on:click="password_toggle_button">
-                        <label for="password-toggle-button" :title="$store.getters.pw_toggle(password_show).title" style="margin-bottom: 0;">Toggle</label>
-                    </div>
-                </div>
-
-                <div class="form-group row mb-0">
-                    <div class="col-md-8 offset-md-4">
-                        <button id="register" name="register" type="button" disabled class="btn btn-primary"
-                                :class="{ 'btn-loading':registering }"
-                                :disabled="register_disabled" v-on:click="register_click" ref="register">註冊
-                        </button>
-                        <button id="back" name="back" type="button" class="btn btn-dark" v-on:click="back">返回</button>
-                    </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" autocomplete="off" required autofocus maxlength="15"
+                           :class="disabled_class(username_disabled)" v-on:input="ban_register"
+                           v-model="username"/>
+                    <div style="font-size: 12px;margin: 4px 8px;">請介於5到15字元之間</div>
                 </div>
             </div>
 
-            <CardFooter :error="error" :type="'alert-danger'"></CardFooter>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label text-md-right">密碼</label>
+
+                <div class="col-md-6">
+                    <input type="password" class="form-control" autocomplete="off" required maxlength="32"
+                           :class="disabled_class(password_disabled)" v-on:input="ban_register"
+                           :type="pw_toggle(password_show).type" v-model="password"/>
+                    <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label text-md-right">確認密碼</label>
+
+                <div class="col-md-6">
+                    <input type="password" class="form-control" autocomplete="off" required maxlength="32"
+                           :class="disabled_class(password_disabled)" v-on:input="ban_register"
+                           :type="pw_toggle(password_show).type" v-model="password_confirmation"/>
+                </div>
+
+                <PasswordToggleButton
+                    :click_event="password_toggle_button"
+                    :show="password_show"
+                    :id_name="'password_toggle_button'"
+                />
+            </div>
+
+            <div class="form-group row mb-0">
+                <div class="col-md-8 offset-md-4">
+                    <button id="register" name="register" type="button" disabled class="btn btn-primary"
+                            :class="{ 'btn-loading':registering }"
+                            :disabled="register_disabled" v-on:click="register_click" ref="register">註冊
+                    </button>
+                    <button id="back" name="back" type="button" class="btn btn-dark" v-on:click="back">返回</button>
+                </div>
+            </div>
         </div>
+
+        <CardFooter :error="error" :type="'alert-danger'" />
     </div>
 </template>
 
 <script>
 import CardFooter from "../../components/CardFooter";
-import {mapState} from "vuex";
+import LightSwitch from "../../components/LightSwitch";
+import PasswordToggleButton from "../../components/PasswordToggleButton";
+
+import {mapGetters, mapMutations, mapState} from "vuex";
 
 export default {
     data: function () {
@@ -74,21 +80,27 @@ export default {
         }
     },
     components: {
-        CardFooter
+        CardFooter,
+        LightSwitch,
+        PasswordToggleButton
     },
-    computed: mapState([
-        'error',
-        'api_prefix'
-    ]),
-    activated: function () {
-        document.title = "註冊";
+    computed: {
+        ...mapState([
+            'error',
+            'api_prefix'
+        ]),
+        ...mapGetters([
+            'between',
+            'pw_toggle',
+            'disabled_class'
+        ])
     },
     methods: {
+        ...mapMutations([
+            'show_error'
+        ]),
         password_toggle_button: function (e) {
             this.password_show = e.target.checked;
-        },
-        between: function (int, from, to) {
-            return int >= from && int <= to;
         },
         ban_register: function () {
             this.username_disabled = !this.between(this.username.length, 5, 15);
@@ -119,7 +131,7 @@ export default {
                     this.password_disabled = true;
                     this.$router.push({name: 'login'});
                 } else {
-                    this.$store.commit("show_error", res.message);
+                    this.show_error(res.message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -130,9 +142,9 @@ export default {
                         s += errors[error] + '\n';
                     });
 
-                    this.$store.commit("show_error", s);
+                    this.show_error(s);
                 } else {
-                    this.$store.commit("show_error", "發生錯誤: " + err.statusText);
+                    this.show_error("發生錯誤: " + err.statusText);
                 }
             }).finally(() => {
                 this.registering = false;
