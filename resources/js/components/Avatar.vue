@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .img-big {
     margin: 0 auto;
     text-align: center;

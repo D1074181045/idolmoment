@@ -23,38 +23,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/js/components/Avatar.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/LightSwitch.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/PasswordToggleButton.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/sass/elements/_buttons.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/vue-styles.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.home.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.home.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.user.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.user.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/vendor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/active-idol.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/active-idol.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Avatar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Avatar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/PasswordToggleButton.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/PasswordToggleButton.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/pages/home/chatroom.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/chatroom.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/create-profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/create-profile.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/profile.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/pages/home/rebirth.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/rebirth.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/user/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/user/login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/user/register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/user/register.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/router/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/router/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/router/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/router/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/header.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/script.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/script.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/sass/app.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/app.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/style.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/style.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/app.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/user/layouts/style.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/layouts/style.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.mix.js" afterDir="false" />
     </list>
@@ -305,7 +286,10 @@
       <workItem from="1619833729877" duration="29157000" />
       <workItem from="1619935690715" duration="30123000" />
       <workItem from="1620017523905" duration="6805000" />
-      <workItem from="1620037188034" duration="10108000" />
+      <workItem from="1620037188034" duration="10610000" />
+      <workItem from="1620052704086" duration="599000" />
+      <workItem from="1620116353603" duration="8255000" />
+      <workItem from="1620203707154" duration="7393000" />
     </task>
     <servers />
   </component>
@@ -373,10 +357,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="51" width="1403" height="702" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1616315542719" />
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1620044671875">
+    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1620211899152">
       <screen x="0" y="0" width="1364" height="728" />
     </state>
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1620044671875" />
+    <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1620211899152" />
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619801330896" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1619955425166">
       <screen x="0" y="0" width="1920" height="1040" />

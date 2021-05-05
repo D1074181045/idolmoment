@@ -174,17 +174,11 @@ table tbody {
     display: block;
     max-height: 500px;
     overflow-y: scroll;
-    -webkit-appearance: none;
 }
 
 table thead, tbody tr {
     display: table;
     width: 100%;
-    table-layout: fixed;
-}
-
-table tbody tr td {
-    word-break: break-all;
 }
 
 table thead {

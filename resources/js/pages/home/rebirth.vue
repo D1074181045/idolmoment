@@ -128,20 +128,24 @@ export default {
 .current-select {
     border: 3px solid var(--primary-bg-color);
     display: flex;
-    flex-direction: column;
+    -webkit-flex-direction: column;
+            flex-direction: column;
     height: 100%;
     padding: 2px 4px;
-    transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+            transition: all 0.2s ease 0s;
     cursor: default;
 }
 
 .not-select {
     border: 3px solid transparent;
     display: flex;
-    flex-direction: column;
+    -webkit-flex-direction: column;
+            flex-direction: column;
     height: 100%;
     padding: 2px 4px;
-    transition: all 0.2s ease 0s;
+    -webkit-transition: all 0.2s ease 0s;
+            transition: all 0.2s ease 0s;
     cursor: pointer;
 }
 

@@ -14,7 +14,8 @@
     }
 
     .setting {
-        align-items: center;
+        -webkit-align-items: center;
+                align-items: center;
         display: flex;
         margin-bottom: 6px;
     }
@@ -63,7 +64,8 @@
 
     .dark-swift-button {
         margin: 4px 32px;
-        border-radius: 20px;
+        -webkit-border-radius: 20px;
+                border-radius: 20px;
         float: right;
         cursor: pointer;
     }
@@ -84,18 +86,23 @@
         height: 33px;
         text-indent: -9999px;
         background-color: #f5f5f5;
-        background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg');
+        -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg');
+                background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg');
         background-position: 8px;
         background-repeat: no-repeat;
-        background-size: 18px 18px;
-        border-radius: 100px;
+        -webkit-background-size: 18px 18px;
+                background-size: 18px 18px;
+        -webkit-border-radius: 100px;
+                border-radius: 100px;
         cursor: pointer;
-        transition: all 0.2s ease 0s;
+        -webkit-transition: all 0.2s ease 0s;
+                transition: all 0.2s ease 0s;
     }
 
     .dark-swift-button > input:checked + label {
         background-color: #045667;
-        background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg');
+        -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg');
+                background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg');
     }
 </style>
 
