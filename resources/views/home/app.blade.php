@@ -22,6 +22,7 @@ $self_name_encrypt = Controller::UserNameEncrypt2($self_name);
 <body>
 <div id="app">
     @include('home.layouts.header')
+    <loading ref="loading"></loading>
     <div class="col-md-6 center" v-if="this.loaded">
         <keep-alive>
             <router-view v-if="$route.meta.KeepAlive" :key="$route.path"></router-view>

@@ -5,6 +5,7 @@ import store from '../store';
 import router from "../router/home";
 
 import LightSwitch from "../components/LightSwitch";
+import Loading from '../components/Loading'
 
 class vue_global {
     static variables() {
@@ -40,7 +41,8 @@ try {
     new Vue({
         el: '#app',
         components: {
-            lightswitch: LightSwitch
+            lightswitch: LightSwitch,
+            loading: Loading
         },
         store,
         data() {
@@ -164,6 +166,10 @@ try {
     });
 
     router.beforeEach((to, from, next) => {
+        router.app.$nextTick(() => {
+            router.app.$refs.loading.start();
+        })
+
         store.commit('error_clear');
 
         if (store.state.IsCreated) {
@@ -176,6 +182,12 @@ try {
                 next();
         }
     });
+
+    router.afterEach((to, from, next) => {
+        router.app.$nextTick(() => {
+            router.app.$refs.loading.finish();
+        })
+    })
 
 } catch (e) {
     console.log(e);

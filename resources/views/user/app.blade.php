@@ -10,6 +10,7 @@
 <body>
 <div id="app">
     @include('user.layouts.header')
+    <loading ref="loading"></loading>
     <div class="py-4">
         <div class="container">
             <div class="row justify-content-center">
