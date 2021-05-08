@@ -123,7 +123,8 @@ export default {
         ...mapState([
             'teetee_info',
             'api_prefix',
-            'profile'
+            'profile',
+            'loading'
         ]),
         ...mapState({
             name: state => state.profile.name,
@@ -140,6 +141,8 @@ export default {
             this.current_popularity = this.profile.popularity;
             this.page_num = 1;
             this.default_load();
+        } else {
+            this.loading.finish(true);
         }
     },
     methods: {

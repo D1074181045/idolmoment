@@ -88,7 +88,7 @@ export default {
         PasswordToggleButton
     },
     mounted() {
-        this.loading.finish();
+        this.loading.finish(true);
     },
     computed: {
         ...mapState([

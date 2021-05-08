@@ -51,7 +51,7 @@ export default {
         decrease: function (num) {
             this.percent = this.percent - Math.floor(num);
         },
-        finish: function (status) {
+        finish: function (status = null) {
             this.status = status;
             this.percent = 100;
             this.hide();
