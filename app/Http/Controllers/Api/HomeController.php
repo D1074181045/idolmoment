@@ -227,7 +227,13 @@ class HomeController extends Controller
      */
     public function get_chats() {
 
-        $chat_messages = ChatRoom::query()->Chat_info()->get();
+        $total_chat_messages = ChatRoom::query()->Chat_info();
+
+        $show_count = 100;
+        $skip_count = max($total_chat_messages->count() - $show_count, 0);
+
+        $chat_messages = $total_chat_messages->skip($skip_count)->take($show_count)->get();
+
         $this->UsersNameEncrypt($chat_messages);
 
         return response()->json([

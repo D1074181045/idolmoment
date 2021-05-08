@@ -118,6 +118,9 @@ export default {
                         created_at: chat_created_at
                     });
 
+                    if (this.chat_messages.length > 100)
+                        this.chat_messages.shift();
+
                     messages_updated = true;
                 });
         },
@@ -137,7 +140,7 @@ export default {
                 } else {
                     this.chat_ban.status = false;
                 }
-            }).catch((err) => {
+            }).catch(() => {
                 this.chat_ban.status = false;
             });
             this.message = "";

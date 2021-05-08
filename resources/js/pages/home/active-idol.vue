@@ -101,6 +101,7 @@
 import {mapState, mapGetters} from "vuex";
 
 import Avatar from "../../components/Avatar";
+import router from "../../router/home";
 
 export default {
     data: function () {

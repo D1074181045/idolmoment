@@ -10,10 +10,20 @@ try {
     require('../plugins/axios');
 
     router.beforeEach((to, from, next) => {
+        router.app.$nextTick(() => {
+            router.app.$refs.loading.start();
+        })
+
         document.title = to.meta.title;
         store.commit('error_clear');
         next();
     });
+
+    router.afterEach((to, from, next) => {
+        router.app.$nextTick(() => {
+            router.app.$refs.loading.finish(true);
+        })
+    })
 
     new Vue({
         el: '#app',
@@ -23,19 +33,6 @@ try {
         store,
         router
     });
-
-    router.beforeEach((to, from, next) => {
-        router.app.$nextTick(() => {
-            router.app.$refs.loading.start();
-        })
-        next();
-    });
-
-    router.afterEach((to, from, next) => {
-        router.app.$nextTick(() => {
-            router.app.$refs.loading.finish();
-        })
-    })
 
 } catch (e) {
     console.log(e);

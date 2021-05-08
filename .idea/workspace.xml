@@ -24,16 +24,19 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Events/ChatRoomEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/ChatRoomEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.home.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.home.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.user.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.user.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/manifest.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/manifest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/vendor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/app/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/app/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/LightSwitch.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/LightSwitch.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Loading.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Loading.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/active-idol.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/active-idol.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/chatroom.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/chatroom.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/store.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,6 +290,9 @@
       <workItem from="1620116353603" duration="8255000" />
       <workItem from="1620203707154" duration="7762000" />
       <workItem from="1620294490540" duration="4416000" />
+      <workItem from="1620395708434" duration="4064000" />
+      <workItem from="1620405783311" duration="4910000" />
+      <workItem from="1620445506209" duration="19003000" />
     </task>
     <servers />
   </component>

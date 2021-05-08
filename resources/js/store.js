@@ -32,7 +32,8 @@ const store = new Vuex.Store({
         teetee_info: null,
         IsCreated: false,
         api_prefix: '/api/',
-        prompt_count: 0
+        prompt_count: 0,
+        loading: null
     },
     mutations: {
         error_clear: function (state) {

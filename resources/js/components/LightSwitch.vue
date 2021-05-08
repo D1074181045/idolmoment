@@ -29,7 +29,7 @@ export default {
             if (link.length) {
                 let link_swal_style = link[link.length - 1];
 
-                if (link_swal_style.href.indexOf('sweetalert2') !== -1)
+                if (link_swal_style.href.includes('sweetalert2'))
                     link_swal_style.href = '/css/sweetalert2.'.concat(this.dark_theme ? 'dark' : 'default').concat('.theme.css');
             }
 

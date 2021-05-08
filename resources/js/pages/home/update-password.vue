@@ -87,10 +87,14 @@ export default {
         CardFooter,
         PasswordToggleButton
     },
+    mounted() {
+        this.loading.finish();
+    },
     computed: {
         ...mapState([
             'error',
-            'api_prefix'
+            'api_prefix',
+            'loading'
         ]),
         ...mapGetters([
             'between',

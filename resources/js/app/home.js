@@ -30,6 +30,33 @@ class vue_global {
 try {
     require('../plugins');
 
+    window.axios.interceptors.request.use(
+        function (config) {
+            router.app.$nextTick(() => {
+                router.app.$refs.loading.start();
+            })
+            return config;
+        },
+        function (error) {
+            return Promise.reject(error);
+        }
+    );
+
+    window.axios.interceptors.response.use(
+        function (response) {
+            router.app.$nextTick(() => {
+                router.app.$refs.loading.finish(true);
+            })
+            return response;
+        },
+        function (error) {
+            router.app.$nextTick(() => {
+                router.app.$refs.loading.finish(false);
+            })
+            return Promise.reject(error);
+        }
+    );
+
     vue_global.variables();
     vue_global.methods();
 
@@ -63,6 +90,9 @@ try {
                     this.danger_event();
                 }
             });
+        },
+        mounted() {
+            store.state.loading = this.$refs.loading;
         },
         methods:{
             ...mapActions([
@@ -141,13 +171,11 @@ try {
                     });
             },
             danger_event: function () {
-                let clear_prompt_msg = null;
-
                 Echo.private('danger-channel-'.concat(store.state.profile.name))
                     .listen('.danger-event', ({type, message}) => {
                         if (message) {
-                            if (this.prompt_msg)
-                                clearTimeout(clear_prompt_msg);
+                            if (this.clear_prompt_msg)
+                                clearTimeout(this.clear_prompt_msg);
 
                             this.prompt_type = type;
                             this.prompt_msg = message;
@@ -155,7 +183,7 @@ try {
                                 store.state.prompt_count++;
                             });
 
-                            clear_prompt_msg = setTimeout(() => {
+                            this.clear_prompt_msg = setTimeout(() => {
                                 this.prompt_msg = null;
                             }, 10000);
                         }
@@ -182,12 +210,6 @@ try {
                 next();
         }
     });
-
-    router.afterEach((to, from, next) => {
-        router.app.$nextTick(() => {
-            router.app.$refs.loading.finish();
-        })
-    })
 
 } catch (e) {
     console.log(e);

@@ -3,6 +3,7 @@
          :style="{
             width: `${percent}%`,
             opacity: show ? 1 : 0,
+            'background-color': status_color()
          }"
          class="progress"
     />
@@ -15,40 +16,55 @@ export default {
             percent: 0,
             show: false,
             duration: 3000,
+            status: null
         }
     },
     methods: {
         start: function () {
-            this.show = true
+            this.show = true;
 
             if (this._timer) {
-                clearInterval(this._timer)
-                this.percent = 0
+                clearInterval(this._timer);
+                this.percent = 0;
             }
 
-            this._cut = 10000 / Math.floor(this.duration)
+            this._cut = 10000 / Math.floor(this.duration);
 
             this._timer = setInterval(() => {
-                this.increase(this._cut * Math.random())
-                if (this.percent > 95) {
-                    this.finish()
-                }
-            }, 100)
+                if (this.percent > 95)
+                    this.decrease(this._cut * Math.random());
+                else
+                    this.increase(this._cut * Math.random());
+            }, 100);
+        },
+        status_color: function () {
+            if (this.status === null)
+                return '#ffe277';
+            else if (this.status)
+                return '#77ebff';
+            else
+                return '#f65353';
         },
         increase: function (num) {
-            this.percent = this.percent + Math.floor(num)
+            this.percent = this.percent + Math.floor(num);
         },
-        finish: function () {
-            this.percent = 100
-            this.hide()
+        decrease: function (num) {
+            this.percent = this.percent - Math.floor(num);
+        },
+        finish: function (status) {
+            this.status = status;
+            this.percent = 100;
+            this.hide();
         },
         hide: function () {
             clearInterval(this._timer)
-            this._timer = null
+            this._timer = null;
+
             setTimeout(() => {
-                this.show = false
+                this.show = false;
                 setTimeout(() => {
-                    this.percent = 0
+                    this.status = null;
+                    this.percent = 0;
                 }, 200)
             }, 500)
         }
