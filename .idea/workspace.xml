@@ -23,13 +23,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Models/Like.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_05_24_142526_create_like_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/Like.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ChatRoom.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ChatRoom.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/GameInfo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/GameInfo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/OwnCharacter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OwnCharacter.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.home.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.home.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.user.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.user.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/Loading.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Loading.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/active-idol.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/active-idol.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +58,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="163a7e6e-27bc-4163-a44d-fe526aa52e1b" />
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/phpunit/php-timer" />
@@ -190,19 +199,19 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\pages" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\app" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\plugins" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\pages" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\app" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\plugins" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
     </key>
   </component>
   <component name="RunManager">
@@ -285,7 +294,18 @@
       <workItem from="1620294490540" duration="4416000" />
       <workItem from="1620395708434" duration="4064000" />
       <workItem from="1620405783311" duration="4910000" />
-      <workItem from="1620445506209" duration="20749000" />
+      <workItem from="1620445506209" duration="21465000" />
+      <workItem from="1620542227709" duration="543000" />
+      <workItem from="1620542884499" duration="118000" />
+      <workItem from="1620730878841" duration="1790000" />
+      <workItem from="1621255951953" duration="643000" />
+      <workItem from="1621300846810" duration="17000" />
+      <workItem from="1621300926119" duration="1996000" />
+      <workItem from="1621316562828" duration="223000" />
+      <workItem from="1621345494985" duration="1388000" />
+      <workItem from="1621523977958" duration="257000" />
+      <workItem from="1621829799058" duration="638000" />
+      <workItem from="1621836875057" duration="32955000" />
     </task>
     <servers />
   </component>
@@ -317,10 +337,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="653" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1618721115556" />
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617968378952">
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1621859996034">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1617968378952" />
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1621859996034" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1616263372850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -353,16 +373,16 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="51" width="1403" height="702" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1616315542719" />
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1620295899970">
+    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1620730959710">
       <screen x="0" y="0" width="1364" height="728" />
     </state>
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1620295899970" />
+    <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1620730959710" />
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619801330896" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1619955425166">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1621871668297">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="443" y="158" width="672" height="475" key="search.everywhere.popup/0.0.1364.728@0.0.1364.728" timestamp="1619696599221" />
     <state x="520" y="187" width="789" height="562" key="search.everywhere.popup/0.0.1600.860@0.0.1600.860" timestamp="1616561226251" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619955425166" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1621871668297" />
   </component>
 </project>

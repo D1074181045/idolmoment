@@ -27,7 +27,16 @@
                     </tr>
                     <tr>
                         <th class="table-info">人氣</th>
-                        <td colspan="2">{{ NumberFormat(opposite_profile.popularity) }}</td>
+                        <td>{{ NumberFormat(opposite_profile.popularity) }}</td>
+                        <td>
+                            <Like :like_num="opposite_like_num"
+                                  :dislike_num="opposite_dislike_num"
+                                  :like_select="like_select"
+                                  :like_name="opposite_profile.name"
+                                  :can_seed="true"
+                                  @like_event="like_event"
+                            />
+                        </td>
                     </tr>
                     <tr>
                         <th class="table-info">名聲</th>
@@ -215,12 +224,16 @@
 import {msg} from '../../styles';
 import {mapGetters, mapMutations, mapState} from "vuex";
 import Avatar from "../../components/Avatar";
+import Like from "../../components/Like";
 
 export default {
     data: function () {
         return {
             information_list: [],
             next_name: null,
+            opposite_like_num: 0,
+            opposite_dislike_num: 0,
+            like_select: null,
             opposite_profile: {game_character: {}},
             profile_type: localStorage.profile_type ? localStorage.profile_type : 'details',
             opposite_loaded: false,
@@ -229,7 +242,8 @@ export default {
     },
     components: {
         msg,
-        Avatar
+        Avatar,
+        Like
     },
     computed: {
         ...mapState([
@@ -276,11 +290,14 @@ export default {
             const url = this.api_prefix.concat('profile/', this.$route.params.name);
 
             return axios.get(url)
-                .then(({status, opposite_profile}) => {
-                    if (status) {
+                .then((res) => {
+                    if (res.status) {
                         if (!this.title)
-                            document.title = this.title = "偶像資訊".concat('-', opposite_profile.nickname);
-                        this.opposite_profile = opposite_profile;
+                            document.title = this.title = "偶像資訊".concat('-', res.opposite_profile.nickname);
+                        this.opposite_like_num = res.opposite_like_num;
+                        this.opposite_dislike_num = res.opposite_dislike_num;
+                        this.like_select = res.like_select;
+                        this.opposite_profile = res.opposite_profile;
                         this.opposite_loaded = true;
                     }
                 })
@@ -352,6 +369,11 @@ export default {
             }).catch(() => {
                 this.operating_ban.status = false;
             });
+        },
+        like_event: function (val) {
+            this.opposite_like_num = val.opposite_like_num;
+            this.opposite_dislike_num = val.opposite_dislike_num;
+            this.like_select = val.like_select;
         }
     }
 }

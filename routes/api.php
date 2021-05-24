@@ -35,6 +35,7 @@ Route::middleware(['refresh.token'])->group(function(){
     Route::patch('/rebirth', [HomeController::class, 'rebirth'])->name('api.rebirth');
     Route::get('/change-page', [HomeController::class, 'change_page'])->name('api.change_page');
     Route::post('/create-message', [HomeController::class, 'create_message'])->name('api.create.message');
+    Route::post('/like', [HomeController::class, 'like'])->name('api.like');
 });
 
 /****************************************************************************************************/

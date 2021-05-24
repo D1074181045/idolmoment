@@ -21,10 +21,16 @@
                 </tr>
                 <tr>
                     <th class="table-info">人氣</th>
-                    <td colspan="2">{{ NumberFormat(profile.popularity) }}
+                    <td>{{ NumberFormat(profile.popularity) }}
                         <div style="display: inline" v-if="next_ability.popularity">
                             → {{ NumberFormat(next_ability.popularity) }}
                         </div>
+                    </td>
+                    <td>
+                        <Like :like_num="like_num"
+                              :dislike_num="dislike_num"
+                              :can_seed="false"
+                        />
                     </td>
                 </tr>
                 <tr>
@@ -155,6 +161,7 @@
 import {msg} from '../../styles';
 import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
 import Avatar from "../../components/Avatar";
+import Like from "../../components/Like";
 
 const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
 
@@ -170,10 +177,13 @@ export default {
     },
     components: {
         msg,
-        Avatar
+        Avatar,
+        Like
     },
     computed: {
         ...mapState([
+            "like_num",
+            'dislike_num',
             "profile",
             "teetee_info",
             "cool_down",

@@ -27,6 +27,8 @@ const store = new Vuex.Store({
             operating: {status: false, time: null},
             chat: {status: false, time: null},
         },
+        like_num: null,
+        dislike_num: null,
         profile: null,
         cool_down: null,
         teetee_info: null,
@@ -81,6 +83,8 @@ const store = new Vuex.Store({
             state.IsCreated = res.status;
 
             if (res.status) {
+                state.like_num = res.like_num;
+                state.dislike_num = res.dislike_num;
                 state.cool_down = res.cool_down;
                 state.profile = res.profile;
                 state.teetee_info = res.teetee_info;

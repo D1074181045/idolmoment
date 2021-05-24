@@ -13,6 +13,7 @@ use App\Models\ChatRoom;
 use App\Models\GameInfo;
 use App\Models\GameCharacter;
 use App\Models\CoolDown;
+use App\Models\Like;
 use App\Models\OwnCharacter;
 use Carbon\Carbon;
 use Exception;
@@ -20,6 +21,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class HomeController extends Controller
@@ -28,6 +30,7 @@ class HomeController extends Controller
 
     public string $opposite_name;
     public array $opposite_character_list = array();
+
 
     /**
      * 解鎖偶像
@@ -254,14 +257,30 @@ class HomeController extends Controller
         $opposite_game_info = GameInfo::query()->with(['GameCharacter' => function ($query) {
             $query->select('tc_name', 'en_name', 'img_file_name');
         }])->findOrFail($opposite_name, [
-            'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
+            'name', 'nickname', 'charm', 'max_vitality', 'energy', 'graduate', 'popularity',
             'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character'
         ]);
 
+        $like_num = $opposite_game_info->toLikeNum('like');
+        $dislike_num = $opposite_game_info->toLikeNum('dislike');
+
         $opposite_game_info['name'] = $name;
+
+        $like = Like::query()
+            ->where('from_name', Auth::user()->name)
+            ->where('to_name', $opposite_name)
+            ->first();
+
+        if ($like)
+            $like_select = $like->type;
+        else
+            $like_select = null;
 
         return response()->json([
             'status' => 1,
+            'like_select' => $like_select,
+            'opposite_like_num' => $like_num,
+            'opposite_dislike_num' => $dislike_num,
             'opposite_profile' => $opposite_game_info,
         ]);
     }
@@ -274,7 +293,9 @@ class HomeController extends Controller
     public function my_profile()
     {
         try {
-            if (!GameInfo::query()->UserGameInfoBuilt(Auth::user()->name)->count()) {
+            $name = Auth::user()->name;
+
+            if (!GameInfo::query()->UserGameInfoBuilt($name)->count()) {
                 return response()->json([
                     'status' => 0,
                     'message' => '尚未創建'
@@ -302,10 +323,16 @@ class HomeController extends Controller
             }
 
             $teetee_info = $this->teetee_info($self_game_info);
+
+            $like_num = $self_game_info->toLikeNum('like');
+            $dislike_num = $self_game_info->toLikeNum('dislike');
+
             $this->UserNameEncrypt($self_game_info);
 
             return response()->json([
                 'status' => 1,
+                'like_num' => $like_num,
+                'dislike_num' => $dislike_num,
                 'profile' => $self_game_info,
                 'teetee_info' => $teetee_info,
                 'cool_down' => $cool_down,
@@ -926,6 +953,69 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 1,
                 'chat_time' => $chat_time,
+                'message' => "送出成功"
+            ]);
+        } catch (ValidationException $e) {
+
+            return response()->json([
+                'status' => 0,
+                'message' => "送出失敗"
+            ]);
+        }
+    }
+
+    /**
+     * 對玩家評價
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function like(Request $request) {
+        try {
+            $this->validate($request, [
+                'type' => ['required'],
+                'opposite_name' => ['required'],
+            ]);
+
+            $type = $request->post('type');
+            $opposite_name = $this->UserNameDecrypt($request->post('opposite_name'));
+
+            $opposite_game_info = GameInfo::query()->find($opposite_name);
+            if (!$opposite_game_info) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => "送出失敗，未有該偶像"
+                ]);
+            }
+
+            switch ($type) {
+                case 'like':
+                case 'dislike':
+                    $like = Like::query()->CreateLike($opposite_name, $type);
+
+                    if (!$like->wasRecentlyCreated)
+                        $like->updateType($type);
+                    break;
+                case 'removelike':
+                    $type = null;
+
+                    Like::query()->DeleteLike($opposite_name);
+                    break;
+                default:
+                    return response()->json([
+                        'status' => 0,
+                        'message' => "送出失敗，無此選項"
+                    ]);
+            }
+
+            $like_num = $opposite_game_info->toLikeNum('like');
+            $dislike_num = $opposite_game_info->toLikeNum('dislike');
+
+            return response()->json([
+                'status' => 1,
+                'like_select' => $type,
+                'opposite_like_num' => $like_num,
+                'opposite_dislike_num' => $dislike_num,
                 'message' => "送出成功"
             ]);
         } catch (ValidationException $e) {
