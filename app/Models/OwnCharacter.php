@@ -14,12 +14,9 @@ class OwnCharacter extends Model
     use HasFactory;
 
     protected $table = 'own_characters';
-    protected $primaryKey = 'name';
-
-    public $keyType = 'string';
-    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'name',
         'character_name'
     ];

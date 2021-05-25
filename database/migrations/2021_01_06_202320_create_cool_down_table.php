@@ -21,7 +21,7 @@ class CreateCoolDownTable extends Migration
             $table->timestamp('operating')->nullable()->comment('操作冷卻時間');
             $table->timestamp('chat')->nullable()->comment('聊天冷卻時間');
 
-            $table->foreign('name')->on('game_info')->references('name')->onDelete('cascade');
+            $table->foreign('name')->on('game_info')->references('name')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });
