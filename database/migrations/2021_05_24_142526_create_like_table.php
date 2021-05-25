@@ -15,12 +15,13 @@ class CreateLikeTable extends Migration
     public function up()
     {
         Schema::create('like', function (Blueprint $table) {
+            $table->id();
             $table->string('from_name', 15);
             $table->string('to_name', 15);
 
             $table->enum('type', ['dislike', 'like']);
 
-            $table->primary(['from_name', 'to_name']);
+            $table->unique(['from_name', 'to_name']);
             $table->foreign('from_name')->on('users')->references('name')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('to_name')->on('users')->references('name')->onDelete('cascade')->onUpdate('cascade');
 

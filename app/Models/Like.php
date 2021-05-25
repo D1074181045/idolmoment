@@ -12,12 +12,9 @@ class Like extends Model
     use HasFactory;
 
     protected $table = 'like';
-    protected $primaryKey = 'from_name';
-
-    public $keyType = 'string';
-    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'from_name',
         'to_name',
         'type'
