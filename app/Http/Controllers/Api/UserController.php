@@ -98,12 +98,12 @@ class UserController extends Controller
         if (!$user->wasRecentlyCreated) {
             return response()->json([
                 'status' => 0,
-                'message' => "錯誤：使用者(" . $user->name . ")已註冊"
+                'message' => "錯誤：使用者 $user->name 已註冊"
             ]);
         } else {
             return response()->json([
                 'status' => 1,
-                'message' => "使用者(" . $user->name . ")註冊完成"
+                'message' => "使用者 $user->name 註冊完成"
             ]);
         }
     }
@@ -120,7 +120,7 @@ class UserController extends Controller
             ]);
         }
 
-        $user = Auth::user();
+        $user = $request->user();
 
         if (!Auth::guard('web')->validate(['name' => $user->name, 'password' => $old_password])) {
             return response()->json([
@@ -153,7 +153,7 @@ class UserController extends Controller
             ]);
         }
 
-        $self_name = Auth::user()->name;
+        $self_name = $request->user()->name;
         $nickname = $request->post('nickname');
 
         if (GameInfo::query()->where('nickname', $nickname)->count()) {

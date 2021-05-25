@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\ChatRoomEvent;
+use App\Events\PromptEvent;
+use App\Events\UnlockCharacterEvent;
+use App\Listeners\ChatRoomListener;
+use App\Listeners\LoginSuccessful;
+use App\Listeners\PromptListener;
+use App\Listeners\UnlockCharacterListener;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,17 +26,17 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\ChatRoomEvent' => [
-            'App\Listeners\ChatRoomListener',
+        ChatRoomEvent::class => [
+            ChatRoomListener::class,
         ],
-        'App\Events\UnlockCharacterEvent' => [
-            'App\Listeners\UnlockCharacterListener',
+        UnlockCharacterEvent::class => [
+            UnlockCharacterListener::class,
         ],
-        'App\Events\PromptEvent' => [
-            'App\Listeners\PromptListener',
+        PromptEvent::class => [
+            PromptListener::class,
         ],
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\LoginSuccessful',
+        Login::class => [
+            LoginSuccessful::class,
         ],
     ];
 

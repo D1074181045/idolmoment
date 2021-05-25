@@ -23,21 +23,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Models/Like.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2021_05_24_142526_create_like_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/Like.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ChatRoom.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ChatRoom.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/UserController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/GameInfo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/GameInfo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/OwnCharacter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OwnCharacter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.home.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.home.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.user.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.user.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/profile.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Like.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Like.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/EventServiceProvider.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,6 +297,10 @@
       <workItem from="1621523977958" duration="257000" />
       <workItem from="1621829799058" duration="638000" />
       <workItem from="1621836875057" duration="32955000" />
+      <workItem from="1621903456411" duration="1384000" />
+      <workItem from="1621905135481" duration="4298000" />
+      <workItem from="1621941606771" duration="209000" />
+      <workItem from="1621945620427" duration="2124000" />
     </task>
     <servers />
   </component>

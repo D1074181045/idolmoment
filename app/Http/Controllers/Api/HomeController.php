@@ -21,7 +21,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class HomeController extends Controller
@@ -65,7 +64,7 @@ class HomeController extends Controller
 
             return [
                 'status' => 1,
-                'message' => '解鎖新偶像：' . $tc_name
+                'message' => "解鎖新偶像： $tc_name"
             ];
 
         } catch (QueryException $e) {
@@ -248,10 +247,11 @@ class HomeController extends Controller
     /**
      * 對方的個人資料
      *
+     * @param Request $request
      * @param $name
      * @return JsonResponse
      */
-    public function profile($name) {
+    public function profile(Request $request, $name) {
         $opposite_name = $this->UserNameDecrypt($name);
 
         $opposite_game_info = GameInfo::query()->with(['GameCharacter' => function ($query) {
@@ -261,24 +261,15 @@ class HomeController extends Controller
             'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character'
         ]);
 
-        $like_num = $opposite_game_info->toLikeNum('like');
-        $dislike_num = $opposite_game_info->toLikeNum('dislike');
+        $like_selectedType = $opposite_game_info->SelectedLikeType($request->user()->name);
+        $like_num = $opposite_game_info->LikeTypeNum('like');
+        $dislike_num = $opposite_game_info->LikeTypeNum('dislike');
 
         $opposite_game_info['name'] = $name;
 
-        $like = Like::query()
-            ->where('from_name', Auth::user()->name)
-            ->where('to_name', $opposite_name)
-            ->first();
-
-        if ($like)
-            $like_select = $like->type;
-        else
-            $like_select = null;
-
         return response()->json([
             'status' => 1,
-            'like_select' => $like_select,
+            'like_select' => $like_selectedType,
             'opposite_like_num' => $like_num,
             'opposite_dislike_num' => $dislike_num,
             'opposite_profile' => $opposite_game_info,
@@ -288,12 +279,13 @@ class HomeController extends Controller
     /**
      * 獲得自己的遊戲資料
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function my_profile()
+    public function my_profile(Request $request)
     {
         try {
-            $name = Auth::user()->name;
+            $name = $request->user()->name;
 
             if (!GameInfo::query()->UserGameInfoBuilt($name)->count()) {
                 return response()->json([
@@ -324,8 +316,8 @@ class HomeController extends Controller
 
             $teetee_info = $this->teetee_info($self_game_info);
 
-            $like_num = $self_game_info->toLikeNum('like');
-            $dislike_num = $self_game_info->toLikeNum('dislike');
+            $like_num = $self_game_info->LikeTypeNum('like');
+            $dislike_num = $self_game_info->LikeTypeNum('dislike');
 
             $this->UserNameEncrypt($self_game_info);
 
@@ -369,9 +361,11 @@ class HomeController extends Controller
             $signature_time = $cool_down->signature;
 
             if ($signature_time > Carbon::now()) {
+                $remain_time = $this->remain_time($signature_time, Carbon::now());
+
                 return response()->json([
                     'status' => 0,
-                    'message' => '更新失敗，剩餘時間：' . $this->remain_time($signature_time, Carbon::now()) . '秒'
+                    'message' => "更新失敗，剩餘時間： $remain_time 秒"
                 ]);
             }
 
@@ -529,10 +523,12 @@ class HomeController extends Controller
         $activity_time = $cool_down->activity;
 
         if ($activity_time > Carbon::now()) {
+            $remain_time = $this->remain_time($activity_time, Carbon::now());
+
             return response()->json([
                 'status' => 0,
                 'activity_time' => $activity_time,
-                'message' => '活動進行失敗，剩餘時間：' . $this->remain_time($activity_time, Carbon::now()) . '秒'
+                'message' => "活動進行失敗，剩餘時間： $remain_time 秒"
             ]);
         }
 
@@ -649,10 +645,12 @@ class HomeController extends Controller
         $cooperation_time = $cool_down->cooperation;
 
         if ($cooperation_time > Carbon::now()) {
+            $remain_time = $this->remain_time($cooperation_time, Carbon::now());
+
             return response()->json([
                 'status' => 0,
                 'cooperation_time' => $cooperation_time,
-                'message' => '合作活動進行失敗，剩餘時間：' . $this->remain_time($cooperation_time, Carbon::now()) . '秒'
+                'message' => "合作活動進行失敗，剩餘時間： $remain_time 秒"
             ]);
         }
 
@@ -753,10 +751,12 @@ class HomeController extends Controller
         $operating_time = $cool_down->operating;
 
         if ($operating_time > Carbon::now()) {
+            $remain_time =  $this->remain_time($operating_time, Carbon::now());
+
             return response()->json([
                 'status' => 0,
                 'operating_time' => $operating_time,
-                'message' => '操作失敗，剩餘時間：' . $this->remain_time($operating_time, Carbon::now()) . '秒'
+                'message' => "操作失敗，剩餘時間： $remain_time 秒"
             ]);
         }
 
@@ -803,13 +803,13 @@ class HomeController extends Controller
                 break;
             case 'endorse':
                 $information = $operating->endorse();
-                event(new PromptEvent($opposite_name, 'success', '你受到偶像 ' . $self_game_info->nickname . ' 的讚賞了'));
+                event(new PromptEvent($opposite_name, 'success', "你受到偶像 $self_game_info->nickname 的讚賞了"));
 
                 $operating_time = $cool_down->update_operating(120);
                 break;
             case 'donate':
                 $information = $operating->donate();
-                event(new PromptEvent($opposite_name, 'success', '你收到偶像 ' . $self_game_info->nickname . ' 的斗內了'));
+                event(new PromptEvent($opposite_name, 'success', "你收到偶像 $self_game_info->nickname 的斗內了"));
 
                 $operating_time = $cool_down->update_operating(120);
                 break;
@@ -924,10 +924,11 @@ class HomeController extends Controller
             $chat_time = $cool_down->chat;
 
             if ($chat_time > Carbon::now()) {
+                $remain_time = $this->remain_time($chat_time, Carbon::now());
                 return response()->json([
                     'status' => 0,
                     'chat_time' => $chat_time,
-                    'message' => '送出失敗，剩餘時間：' . $this->remain_time($chat_time, Carbon::now()) . '秒'
+                    'message' => "送出失敗，剩餘時間： $remain_time 秒"
                 ]);
             }
 
@@ -1008,8 +1009,8 @@ class HomeController extends Controller
                     ]);
             }
 
-            $like_num = $opposite_game_info->toLikeNum('like');
-            $dislike_num = $opposite_game_info->toLikeNum('dislike');
+            $like_num = $opposite_game_info->LikeTypeNum('like');
+            $dislike_num = $opposite_game_info->LikeTypeNum('dislike');
 
             return response()->json([
                 'status' => 1,

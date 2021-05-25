@@ -93,13 +93,20 @@ class GameInfo extends Model
         ]);
     }
 
-    public function fromLike() {
-        return $this->hasMany('App\Models\Like', 'from_name', 'name');
-    }
-
-    public function toLikeNum($type) {
+    public function LikeTypeNum($type) {
         return $this->hasMany('App\Models\Like', 'to_name', 'name')
             ->where('type', $type)->count();
+    }
+
+    public function SelectedLikeType($from_name) {
+        $like = $this->hasMany('App\Models\Like', 'to_name', 'name')
+            ->where('from_name', $from_name)
+            ->first();
+
+        if ($like)
+            return $like->type;
+        else
+            return null;
     }
 
     /**
