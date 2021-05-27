@@ -12,9 +12,15 @@
 
 <script>
 import {msg} from '../styles';
+import {mapState} from "vuex";
 
 export default {
-    props: ['type', 'error'],
+    props: ['type'],
+    computed: {
+        ...mapState([
+            'error',
+        ]),
+    },
     components: {
         msg
     }

@@ -24,9 +24,12 @@
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/OwnCharacter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OwnCharacter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_16_204410_create_own_characters_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_16_204410_create_own_characters_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_06_202320_create_cool_down_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_06_202320_create_cool_down_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/CardFooter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/CardFooter.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/create-profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/create-profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/user/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/user/login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/user/register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/user/register.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,6 +169,7 @@
       <path value="$PROJECT_DIR$/vendor/namshi/jose" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/vendor/tymon/jwt-auth" />
+      <path value="$PROJECT_DIR$/vendor/laravel/ui" />
     </include_path>
   </component>
   <component name="ProjectId" id="1pynpXzS70vPVHAY6d1skwWyjGR" />
@@ -188,19 +192,19 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\pages" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\app" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\plugins" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
     </key>
   </component>
   <component name="RunManager">

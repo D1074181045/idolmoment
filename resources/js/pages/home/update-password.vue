@@ -56,7 +56,7 @@
                         </button>
                     </div>
 
-                    <CardFooter :error="error" :type="'alert-danger'" />
+                    <CardFooter :type="'alert-danger'" />
                 </div>
             </div>
         </div>
@@ -92,7 +92,6 @@ export default {
     },
     computed: {
         ...mapState([
-            'error',
             'api_prefix',
             'loading'
         ]),

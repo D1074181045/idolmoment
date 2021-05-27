@@ -246,7 +246,7 @@ export default {
         ]),
         set_teetee: function () {
             if (this.profile.teetee !== null) {
-                if (this.profile.teetee.length > 12 || !this.profile.teetee.match(legalityKey) && this.profile.teetee.length !== 0)
+                if (this.profile.teetee.length > 12 || !legalityKey.test(this.profile.teetee) && this.profile.teetee.length !== 0)
                     return;
             }
 
@@ -291,7 +291,7 @@ export default {
             if (this.signature_ban.time)
                 return;
 
-            this.signature_ban.status = this.class_signature_disabled = this.signature && !this.signature.match(legalityKey) || this.signature.length > 30;
+            this.signature_ban.status = this.class_signature_disabled = this.signature && !legalityKey.test(this.signature) || this.signature.length > 30;
         },
         do_activity: function (activity_type) {
             if (this.activity_disabled)
