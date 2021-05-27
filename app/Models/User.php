@@ -58,6 +58,23 @@ class User extends Authenticatable implements JWTSubject
         ]);
     }
 
+    public function scopeAlreadyEmail($query, $email) {
+        return $query->where('email', $email)->count() > 0;
+    }
+
+    public function scopeEmailVerified($query, $email) {
+        $email = $query->where('email', $email);
+
+        if ($email->count() > 0) {
+            $e_user = $email->first();
+            if ($e_user->hasVerifiedEmail())
+                return true;
+            $e_user->forceFill(['email' => null])->save();
+        }
+
+        return false;
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

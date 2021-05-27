@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,26 +17,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [UserController::class, 'login'])->name('api.login');
-Route::post('/register', [UserController::class, 'register'])->name('api.register');
+Route::get('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
 
 Route::middleware(['refresh.token'])->group(function(){
     Route::get('/profile/{name}', [HomeController::class, 'profile']);
     Route::get('/get-chats', [HomeController::class, 'get_chats']);
     Route::get('/my-profile', [HomeController::class, 'my_profile']);
-    Route::get('/own-character', [HomeController::class, 'own_character'])->name('home.own-character');
-    Route::patch('/update-password', [UserController::class, 'update_password'])->name('api.update.password');
-    Route::post('/store-profile', [UserController::class, 'store_profile'])->name('api.store.profile');
-    Route::post('/unlock-character', [HomeController::class, 'keyup_unlock_character'])->name('api.store.keyup_unlock_character');
-    Route::patch('/update-signature', [HomeController::class, 'update_signature'])->name('api.update.signature');
-    Route::patch('/update-teetee', [HomeController::class, 'update_teetee'])->name('api.update.teetee');
-    Route::patch('/activity', [HomeController::class, 'activity'])->name('api.activity');
-    Route::patch('/cooperation', [HomeController::class, 'cooperation'])->name('api.cooperation');
-    Route::patch('/operating', [HomeController::class, 'operating'])->name('api.operating');
-    Route::patch('/rebirth', [HomeController::class, 'rebirth'])->name('api.rebirth');
-    Route::get('/change-page', [HomeController::class, 'change_page'])->name('api.change_page');
-    Route::post('/create-message', [HomeController::class, 'create_message'])->name('api.create.message');
-    Route::post('/like', [HomeController::class, 'like'])->name('api.like');
+    Route::get('/own-character', [HomeController::class, 'own_character']);
+    Route::patch('/update-password', [UserController::class, 'update_password']);
+    Route::post('/store-profile', [UserController::class, 'store_profile']);
+    Route::post('/unlock-character', [HomeController::class, 'keyup_unlock_character']);
+    Route::patch('/update-signature', [HomeController::class, 'update_signature']);
+    Route::patch('/update-teetee', [HomeController::class, 'update_teetee']);
+    Route::patch('/activity', [HomeController::class, 'activity']);
+    Route::patch('/cooperation', [HomeController::class, 'cooperation']);
+    Route::patch('/operating', [HomeController::class, 'operating']);
+    Route::patch('/rebirth', [HomeController::class, 'rebirth']);
+    Route::get('/change-page', [HomeController::class, 'change_page']);
+    Route::post('/create-message', [HomeController::class, 'create_message']);
+    Route::post('/like', [HomeController::class, 'like']);
 });
+
+Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::post('email/send', [VerificationController::class, 'send']);
 
 /****************************************************************************************************/

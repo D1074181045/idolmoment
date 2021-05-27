@@ -8,6 +8,7 @@ import rebirth from '../pages/home/rebirth.vue';
 import chatroom from '../pages/home/chatroom.vue';
 import create_profile from '../pages/home/create-profile.vue';
 import update_password from '../pages/home/update-password.vue';
+import verify from '../pages/home/auth/verify';
 
 Vue.use(Router);
 
@@ -71,6 +72,14 @@ const routes = [
         name: 'update-password',
         meta: {
             title: '修改密碼',
+        }
+    },
+    {
+        path: '/email/verify',
+        component: verify,
+        name: 'verify',
+        meta: {
+            title: '郵件驗證',
         }
     }
 ];

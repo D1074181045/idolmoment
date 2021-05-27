@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Controller;
 use App\Models\GameInfo;
 use Illuminate\Http\Request;
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/create-profile', [UserController::class, 'create_profile'])->name('user.create.profile');
 });
 
+Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+
 Route::get('/{user}', [UserController::class, 'spa'])
     ->where('user', 'login|register')
     ->name('user');
@@ -35,6 +38,3 @@ Route::get('/{home}', [HomeController::class, 'spa'])
     ->where('home', '.*')
     ->middleware('auth.user')
     ->name('home');
-
-//->where('path', '^(?!api).*')
-
