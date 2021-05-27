@@ -23,10 +23,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95f0250e-8d97-4a96-b811-ee5347857077" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/js/pages/home/auth/verify.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/IdolMoment-Vue.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/IdolMoment-Vue.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/OwnCharacter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OwnCharacter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_16_204410_create_own_characters_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_16_204410_create_own_characters_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_06_202320_create_cool_down_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_06_202320_create_cool_down_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/VerificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/VerificationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/GameInfo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/GameInfo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/RouteServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RouteServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.home.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.home.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.user.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.user.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/manifest.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/manifest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/CardFooter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/CardFooter.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/create-profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/create-profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/home/update-password.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/user/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/user/login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/user/register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/user/register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/router/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/router/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/home/layouts/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home/layouts/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +64,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="Vue Single File Component" />
       </list>
     </option>
   </component>
@@ -89,48 +113,35 @@
       <path value="$PROJECT_DIR$/vendor/theseer/tokenizer" />
       <path value="$PROJECT_DIR$/vendor/phpoption/phpoption" />
       <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
-      <path value="$PROJECT_DIR$/vendor/opis/closure" />
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
-      <path value="$PROJECT_DIR$/vendor/nesbot/carbon" />
       <path value="$PROJECT_DIR$/vendor/brick/math" />
-      <path value="$PROJECT_DIR$/vendor/laravel/framework" />
       <path value="$PROJECT_DIR$/vendor/laravel/tinker" />
-      <path value="$PROJECT_DIR$/vendor/asm89/stack-cors" />
-      <path value="$PROJECT_DIR$/vendor/facade/flare-client-php" />
       <path value="$PROJECT_DIR$/vendor/facade/ignition-contracts" />
       <path value="$PROJECT_DIR$/vendor/hashids/hashids" />
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/psr/http-client" />
-      <path value="$PROJECT_DIR$/vendor/filp/whoops" />
-      <path value="$PROJECT_DIR$/vendor/facade/ignition" />
       <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
       <path value="$PROJECT_DIR$/vendor/psr/log" />
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
-      <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
-      <path value="$PROJECT_DIR$/vendor/league/commonmark" />
       <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/vendor/league/flysystem" />
       <path value="$PROJECT_DIR$/vendor/league/mime-type-detection" />
       <path value="$PROJECT_DIR$/vendor/symfony/var-dumper" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
-      <path value="$PROJECT_DIR$/vendor/symfony/http-kernel" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
-      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-iconv" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
       <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/vendor/symfony/console" />
       <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
-      <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/mime" />
-      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
       <path value="$PROJECT_DIR$/vendor/pusher/pusher-php-server" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
       <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
@@ -140,25 +151,17 @@
       <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
       <path value="$PROJECT_DIR$/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
-      <path value="$PROJECT_DIR$/vendor/symfony/http-client-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/routing" />
-      <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
       <path value="$PROJECT_DIR$/vendor/tijsverkoyen/css-to-inline-styles" />
       <path value="$PROJECT_DIR$/vendor/symfony/http-foundation" />
-      <path value="$PROJECT_DIR$/vendor/symfony/translation" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
-      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher" />
       <path value="$PROJECT_DIR$/vendor/symfony/css-selector" />
-      <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
       <path value="$PROJECT_DIR$/vendor/nunomaduro/collision" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
-      <path value="$PROJECT_DIR$/vendor/dnoegel/php-xdg-base-dir" />
       <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
       <path value="$PROJECT_DIR$/vendor/composer" />
-      <path value="$PROJECT_DIR$/vendor/paragonie/sodium_compat" />
       <path value="$PROJECT_DIR$/vendor/phar-io/version" />
       <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
-      <path value="$PROJECT_DIR$/vendor/fruitcake/laravel-cors" />
       <path value="$PROJECT_DIR$/vendor/fideloper/proxy" />
       <path value="$PROJECT_DIR$/vendor/vlucas/phpdotenv" />
       <path value="$PROJECT_DIR$/vendor/vinkla/hashids" />
@@ -166,6 +169,27 @@
       <path value="$PROJECT_DIR$/vendor/namshi/jose" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/vendor/tymon/jwt-auth" />
+      <path value="$PROJECT_DIR$/vendor/laravel/ui" />
+      <path value="$PROJECT_DIR$/vendor/symfony/http-client-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/http-kernel" />
+      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/opis/closure" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/vendor/nesbot/carbon" />
+      <path value="$PROJECT_DIR$/vendor/league/commonmark" />
+      <path value="$PROJECT_DIR$/vendor/filp/whoops" />
+      <path value="$PROJECT_DIR$/vendor/laravel/framework" />
+      <path value="$PROJECT_DIR$/vendor/facade/flare-client-php" />
+      <path value="$PROJECT_DIR$/vendor/facade/ignition" />
+      <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
+      <path value="$PROJECT_DIR$/vendor/asm89/stack-cors" />
+      <path value="$PROJECT_DIR$/vendor/fruitcake/laravel-cors" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/sodium_compat" />
     </include_path>
   </component>
   <component name="ProjectId" id="1pynpXzS70vPVHAY6d1skwWyjGR" />
@@ -176,7 +200,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/js/components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/routes" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -188,18 +212,18 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
-      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\user" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\pages" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\app" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\plugins" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\wamp64\www\IdolMoment-Vue\routes" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\app\Http\Other" />
+      <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js\components\home" />
       <recent name="D:\wamp64\www\IdolMoment-Vue\resources\js" />
     </key>
   </component>
@@ -300,6 +324,9 @@
       <workItem from="1621941606771" duration="209000" />
       <workItem from="1621945620427" duration="2124000" />
       <workItem from="1621955680546" duration="5837000" />
+      <workItem from="1622021016499" duration="2561000" />
+      <workItem from="1622032738843" duration="5307000" />
+      <workItem from="1622073250185" duration="21895000" />
     </task>
     <servers />
   </component>
@@ -331,10 +358,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="653" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1618721115556" />
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1621859996034">
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1622081657974">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1621859996034" />
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1622081657974" />
+    <state x="725" y="432" key="ComposerInitDialogKey" timestamp="1622037948457">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="725" y="432" key="ComposerInitDialogKey/0.0.1920.1040@0.0.1920.1040" timestamp="1622037948457" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1616263372850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -367,11 +398,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="51" width="1403" height="702" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1616315542719" />
-    <state x="438" y="168" width="672" height="677" key="run.anything.popup" timestamp="1620730959710">
-      <screen x="0" y="0" width="1364" height="728" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1622090122419">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="438" y="168" width="672" height="677" key="run.anything.popup/0.0.1364.728@0.0.1364.728" timestamp="1620730959710" />
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619801330896" />
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1622090122419" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1621871668297">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

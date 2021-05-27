@@ -34,7 +34,9 @@ class GameInfo extends Model
         'energy',
         'resistance',
         'charm',
-        'rebirth_counter'
+        'rebirth_counter',
+        'signature',
+        'teetee'
     ];
     /**
      * @var mixed
@@ -170,26 +172,29 @@ class GameInfo extends Model
     }
 
     public function update_teetee($teetee) {
-        $this->teetee = $teetee;
-        $this->save();
+        $this->update([
+            'teetee' => $teetee
+        ]);
     }
 
     public function update_signature($signature) {
-        $this->signature = $signature;
-        $this->save();
+        $this->update([
+            'signature' => $signature
+        ]);
     }
 
     public function rebirth($game_character) {
-        $this['use_character'] = $game_character->en_name;
-        $this['popularity'] = ceil($this['popularity'] / 10);
-        $this['reputation'] = ceil($this['reputation'] / 2);
-        $this['max_vitality'] = $game_character->vitality;
-        $this['current_vitality'] = $game_character->vitality;
-        $this['energy'] = $game_character->energy;
-        $this['resistance'] = $game_character->resistance;
-        $this['charm'] = $game_character->charm;
-        $this['rebirth_counter'] += 1;
-        $this['graduate'] = false;
-        $this->save();
+        $this->update([
+            'use_character' => $game_character->en_name,
+            'popularity' => ceil($this['popularity'] / 10),
+            'reputation' => ceil($this['reputation'] / 2),
+            'max_vitality' => $game_character->vitality,
+            'current_vitality' => $game_character->vitality,
+            'energy' => $game_character->energy,
+            'resistance' => $game_character->resistance,
+            'charm' => $game_character->charm,
+            'rebirth_counter' => $this->rebirth_counter + 1,
+            'graduate' => false
+        ]);
     }
 }
