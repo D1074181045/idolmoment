@@ -75,6 +75,16 @@ class User extends Authenticatable implements JWTSubject
         return false;
     }
 
+    public function scopeEmailVerifyStatus($query, $email) {
+        $email = $query->where('email', $email);
+
+        if ($email->count() > 0) {
+            return $email->first()->hasVerifiedEmail();
+        }
+
+        return false;
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

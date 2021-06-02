@@ -45,11 +45,15 @@ export default {
     },
     computed: {
         ...mapState([
-            'api_prefix'
+            'api_prefix',
+            'loading'
         ]),
         ...mapGetters([
             'disabled_class'
         ])
+    },
+    mounted() {
+        this.loading.finish(true);
     },
     methods: {
         ...mapMutations([

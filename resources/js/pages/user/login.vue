@@ -47,8 +47,11 @@
                             :disabled="login_disabled" v-on:click="login_click" ref="login">登入
                     </button>
                     <button type="button" class="btn btn-dark" v-on:click="to_register">前往註冊</button>
+                    <button type="button" class="btn btn-link" v-on:click="to_forgot_pwd">忘記密碼</button>
                 </div>
             </div>
+
+
         </div>
 
         <CardFooter :type="'alert-danger'" />
@@ -103,6 +106,9 @@ export default {
         },
         to_register: function () {
             this.$router.push({name: 'register'});
+        },
+        to_forgot_pwd: function () {
+            this.$router.push({name: 'forgot.password'});
         },
         login_click: function () {
             if (this.login_disabled)

@@ -8,7 +8,7 @@ import rebirth from '../pages/home/rebirth.vue';
 import chatroom from '../pages/home/chatroom.vue';
 import create_profile from '../pages/home/create-profile.vue';
 import update_password from '../pages/home/update-password.vue';
-import verify from '../pages/home/auth/verify';
+import verify from '../pages/auth/verify';
 
 Vue.use(Router);
 

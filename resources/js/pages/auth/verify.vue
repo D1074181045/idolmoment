@@ -14,6 +14,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-block" style="margin: 0 0;"
+                                :class="{ 'btn-loading':sending }"
                                 :disabled="send_disable" v-on:click="send">{{ send_btn_name }}</button>
                     </div>
                     <CardFooter :type="'alert-danger'" />
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import CardFooter from "../../../components/CardFooter";
+import CardFooter from "../../components/CardFooter";
 import {mapGetters, mapMutations, mapState} from "vuex";
 
 let legalityKey = new RegExp("^\\w{1,255}@[a-zA-Z0-9]{2,63}\\.[a-zA-Z]{2,63}(\\.[a-zA-Z]{2,63})*$");
@@ -36,7 +37,8 @@ export default {
             send_btn_name: '寄送',
             illegal: true,
             send_disable: true,
-            isCd: false
+            isCd: false,
+            sending: false
         }
     },
     components: {
@@ -62,12 +64,14 @@ export default {
         cd: function (second) {
             let _second = second;
             this.isCd = true;
+            this.sending = false;
+
+            this.send_btn_name = '再次寄送還需 ' + (_second--).toString() + ' 秒';
             let cd = setInterval(() => {
                 this.send_btn_name = '再次寄送還需 ' + (_second--).toString() + ' 秒';
                 if (_second === 0) {
                     this.send_btn_name = '再次寄送';
-                    this.send_disable = false;
-                    this.isCd = false;
+                    this.send_disable = this.isCd = false;
                     this.check_email();
                     clearInterval(cd);
                 }
@@ -78,7 +82,7 @@ export default {
                 return
 
             let url = this.api_prefix.concat('email/send')
-            this.send_disable = true;
+            this.send_disable = this.sending = true;
 
             axios.post(url, {
                 email: this.email
@@ -86,8 +90,19 @@ export default {
                 if (res.status !== 0)
                     this.cd(30);
             }).catch((err) => {
-                this.show_error(err.data.message);
-                this.send_disable = false;
+                if (err.status === 422) {
+                    let s = "";
+                    let errors = err.data.errors;
+
+                    Object.keys(errors).forEach((error) => {
+                        s += errors[error] + '\n';
+                    });
+
+                    this.show_error(s);
+                } else {
+                    this.show_error("發生錯誤: " + err.statusText);
+                }
+                this.send_disable = this.sending = false;
             })
         }
     }

@@ -345,7 +345,7 @@ export default {
             const url = this.api_prefix.concat('operating');
             this.operating_ban.status = true;
 
-            axios.patch(url, {
+            axios.post(url, {
                 opposite_name: this.$route.params.name,
                 operating_type: type,
             }).then((res) => {

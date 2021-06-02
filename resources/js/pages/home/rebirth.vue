@@ -103,7 +103,7 @@ export default {
 
             const url = this.api_prefix.concat('rebirth');
 
-            axios.patch(url, {
+            axios.post(url, {
                 character_name: this.selected_character,
             }).then((res) => {
                 if (res.status) {

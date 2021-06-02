@@ -3,6 +3,8 @@ import Router from "vue-router";
 
 import login from '../pages/user/login.vue';
 import register from '../pages/user/register.vue';
+import email from '../pages/auth/password/email.vue';
+import reset from '../pages/auth/password/reset.vue';
 
 Vue.use(Router);
 
@@ -21,6 +23,22 @@ const routes = [
         name: 'register',
         meta: {
             title: '註冊',
+        }
+    },
+    {
+        path: '/password/reset',
+        component: email,
+        name: 'forgot.password',
+        meta: {
+            title: '忘記密碼',
+        }
+    },
+    {
+        path: '/password/reset/:token',
+        component: reset,
+        name: 'reset.password',
+        meta: {
+            title: '重設密碼',
         }
     }
 ];

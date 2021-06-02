@@ -254,7 +254,7 @@ export default {
 
             this.teetee_updating = true;
 
-            axios.patch(url, {
+            axios.post(url, {
                 teetee: this.teetee,
             }).then((res) => {
                 if (res.status) {
@@ -273,7 +273,7 @@ export default {
             const url = this.api_prefix.concat('update-signature');
             this.signature_ban.status = true;
 
-            axios.patch(url, {
+            axios.post(url, {
                 signature: this.signature
             }).then((res) => {
                 if (res.signature_time) {
@@ -300,7 +300,7 @@ export default {
             const url = this.api_prefix.concat('activity');
             this.activity_ban.status = true;
 
-            axios.patch(url, {
+            axios.post(url, {
                 activity_type: activity_type,
             }).then((res) => {
                 if (res.activity_time) {
@@ -327,7 +327,7 @@ export default {
             const url = this.api_prefix.concat('cooperation');
             this.cooperation_ban.status = true;
 
-            axios.patch(url, {
+            axios.post(url, {
                 cooperation_type: cooperation_type,
             }).then((res) => {
                 if (res.cooperation_time) {

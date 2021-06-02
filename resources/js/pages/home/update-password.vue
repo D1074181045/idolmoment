@@ -123,7 +123,7 @@ export default {
             this.updating = true;
             const url = this.api_prefix.concat('update-password');
 
-            axios.patch(url, {
+            axios.post(url, {
                 old_password: this.old_password,
                 new_password: this.new_password,
                 new_password_confirmation: this.new_password_confirmation,

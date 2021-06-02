@@ -1,19 +1,16 @@
 <template>
-    <div class="card" v-on:keyup.enter="register_click">
+    <div class="card">
         <div class="card-header">
-            Register
+            重設密碼
             <LightSwitch />
         </div>
 
         <div class="card-body">
             <div class="form-group row">
-                <label class="col-md-4 col-form-label text-md-right">使用者名稱</label>
-
+                <label class="col-md-4 col-form-label text-md-right">電子郵件</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" autocomplete="off" required autofocus maxlength="15"
-                           :class="disabled_class(username_disabled)" v-on:input="ban_register"
-                           v-model="username"/>
-                    <div style="font-size: 12px;margin: 4px 8px;">請介於5到15字元之間</div>
+                    <input type="text" class="form-control" autocomplete="off" required autofocus disabled
+                            :value="this.email"/>
                 </div>
             </div>
 
@@ -22,8 +19,9 @@
 
                 <div class="col-md-6">
                     <input type="password" class="form-control" autocomplete="off" required maxlength="32"
-                           :class="disabled_class(password_disabled)" v-on:input="ban_register"
-                           :type="pw_toggle(password_show).type" v-model="password"/>
+                           :class="disabled_class(password_disabled)" v-model="password"
+                           :type="pw_toggle(password_show).type" v-on:input="ban"
+                           />
                     <div style="font-size: 12px;margin: 4px 8px;">請介於8到32字元之間</div>
                 </div>
             </div>
@@ -33,8 +31,9 @@
 
                 <div class="col-md-6">
                     <input type="password" class="form-control" autocomplete="off" required maxlength="32"
-                           :class="disabled_class(password_disabled)" v-on:input="ban_register"
-                           :type="pw_toggle(password_show).type" v-model="password_confirmation"/>
+                           :class="disabled_class(password_disabled)" v-model="password_confirmation"
+                           :type="pw_toggle(password_show).type" v-on:input="ban"
+                           />
                 </div>
 
                 <PasswordToggleButton
@@ -46,11 +45,11 @@
 
             <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
-                    <button id="register" name="register" type="button" disabled class="btn btn-primary"
-                            :class="{ 'btn-loading':registering }"
-                            :disabled="register_disabled" v-on:click="register_click" ref="register">註冊
+                    <button type="button" disabled class="btn btn-primary"
+                            :class="{ 'btn-loading':sending }"
+                            v-on:click="send_reset_pwd" :disabled="send_reset_pwd_disabled"
+                            >重設密碼
                     </button>
-                    <button type="button" class="btn btn-dark" v-on:click="back">返回</button>
                 </div>
             </div>
         </div>
@@ -60,23 +59,23 @@
 </template>
 
 <script>
-import CardFooter from "../../components/CardFooter";
-import LightSwitch from "../../components/LightSwitch";
-import PasswordToggleButton from "../../components/PasswordToggleButton";
+import CardFooter from "../../../components/CardFooter";
+import LightSwitch from "../../../components/LightSwitch";
+import PasswordToggleButton from "../../../components/PasswordToggleButton";
 
 import {mapGetters, mapMutations, mapState} from "vuex";
 
 export default {
     data: function () {
         return {
-            username: "",
+            token: null,
+            email: "",
             password: "",
             password_confirmation: "",
             password_show: false,
-            username_disabled: true,
             password_disabled: true,
-            register_disabled: true,
-            registering: false
+            send_reset_pwd_disabled: true,
+            sending: false
         }
     },
     components: {
@@ -94,6 +93,11 @@ export default {
             'disabled_class'
         ])
     },
+    mounted() {
+        let route = this.$route;
+        this.email = route.query.email;
+        this.token = route.params.token;
+    },
     methods: {
         ...mapMutations([
             'show_error'
@@ -101,36 +105,28 @@ export default {
         password_toggle_button: function (e) {
             this.password_show = e.target.checked;
         },
-        ban_register: function () {
-            this.username_disabled = !this.between(this.username.length, 5, 15);
+        ban: function () {
             this.password_disabled = this.password !== this.password_confirmation || !this.between(this.password.length, 8, 32);
-            this.register_disabled = this.username_disabled || this.password_disabled;
+            this.send_reset_pwd_disabled = this.password_disabled;
         },
-        back: function () {
-            this.$router.push({name: 'login'});
-        },
-        register_click: function () {
-            if (this.register_disabled)
+        send_reset_pwd: function () {
+            if (this.send_reset_pwd_disabled)
                 return
 
-            this.registering = true;
-            const url = this.api_prefix.concat('register');
-            this.$refs.register.focus();
+            let url = this.api_prefix.concat('password/reset')
+            this.send_reset_pwd_disabled = this.sending = true;
 
             axios.post(url, {
-                username: this.username,
+                token : this.token,
+                email: this.email,
                 password: this.password,
                 password_confirmation: this.password_confirmation
             }).then((res) => {
-                if (res.status) {
-                    this.username = "";
-                    this.password = "";
-                    this.password_confirmation = "";
-                    this.username_disabled = true;
-                    this.password_disabled = true;
+                if (res.status !== 0)
                     this.$router.push({name: 'login'});
-                } else {
+                else {
                     this.show_error(res.message);
+                    this.send_reset_pwd_disabled = false;
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -145,10 +141,11 @@ export default {
                 } else {
                     this.show_error("發生錯誤: " + err.statusText);
                 }
+                this.send_reset_pwd_disabled = false;
             }).finally(() => {
-                this.registering = false;
-            });
-        },
+                this.sending = false;
+            })
+        }
     }
 }
 </script>
