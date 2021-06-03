@@ -40,7 +40,7 @@ class HomeController extends Controller
      */
     public function unlock_character($character_name, $isSelf = true)
     {
-        $username = $isSelf ? Auth::user()->name :  $this->opposite_name;
+        $username = $isSelf ? Auth::user()->name : $this->opposite_name;
 
         try {
             $Character = OwnCharacter::query()->BuildOwnCharacter([
@@ -139,7 +139,8 @@ class HomeController extends Controller
      * @param bool $IsSelf
      * @return void
      */
-    public function ability_upgrade_unlock_character($game_info, $IsSelf = true) {
+    public function ability_upgrade_unlock_character($game_info, $IsSelf = true)
+    {
         if (GameInfo::query()->orderByDesc('popularity')->first()->nickname === $game_info->nickname) // 人氣第一名
             $this->unlock_character("Kiryu Coco", $IsSelf);
 
@@ -227,7 +228,8 @@ class HomeController extends Controller
      *
      * @return JsonResponse
      */
-    public function get_chats() {
+    public function get_chats()
+    {
 
         $total_chat_messages = ChatRoom::query()->Chat_info();
 
@@ -251,7 +253,8 @@ class HomeController extends Controller
      * @param $name
      * @return JsonResponse
      */
-    public function profile(Request $request, $name) {
+    public function profile(Request $request, $name)
+    {
         $opposite_name = $this->UserNameDecrypt($name);
 
         $opposite_game_info = GameInfo::query()->with(['GameCharacter' => function ($query) {
@@ -284,58 +287,50 @@ class HomeController extends Controller
      */
     public function my_profile(Request $request)
     {
-        try {
-            $name = $request->user()->name;
+        $name = $request->user()->name;
 
-            if (!GameInfo::query()->UserGameInfoBuilt($name)->count()) {
-                return response()->json([
-                    'status' => 0,
-                    'message' => '尚未創建'
-                ]);
-            }
-
-            $cool_down = CoolDown::query()->select('signature', 'activity', 'cooperation', 'chat', 'operating')->CurrentLoginUser();
-            if (!$cool_down) {
-                return response()->json([
-                    'status' => 0
-                ]);
-            }
-
-            $self_game_info = GameInfo::query()
-                ->select('name', 'nickname', 'charm', 'max_vitality', 'current_vitality', 'energy', 'graduate',
-                        'popularity', 'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character')
-                ->with(['GameCharacter' => function ($query) {
-                    $query->select('tc_name', 'en_name', 'img_file_name');
-                }])->CurrentLoginUser();
-
-            if (!$self_game_info) {
-                return response()->json([
-                    'status' => 0
-                ]);
-            }
-
-            $teetee_info = $this->teetee_info($self_game_info);
-
-            $like_num = $self_game_info->LikeTypeNum('like');
-            $dislike_num = $self_game_info->LikeTypeNum('dislike');
-
-            $this->UserNameEncrypt($self_game_info);
-
-            return response()->json([
-                'status' => 1,
-                'like_num' => $like_num,
-                'dislike_num' => $dislike_num,
-                'profile' => $self_game_info,
-                'teetee_info' => $teetee_info,
-                'cool_down' => $cool_down,
-            ]);
-
-        } catch (ValidationException $e) {
+        if (!GameInfo::query()->UserGameInfoBuilt($name)->count()) {
             return response()->json([
                 'status' => 0,
-                'message' => '更新失敗，簽名超過30字元或有非法字元'
+                'message' => '尚未創建'
             ]);
         }
+
+        $cool_down = CoolDown::query()->select('signature', 'activity', 'cooperation', 'chat', 'operating')->CurrentLoginUser();
+        if (!$cool_down) {
+            return response()->json([
+                'status' => 0
+            ]);
+        }
+
+        $self_game_info = GameInfo::query()
+            ->select('name', 'nickname', 'charm', 'max_vitality', 'current_vitality', 'energy', 'graduate',
+                'popularity', 'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character')
+            ->with(['GameCharacter' => function ($query) {
+                $query->select('tc_name', 'en_name', 'img_file_name');
+            }])->CurrentLoginUser();
+
+        if (!$self_game_info) {
+            return response()->json([
+                'status' => 0
+            ]);
+        }
+
+        $teetee_info = $this->teetee_info($self_game_info);
+
+        $like_num = $self_game_info->LikeTypeNum('like');
+        $dislike_num = $self_game_info->LikeTypeNum('dislike');
+
+        $this->UserNameEncrypt($self_game_info);
+
+        return response()->json([
+            'status' => 1,
+            'like_num' => $like_num,
+            'dislike_num' => $dislike_num,
+            'profile' => $self_game_info,
+            'teetee_info' => $teetee_info,
+            'cool_down' => $cool_down,
+        ]);
     }
 
     /**
@@ -355,7 +350,7 @@ class HomeController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => '更新失敗'
-                ]);
+                ], 400);
             }
 
             $signature_time = $cool_down->signature;
@@ -365,8 +360,9 @@ class HomeController extends Controller
 
                 return response()->json([
                     'status' => 0,
+                    'signature_time' => $signature_time,
                     'message' => "更新失敗，剩餘時間： $remain_time 秒"
-                ]);
+                ], 400);
             }
 
             $signature = $request->post('signature');
@@ -387,7 +383,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '更新失敗，簽名超過30字元或有非法字元'
-            ]);
+            ], 400);
         }
     }
 
@@ -409,8 +405,9 @@ class HomeController extends Controller
                     'status' => 0,
                     'teetee_status' => 0,
                     'teetee_name' => null,
+                    'teetee_graduate' => null,
                     'message' => '更新失敗'
-                ]);
+                ], 400);
             }
 
             $self_game_info->update_teetee($request->post('teetee'));
@@ -419,8 +416,9 @@ class HomeController extends Controller
 
             return response()->json([
                 'status' => 1,
-                'teetee_status' => $teetee_info['status'],
+                'teetee_status' => $teetee_info['teetee_status'],
                 'teetee_name' => $teetee_info['teetee_name'],
+                'teetee_graduate' => $teetee_info['teetee_graduate'],
                 'message' => '更新成功'
             ]);
 
@@ -429,8 +427,9 @@ class HomeController extends Controller
                 'status' => 0,
                 'teetee_status' => 0,
                 'teetee_name' => null,
+                'teetee_graduate' => null,
                 'message' => '更新失敗，無效的暱稱格式'
-            ]);
+            ], 400);
         }
     }
 
@@ -451,7 +450,7 @@ class HomeController extends Controller
                     'total_pages' => 0,
                     'max_popularity' => 0,
                     'data' => ""
-                ]);
+                ], 400);
             }
 
             if ($search_name = $request->get('search_name')) {
@@ -500,7 +499,7 @@ class HomeController extends Controller
                 'total_pages' => 0,
                 'max_popularity' => 0,
                 'idol_list' => ""
-            ]);
+            ], 400);
 
         }
     }
@@ -517,7 +516,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '活動進行失敗'
-            ]);
+            ], 400);
         }
 
         $activity_time = $cool_down->activity;
@@ -529,7 +528,7 @@ class HomeController extends Controller
                 'status' => 0,
                 'activity_time' => $activity_time,
                 'message' => "活動進行失敗，剩餘時間： $remain_time 秒"
-            ]);
+            ], 400);
         }
 
         $self_game_info = $cool_down->GameInfo;
@@ -538,7 +537,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '活動進行失敗，你已畢業'
-            ]);
+            ], 400);
         }
 
         $activity = new activity($self_game_info);
@@ -583,7 +582,7 @@ class HomeController extends Controller
             case 'do-good-things':
                 $activity->do_good_things();
 
-                switch ($self_game_info->use_character){
+                switch ($self_game_info->use_character) {
                     case 'Amane Kanata':
                         $this->DrawCharacter(['Tokoyami Towa'], rand(0, 5));
                         break;
@@ -605,7 +604,7 @@ class HomeController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => '活動進行失敗，無此活動'
-                ]);
+                ], 400);
         }
 
         unset($activity);
@@ -634,12 +633,13 @@ class HomeController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function cooperation(Request $request) {
+    public function cooperation(Request $request)
+    {
         if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
             return response()->json([
                 'status' => 0,
                 'message' => '合作活動進行失敗'
-            ]);
+            ], 400);
         }
 
         $cooperation_time = $cool_down->cooperation;
@@ -651,7 +651,7 @@ class HomeController extends Controller
                 'status' => 0,
                 'cooperation_time' => $cooperation_time,
                 'message' => "合作活動進行失敗，剩餘時間： $remain_time 秒"
-            ]);
+            ], 400);
         }
 
         $self_game_info = $cool_down->GameInfo;
@@ -660,23 +660,23 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '合作活動進行失敗，你已畢業'
-            ]);
+            ], 400);
         }
 
         $teetee_info = $this->teetee_info($self_game_info);
 
-        if (!$teetee_info['status']) {
+        if (!$teetee_info['teetee_status']) {
             return response()->json([
                 'status' => 0,
                 'message' => '你沒有貼貼夥伴，無法進行合作活動'
-            ]);
+            ], 400);
         }
 
         if ($teetee_info['teetee_graduate']) {
             return response()->json([
                 'status' => 0,
                 'message' => '你的貼貼夥伴已畢業'
-            ]);
+            ], 400);
         }
 
         $this->opposite_name = $this->UserNameDecrypt($teetee_info['teetee_name']);
@@ -699,7 +699,7 @@ class HomeController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => '合作活動進行失敗，無此活動'
-                ]);
+                ], 400);
         }
 
         unset($cooperation);
@@ -735,7 +735,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '操作失敗'
-            ]);
+            ], 400);
         }
 
         $opposite_name = $request->post('opposite_name');
@@ -745,19 +745,19 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '操作失敗，你已畢業'
-            ]);
+            ], 400);
         }
 
         $operating_time = $cool_down->operating;
 
         if ($operating_time > Carbon::now()) {
-            $remain_time =  $this->remain_time($operating_time, Carbon::now());
+            $remain_time = $this->remain_time($operating_time, Carbon::now());
 
             return response()->json([
                 'status' => 0,
                 'operating_time' => $operating_time,
                 'message' => "操作失敗，剩餘時間： $remain_time 秒"
-            ]);
+            ], 400);
         }
 
         $this->opposite_name = $opposite_name_decrypt = $this->UserNameDecrypt($opposite_name);
@@ -768,7 +768,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => '操作失敗，對方已畢業'
-            ]);
+            ], 400);
         }
 
         $self_teetee_name = $this->teetee_info($self_game_info)['teetee_name'];
@@ -780,7 +780,7 @@ class HomeController extends Controller
                     return response()->json([
                         'status' => 0,
                         'message' => '不能寄刀片給你的貼貼'
-                    ]);
+                    ], 400);
                 }
 
                 $information = $operating->send_blade();
@@ -793,7 +793,7 @@ class HomeController extends Controller
                     return response()->json([
                         'status' => 0,
                         'message' => '不能抹黑你的貼貼'
-                    ]);
+                    ], 400);
                 }
 
                 $information = $operating->defame();
@@ -817,7 +817,7 @@ class HomeController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => "操作無效，未有此操作"
-                ]);
+                ], 400);
         }
 
         unset($operating);
@@ -869,21 +869,21 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "轉生失敗"
-            ]);
+            ], 400);
         }
 
         if (!$game_character = GameCharacter::query()->find($character_name)) {
             return response()->json([
                 'status' => 0,
                 'message' => "轉生失敗，沒有該偶像。"
-            ]);
+            ], 400);
         }
 
         if (!OwnCharacter::query()->OwnedCharacter(['character_name' => $character_name])->count()) {
             return response()->json([
                 'status' => 0,
                 'message' => "轉生失敗，尚未解鎖該偶像。"
-            ]);
+            ], 400);
         }
 
         $self_game_info->rebirth($game_character);
@@ -918,7 +918,7 @@ class HomeController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => '送出失敗'
-                ]);
+                ], 400);
             }
 
             $chat_time = $cool_down->chat;
@@ -929,7 +929,7 @@ class HomeController extends Controller
                     'status' => 0,
                     'chat_time' => $chat_time,
                     'message' => "送出失敗，剩餘時間： $remain_time 秒"
-                ]);
+                ], 400);
             }
 
             $chat_message = ChatRoom::query()->create([
@@ -949,7 +949,8 @@ class HomeController extends Controller
 
             try {
                 event(new ChatRoomEvent($name, $nickname, $message, $chat_created_at));
-            } catch (Exception $e) {}
+            } catch (Exception $e) {
+            }
 
             return response()->json([
                 'status' => 1,
@@ -961,7 +962,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "送出失敗"
-            ]);
+            ], 400);
         }
     }
 
@@ -971,7 +972,8 @@ class HomeController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function like(Request $request) {
+    public function like(Request $request)
+    {
         try {
             $this->validate($request, [
                 'type' => ['required'],
@@ -986,7 +988,7 @@ class HomeController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => "送出失敗，未有該偶像"
-                ]);
+                ], 400);
             }
 
             switch ($type) {
@@ -1006,7 +1008,7 @@ class HomeController extends Controller
                     return response()->json([
                         'status' => 0,
                         'message' => "送出失敗，無此選項"
-                    ]);
+                    ], 400);
             }
 
             $like_num = $opposite_game_info->LikeTypeNum('like');
@@ -1024,7 +1026,7 @@ class HomeController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "送出失敗"
-            ]);
+            ], 400);
         }
     }
 
@@ -1033,7 +1035,8 @@ class HomeController extends Controller
      *
      * @return JsonResponse
      */
-    public function own_character() {
+    public function own_character()
+    {
         $own_character_list = OwnCharacter::query()->OwnCharacterList()->get();
 
         return response()->json([
@@ -1055,6 +1058,7 @@ class HomeController extends Controller
             if (!empty($this->opposite_character_list)) {
                 event(new UnlockCharacterEvent($this->opposite_character_list, $this->opposite_name));
             }
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+        }
     }
 }

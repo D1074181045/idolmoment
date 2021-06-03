@@ -42,32 +42,6 @@ const store = new Vuex.Store({
             state.error.status = 0;
             state.error.message = null;
         },
-        cool_down: function (state, type) {
-            if (state.cool_down[type]) {
-                let time = new Date(state.cool_down[type]).getTime()
-                    ? new Date(state.cool_down[type]).getTime()
-                    : new Date(String2DateTime(state.cool_down[type])).getTime();
-
-                if (time > Date.now()) {
-                    let Remaining_time = Math.ceil((time - Date.now()) / 1000);
-
-                    state.ban_type[type].status = true;
-                    state.ban_type[type].time = Remaining_time;
-
-                    const timeout = setInterval(() => {
-                        Remaining_time = Math.ceil((time - Date.now()) / 1000);
-
-                        state.ban_type[type].time = Remaining_time;
-
-                        if (Remaining_time < 1) {
-                            state.ban_type[type].status = false;
-                            state.ban_type[type].time = null;
-                            clearInterval(timeout);
-                        }
-                    }, 1000)
-                }
-            }
-        },
         show_error: function (state, message) {
             state.error.status = true;
             state.error.message = message;
@@ -121,8 +95,47 @@ const store = new Vuex.Store({
                         commit('load_my_profile', res)
                         resolve()
                     }).catch(() => {
-                        reject()
-                    })
+                    reject()
+                })
+            })
+        },
+        cool_down_rec: function ({state}, type) {
+            return new Promise(function (resolve) {
+                let type_name = type.name;
+
+                if (type.time)
+                    state.cool_down[type_name] = type.time;
+
+                if (state.cool_down[type_name]) {
+                    let time = new Date(state.cool_down[type_name]).getTime();
+                    if (!time)
+                        time = new Date(String2DateTime(state.cool_down[type_name])).getTime();
+
+                    if (time > Date.now()) {
+                        let Remaining_time = Math.ceil((time - Date.now()) / 1000);
+
+                        state.ban_type[type_name].status = true;
+                        state.ban_type[type_name].time = Remaining_time;
+                        console.log("DEBUG", type_name.concat("冷卻開始"), state.ban_type[type_name]);
+
+                        const timeout = setInterval(() => {
+                            Remaining_time = Math.ceil((time - Date.now()) / 1000);
+                            state.ban_type[type_name].time = Remaining_time;
+
+                            if (Remaining_time < 1) {
+                                state.ban_type[type_name].status = false;
+                                state.ban_type[type_name].time = null;
+                                console.log("DEBUG", type_name.concat("冷卻結束"));
+                                clearInterval(timeout);
+                                resolve();
+                            }
+                        }, 1000)
+                    } else {
+                        resolve();
+                    }
+                } else {
+                    resolve();
+                }
             })
         }
     }

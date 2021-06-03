@@ -19,7 +19,7 @@ const routes = [
         name: 'index',
         meta: {
             title: '我的偶像',
-            KeepAlive: true
+            KeepAlive: false
         }
     },
     {

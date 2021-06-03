@@ -7,7 +7,7 @@
                         v-on:click="switch_show">{{ next_name }}
                 </button>
             </div>
-            <div v-if="profile_type === 'details'" id="details">
+            <div v-if="profile_type === 'details'">
                 <table class="table">
                     <tbody>
                     <tr>
@@ -222,7 +222,7 @@
 
 <script>
 import {msg} from '../../styles';
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 import Avatar from "../../components/Avatar";
 import Like from "../../components/Like";
 
@@ -248,7 +248,6 @@ export default {
     computed: {
         ...mapState([
             'api_prefix',
-            'cool_down',
             'teetee_info'
         ]),
         ...mapState({
@@ -260,32 +259,44 @@ export default {
             'NumberFormat',
         ])
     },
-    created: function () {
-        switch (localStorage.profile_type) {
-            case 'details':
-                this.details();
-                break;
-            case 'comparison':
-                this.comparison();
-                break;
-            default:
-                this.details();
-                break;
-        }
-    },
     mounted: function () {
-        this.cool_down_func('operating');
+        this.cool_down_rec({name: 'operating'});
     },
     activated: function () {
         if (this.title)
             document.title = this.title;
 
+        this.show_profile_type(localStorage.profile_type);
         this.get_opposite_profile();
     },
     methods: {
-        ...mapMutations({
-            cool_down_func: 'cool_down'
-        }),
+        ...mapActions([
+            'load_my_profile',
+            'cool_down_rec'
+        ]),
+        show_profile_type: function (profile_type) {
+            switch (profile_type) {
+                case 'details':
+                    this.details();
+                    break;
+                case 'comparison':
+                    this.comparison();
+                    break;
+                default:
+                    this.details();
+                    break;
+            }
+        },
+        get_profile_next_type: function () {
+            switch (localStorage.profile_type) {
+                case 'details':
+                    return 'comparison';
+                case 'comparison':
+                    return 'details';
+                default:
+                    return 'comparison';
+            }
+        },
         get_opposite_profile: function () {
             const url = this.api_prefix.concat('profile/', this.$route.params.name);
 
@@ -303,28 +314,8 @@ export default {
                 })
         },
         switch_show: function () {
-            let next_type = this.get_profile_type();
-            switch (next_type) {
-                case 'details':
-                    this.details();
-                    break;
-                case 'comparison':
-                    this.comparison();
-                    break;
-                default:
-                    this.details();
-                    break;
-            }
-        },
-        get_profile_type: function () {
-            switch (localStorage.profile_type) {
-                case 'details':
-                    return 'comparison';
-                case 'comparison':
-                    return 'details';
-                default:
-                    return 'comparison';
-            }
+            let next_type = this.get_profile_next_type();
+            this.show_profile_type(next_type);
         },
         details: function () {
             this.next_name = '查看能力比對';
@@ -349,14 +340,9 @@ export default {
                 opposite_name: this.$route.params.name,
                 operating_type: type,
             }).then((res) => {
-                if (res.operating_time) {
-                    this.cool_down.operating = res.operating_time;
-                    this.cool_down_func('operating');
-                } else {
-                    this.operating_ban.status = false;
-                }
-
                 if (res.status) {
+                    this.cool_down_rec({name: 'operating', time: res.operating_time});
+
                     Object.keys(res.ability.opposite).forEach((key) => {
                         this.opposite_profile[key] = res.ability.opposite[key];
                     });
@@ -367,7 +353,9 @@ export default {
                     this.information_list.push(res.information);
                 }
             }).catch(() => {
-                this.operating_ban.status = false;
+                this.load_my_profile().then(() => {
+                    this.cool_down_rec({name: 'operating'});
+                });
             });
         },
         like_event: function (val) {

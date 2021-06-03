@@ -78,7 +78,7 @@ export default {
     },
     methods: {
         default_select: function (item = 0) {
-            this.selected_character = this.own_character_list[item].character_name;
+            this.select_character(this.own_character_list[item].character_name);
         },
         character_select_status: function (character_name) {
             return this.selected_character === character_name ? 'current-select' : 'not-select';
@@ -95,6 +95,7 @@ export default {
                 })
         },
         select_character: function (character_name) {
+            console.log("DEBUG", "選取偶像", character_name);
             this.selected_character = character_name;
             this.rebirth_disabled = false;
         },
@@ -108,10 +109,8 @@ export default {
             }).then((res) => {
                 if (res.status) {
                     this.$router.push({name: 'index'})
-                } else {
-                    this.rebirth_disabled = false;
                 }
-            }).catch((err) => {
+            }).catch(() => {
                 this.rebirth_disabled = false;
             });
         }

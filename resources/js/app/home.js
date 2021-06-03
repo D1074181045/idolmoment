@@ -36,9 +36,6 @@ try {
                 router.app.$refs.loading.start();
             })
             return config;
-        },
-        function (error) {
-            return Promise.reject(error);
         }
     );
 
@@ -62,8 +59,17 @@ try {
 
     router.beforeEach((to, from, next) => {
         document.title = to.meta.title;
+        router.app.$nextTick(() => {
+            router.app.$refs.loading.start();
+        })
         next();
     });
+
+    router.afterEach((to, from, next) => {
+        router.app.$nextTick(() => {
+            router.app.$refs.loading.finish(true);
+        })
+    })
 
     new Vue({
         el: '#app',
@@ -167,12 +173,14 @@ try {
 
                 Echo.private('unlock-character-channel-'.concat(store.state.profile.name))
                     .listen('.unlock-character-event', ({Character}) => {
+                        console.log("DEBUG", '獲得新偶像', Character);
                         unlock_character_message(Character);
                     });
             },
             danger_event: function () {
                 Echo.private('danger-channel-'.concat(store.state.profile.name))
                     .listen('.danger-event', ({type, message}) => {
+                        console.log("DEBUG", '緊急事件', {type: type, message: message});
                         if (message) {
                             if (this.clear_prompt_msg)
                                 clearTimeout(this.clear_prompt_msg);

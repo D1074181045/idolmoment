@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" v-on:keyup.enter="send_reset_password">
         <div class="card-header">
             忘記密碼
             <LightSwitch />
@@ -80,7 +80,7 @@ export default {
             this.send_btn_name = '再次寄送密碼重設還需 ' + (_second--).toString() + ' 秒';
             let cd = setInterval(() => {
                 this.send_btn_name = '再次寄送密碼重設還需 ' + (_second--).toString() + ' 秒';
-                if (_second === 0) {
+                if (_second === -1) {
                     this.send_btn_name = '再次寄送密碼重設';
                     this.send_disable = false;
                     this.isCd = false;
@@ -98,14 +98,8 @@ export default {
 
             axios.post(url, {
                 email: this.email
-            }).then((res) => {
-                if (res.status !== 0) {
-                    this.cd(30);
-                }
-                else {
-                    this.show_error(res.message)
-                    this.send_disable = this.sending = false;
-                }
+            }).then(() => {
+                this.cd(30);
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";
@@ -117,7 +111,7 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.show_error(err.data.message);
                 }
                 this.send_disable = this.sending = false;
             })

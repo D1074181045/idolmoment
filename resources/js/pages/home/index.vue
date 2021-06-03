@@ -98,13 +98,13 @@
                            :class="disabled_class(class_signature_disabled)"
                            v-model="signature" v-on:input="ban_signature"/>
                     <button type="button" class="btn btn-primary"
-                            :disabled="signature_disabled" v-on:click="set_signature">更新
+                            :disabled="signature_ban.status" v-on:click="set_signature">更新
                     </button>
                 </div>
                 <div class="setting">
                     <label style="width: 80px;margin-bottom: 0;">貼貼</label>
                     <input type="text" maxlength="12" class="form-control" style="transition: all 0.2s ease 0s;"
-                           :class="disabled_class(!teetee_info.status)" v-model="teetee" />
+                           :class="disabled_class(!teetee_info.teetee_status)" v-model="teetee"/>
                     <button type="button" class="btn btn-primary" :class="{ 'btn-loading':teetee_updating }"
                             v-on:click="set_teetee">設定
                     </button>
@@ -115,43 +115,30 @@
             <h3>個人活動</h3>
             <msg v-if="activity_ban.time">剩餘時間：{{ activity_ban.time }}</msg>
             <div class="tb-gap" style="margin-left: -10px;">
-                <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('adult-live')">成人直播
-                </button>
-                <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('live')">直播
-                </button>
-                <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('do-good-things')">做善事
-                </button>
-                <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('go-to-sleep')">睡覺
-                </button>
-                <button type="button" class="btn btn-bottom btn-info" :disabled="activity_disabled"
-                        v-on:click="do_activity('meditation')">打坐
+                <button type="button" class="btn btn-bottom btn-info"
+                        v-for="activity in activity_list" v-on:click="do_activity(activity.en)"
+                        :disabled="activity_ban.status"
+                >{{ activity.tc }}
                 </button>
             </div>
-            <h3 style="padding-top: 15px;border-top: 1px solid var(--border-color);">合作活動</h3>
+            <h3 style="padding-top: 15px;border-top: 1px solid var(--border-color);">
+                {{ teetee_info.teetee_graduate ? '合作活動 (貼貼已畢業)' : '合作活動' }}
+            </h3>
             <msg v-if="cooperation_ban.time">剩餘時間：{{ cooperation_ban.time }}</msg>
             <div class="tb-gap" style="margin-left: -10px;">
                 <button type="button" class="btn btn-bottom btn-info"
-                        :disabled="cooperation_disabled ||　!teetee_info.status || teetee_info.teetee_graduate"
-                        v-on:click="do_cooperation('play-ordinary-game')">玩普通遊戲
-                </button>
-                <button type="button" class="btn btn-bottom btn-info"
-                        :disabled="cooperation_disabled ||　!teetee_info.status || teetee_info.teetee_graduate"
-                        v-on:click="do_cooperation('play-tacit-game')">玩默契遊戲
+                        v-for="cooperation in cooperation_list" v-on:click="do_cooperation(cooperation.en)"
+                        :disabled="cooperation_ban.status || !teetee_info.teetee_status || teetee_info.teetee_graduate"
+                >{{ cooperation.tc }}
                 </button>
             </div>
         </div>
         <div class="tb" v-else>
             <h3>已畢業，無法進行任何活動</h3>
             <div class="tb-gap" style="margin-left: -10px;">
-                <button type="button" class="btn btn-bottom btn-info" disabled>成人直播</button>
-                <button type="button" class="btn btn-bottom btn-info" disabled>直播</button>
-                <button type="button" class="btn btn-bottom btn-info" disabled>做善事</button>
-                <button type="button" class="btn btn-bottom btn-info" disabled>睡覺</button>
-                <button type="button" class="btn btn-bottom btn-info" disabled>打坐</button>
+                <button type="button" class="btn btn-bottom btn-info"
+                        v-for="activity in activity_list" disabled>{{ activity.tc }}
+                </button>
             </div>
         </div>
     </div>
@@ -159,7 +146,7 @@
 
 <script>
 import {msg} from '../../styles';
-import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
+import {mapState, mapGetters, mapActions} from "vuex";
 import Avatar from "../../components/Avatar";
 import Like from "../../components/Like";
 
@@ -168,6 +155,17 @@ const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
 export default {
     data: function () {
         return {
+            activity_list: [
+                {en: 'adult-live', tc: '成人直播'},
+                {en: 'live', tc: '直播'},
+                {en: 'do-good-things', tc: '做善事'},
+                {en: 'go-to-sleep', tc: '睡覺'},
+                {en: 'meditation', tc: '打坐'}
+            ],
+            cooperation_list: [
+                {en: 'play-ordinary-game', tc: '玩普通遊戲'},
+                {en: 'play-tacit-game', tc: '玩默契遊戲'},
+            ],
             class_signature_disabled: false,
             teetee_updating: false,
             signature: null,
@@ -186,14 +184,10 @@ export default {
             'dislike_num',
             "profile",
             "teetee_info",
-            "cool_down",
             "api_prefix",
             "prompt_count",
         ]),
         ...mapState({
-            signature_disabled: state => state.ban_type.signature.status,
-            activity_disabled: state => state.ban_type.activity.status,
-            cooperation_disabled: state => state.ban_type.cooperation.status,
             signature_ban: state => state.ban_type.signature,
             activity_ban: state => state.ban_type.activity,
             cooperation_ban: state => state.ban_type.cooperation
@@ -216,9 +210,7 @@ export default {
             this.next_ability = {};
         }
     },
-    activated: function () {
-        this.next_ability = {};
-
+    mounted: function () {
         this.signature = this.profile.signature;
         this.teetee = this.profile.teetee;
 
@@ -227,26 +219,35 @@ export default {
                 this.signature = this.profile.signature;
                 this.teetee = this.profile.teetee;
 
-                this.cool_down_func('activity');
-                this.cool_down_func('cooperation');
-                this.cool_down_func('signature');
+                this.cool_down_rec({name: 'activity'});
+                this.cool_down_rec({name: 'cooperation'});
+                this.cool_down_rec({name: 'signature'}).then(this.ban_signature);
             });
         } else {
-            this.cool_down_func('activity');
-            this.cool_down_func('cooperation');
-            this.cool_down_func('signature');
+            this.cool_down_rec({name: 'activity'});
+            this.cool_down_rec({name: 'cooperation'});
+            this.cool_down_rec({name: 'signature'}).then(this.ban_signature);
         }
     },
     methods: {
-        ...mapMutations({
-            cool_down_func: 'cool_down'
-        }),
         ...mapActions([
-            'load_my_profile'
+            'load_my_profile',
+            'cool_down_rec'
         ]),
+        ban_signature: function () {
+            if (this.signature) {
+                this.class_signature_disabled = !legalityKey.test(this.signature) || this.signature.length > 30;
+            } else {
+                this.class_signature_disabled = false;
+            }
+
+            if (!this.signature_ban.time) {
+                this.signature_ban.status = this.class_signature_disabled;
+            }
+        },
         set_teetee: function () {
-            if (this.profile.teetee !== null) {
-                if (this.profile.teetee.length > 12 || !legalityKey.test(this.profile.teetee) && this.profile.teetee.length !== 0)
+            if (this.teetee !== null) {
+                if (this.teetee.length > 12 || !legalityKey.test(this.teetee) && this.teetee.length !== 0)
                     return;
             }
 
@@ -259,15 +260,16 @@ export default {
             }).then((res) => {
                 if (res.status) {
                     this.profile.teetee = this.teetee;
-                    this.teetee_info.status = res.teetee_status;
+                    this.teetee_info.teetee_status = res.teetee_status;
                     this.teetee_info.teetee_name = res.teetee_name;
+                    this.teetee_info.teetee_graduate = res.teetee_graduate;
                 }
             }).finally(() => {
                 this.teetee_updating = false;
             })
         },
         set_signature: function () {
-            if (this.signature_disabled)
+            if (this.signature_ban.status)
                 return;
 
             const url = this.api_prefix.concat('update-signature');
@@ -276,25 +278,18 @@ export default {
             axios.post(url, {
                 signature: this.signature
             }).then((res) => {
-                if (res.signature_time) {
+                if (res.status) {
                     this.profile.signature = this.signature;
-                    this.cool_down.signature = res.signature_time;
-                    this.cool_down_func('signature');
-                } else {
-                    this.signature_ban.status = false;
+                    this.cool_down_rec({name: 'signature', time: res.signature_time}).then(this.ban_signature);
                 }
             }).catch(() => {
-                this.signature_ban.status = false;
+                this.load_my_profile().then(() => {
+                    this.cool_down_rec({name: 'signature'}).then(this.ban_signature);
+                });
             });
         },
-        ban_signature: function () {
-            if (this.signature_ban.time)
-                return;
-
-            this.signature_ban.status = this.class_signature_disabled = this.signature && !legalityKey.test(this.signature) || this.signature.length > 30;
-        },
         do_activity: function (activity_type) {
-            if (this.activity_disabled)
+            if (this.activity_ban.status)
                 return;
 
             const url = this.api_prefix.concat('activity');
@@ -303,25 +298,22 @@ export default {
             axios.post(url, {
                 activity_type: activity_type,
             }).then((res) => {
-                if (res.activity_time) {
-                    this.cool_down.activity = res.activity_time;
-                    this.cool_down_func('activity');
-                } else {
-                    this.activity_ban.status = false;
-                }
-
                 if (res.status) {
+                    this.cool_down_rec({name: 'activity', time: res.activity_time});
+
                     Object.keys(res.ability).forEach((key) => {
                         this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
                         this.next_ability[key] = this.profile[key] !== res.ability[key] ? res.ability[key] : null;
                     });
                 }
-            }).catch((err) => {
-                this.activity_ban.status = false;
+            }).catch(() => {
+                this.load_my_profile().then(() => {
+                    this.cool_down_rec({name: 'activity'});
+                });
             });
         },
         do_cooperation: function (cooperation_type) {
-            if (this.cooperation_disabled || !this.teetee_info.status)
+            if (this.cooperation_ban.status || !this.teetee_info.teetee_status || this.teetee_info.teetee_graduate)
                 return;
 
             const url = this.api_prefix.concat('cooperation');
@@ -330,21 +322,18 @@ export default {
             axios.post(url, {
                 cooperation_type: cooperation_type,
             }).then((res) => {
-                if (res.cooperation_time) {
-                    this.cool_down.cooperation = res.cooperation_time;
-                    this.cool_down_func('cooperation');
-                } else {
-                    this.cooperation_ban.status = false;
-                }
-
                 if (res.status) {
+                    this.cool_down_rec({name: 'cooperation', time: res.cooperation_time});
+
                     Object.keys(res.ability).forEach((key) => {
                         this.profile[key] = this.next_ability[key] ? this.next_ability[key] : this.profile[key];
                         this.next_ability[key] = this.profile[key] !== res.ability[key] ? res.ability[key] : null;
                     });
                 }
             }).catch(() => {
-                this.cooperation_ban.status = false;
+                this.load_my_profile().then(() => {
+                    this.cool_down_rec({name: 'cooperation'});
+                });
             });
         }
     }

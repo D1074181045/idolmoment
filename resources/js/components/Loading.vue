@@ -21,12 +21,13 @@ export default {
     },
     methods: {
         start: function () {
-            this.show = true;
+            if (this._timer) clearInterval(this._timer);
+            if (this._timeout1) clearInterval(this._timeout1);
+            if (this._timeout2) clearInterval(this._timeout2);
 
-            if (this._timer) {
-                clearInterval(this._timer);
-                this.percent = 0;
-            }
+            this.show = true;
+            this.status = null;
+            this.percent = 0;
 
             this._cut = 10000 / Math.floor(this.duration);
 
@@ -60,10 +61,9 @@ export default {
             clearInterval(this._timer)
             this._timer = null;
 
-            setTimeout(() => {
+            this._timeout1 = setTimeout(() => {
                 this.show = false;
-                setTimeout(() => {
-                    this.status = null;
+                this._timeout2 = setTimeout(() => {
                     this.percent = 0;
                 }, 200)
             }, 500)

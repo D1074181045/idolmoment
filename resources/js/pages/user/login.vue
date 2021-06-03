@@ -114,7 +114,7 @@ export default {
             if (this.login_disabled)
                 return
 
-            this.logging = true;
+            this.logging = this.login_disabled = true;
             const url = this.api_prefix.concat('login');
             this.$refs.login.focus();
 
@@ -128,14 +128,6 @@ export default {
                 if (res.status) {
                     localStorage.token = res.token;
                     document.location.href = "/";
-                } else {
-                    this.password = "";
-                    this.password_disabled = true;
-                    this.autologin = false;
-                    this.login_disabled = true;
-                    this.logging = false;
-
-                    this.show_error(res.message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -148,16 +140,12 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.show_error(err.data.message);
                 }
-                this.logging = false;
+                this.password = "";
+                this.autologin = this.logging = false;
+                this.ban_login();
             });
-        },
-        login_enter: function () {
-            document.onkeydown = (e) => {
-                if (e.keyCode === 13)
-                    this.login_click();
-            }
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="color: var(--form-control-color)">
+    <div class="container" style="color: var(--form-control-color)" v-on:keyup.enter="send">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card" style="background-color: var(--form-control-bg-color)">
@@ -86,9 +86,8 @@ export default {
 
             axios.post(url, {
                 email: this.email
-            }).then((res) => {
-                if (res.status !== 0)
-                    this.cd(30);
+            }).then(() => {
+                this.cd(30);
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";
@@ -100,7 +99,7 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.show_error(err.data.message);
                 }
                 this.send_disable = this.sending = false;
             })

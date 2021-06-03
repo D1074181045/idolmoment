@@ -35,6 +35,7 @@ class GameInfo extends Model
         'resistance',
         'charm',
         'rebirth_counter',
+        'graduate',
         'signature',
         'teetee'
     ];

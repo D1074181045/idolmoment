@@ -8,10 +8,10 @@
                     <input class="form-control" type="text" id="name" name="name" autocomplete="off"
                            style="width: 200px; margin: 6px 2px;display: inline;" v-model="search_name">
                     <button id="search-name" name="search-name" type="button" class="btn btn-info"
-                            style="margin-top: -6px;height: 36px;" v-on:click="to_search_name">搜尋
+                            style="margin-top: -6px;height: 36px;" v-on:click="get_search_name">搜尋
                     </button>
                     <button id="clear_search" name="clear_search" type="button" class="btn btn-info"
-                            style="margin-top: -6px;height: 36px;" v-on:click="clear_search">清除搜尋
+                            style="margin-top: -6px;height: 36px;" v-on:click="clear_search_name">清除搜尋
                     </button>
                 </div>
             </div>
@@ -101,7 +101,6 @@
 import {mapState, mapGetters} from "vuex";
 
 import Avatar from "../../components/Avatar";
-import router from "../../router/home";
 
 export default {
     data: function () {
@@ -138,8 +137,6 @@ export default {
     },
     activated: function () {
         if (this.reload()) {
-            this.current_popularity = this.profile.popularity;
-            this.page_num = 1;
             this.default_load();
         } else {
             this.loading.finish(true);
@@ -187,7 +184,7 @@ export default {
                 }
             })
         },
-        to_search_name: function () {
+        get_search_name: function () {
             if (!this.search_name)
                 return;
 
@@ -203,7 +200,13 @@ export default {
                 }
             })
         },
+        clear_search_name: function () {
+            this.default_load();
+            this.search_name = null;
+        },
         default_load: function () {
+            this.current_popularity = this.profile.popularity;
+            this.page_num = 1;
             this.get_idol_list(this.page_num, this.current_popularity);
         },
         switch_page: function (page, popularity) {
@@ -214,14 +217,10 @@ export default {
 
             this.get_idol_list(page, popularity);
         },
-        clear_search: function () {
-            this.default_load();
-            this.search_name = null;
-        },
         idol_class: function (idol) {
             return {
                 self: this.name === idol.name,
-                teetee: this.teetee_info.status && this.teetee_info.teetee_name === idol.name && this.teetee_info.status,
+                teetee: this.teetee_info.teetee_name === idol.name && this.teetee_info.teetee_status,
                 graduate: idol.graduate
             };
         }

@@ -43,7 +43,7 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 0,
                     'message' => "錯誤：登入失敗，帳號或密碼不正確。"
-                ]);
+                ], 400);
             }
 
             if ($autologin) {
@@ -75,7 +75,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "錯誤：使用者名稱或密碼為空。"
-            ]);
+            ], 400);
         }
     }
 
@@ -99,13 +99,13 @@ class UserController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "錯誤：使用者 $user->name 已註冊"
-            ]);
-        } else {
-            return response()->json([
-                'status' => 1,
-                'message' => "使用者 $user->name 註冊完成"
-            ]);
+            ], 400);
         }
+
+        return response()->json([
+            'status' => 1,
+            'message' => "使用者 $user->name 註冊完成"
+        ]);
     }
 
     function update_password(UpdateUserPasswordRequest $request)
@@ -126,11 +126,12 @@ class UserController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "密碼修改失敗，舊密碼不正確"
-            ]);
+            ], 400);
         }
 
-        $user->password = Hash::make($new_password);
-        $user->save();
+        $user->update([
+            'password' => Hash::make($new_password)
+        ]);
 
         return response()->json([
             'status' => 1,
@@ -150,7 +151,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "錯誤：建立失敗，尚未登入"
-            ]);
+            ], 400);
         }
 
         $self_name = $request->user()->name;
@@ -160,7 +161,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "錯誤：建立失敗，已有相同暱稱"
-            ]);
+            ], 400);
         }
 
         $DefaultCharacter = OwnCharacter::query()->BuildDefaultOwnCharacter($self_name)->GameCharacter;
@@ -178,15 +179,16 @@ class UserController extends Controller
         ])->wasRecentlyCreated;
 
         if (!$wasRecentlyCreated) {
+            // 本次未創建遊戲資料
             return response()->json([
                 'status' => 0,
                 'message' => "錯誤：建立失敗，已創建角色"
-            ]);
-        } else { // 本次有創建遊戲資料
-            return response()->json([
-                'status' => 1,
-                'message' => "建立成功"
-            ]);
+            ], 400);
         }
+
+        return response()->json([
+            'status' => 1,
+            'message' => "建立成功"
+        ]);
     }
 }

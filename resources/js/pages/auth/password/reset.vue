@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" v-on:keyup.enter="reset_password">
         <div class="card-header">
             重設密碼
             <LightSwitch />
@@ -10,7 +10,7 @@
                 <label class="col-md-4 col-form-label text-md-right">電子郵件</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" autocomplete="off" required autofocus disabled
-                            :value="this.email"/>
+                            :value="email"/>
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
                 <div class="col-md-8 offset-md-4">
                     <button type="button" disabled class="btn btn-primary"
                             :class="{ 'btn-loading':sending }"
-                            v-on:click="send_reset_pwd" :disabled="send_reset_pwd_disabled"
+                            v-on:click="reset_password" :disabled="send_reset_pwd_disabled"
                             >重設密碼
                     </button>
                 </div>
@@ -109,7 +109,7 @@ export default {
             this.password_disabled = this.password !== this.password_confirmation || !this.between(this.password.length, 8, 32);
             this.send_reset_pwd_disabled = this.password_disabled;
         },
-        send_reset_pwd: function () {
+        reset_password: function () {
             if (this.send_reset_pwd_disabled)
                 return
 
@@ -121,13 +121,8 @@ export default {
                 email: this.email,
                 password: this.password,
                 password_confirmation: this.password_confirmation
-            }).then((res) => {
-                if (res.status !== 0)
-                    this.$router.push({name: 'login'});
-                else {
-                    this.show_error(res.message);
-                    this.send_reset_pwd_disabled = false;
-                }
+            }).then(() => {
+                this.$router.push({name: 'login'});
             }).catch((err) => {
                 if (err.status === 422) {
                     let s = "";
@@ -139,7 +134,7 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.show_error(err.data.message);
                 }
                 this.send_reset_pwd_disabled = false;
             }).finally(() => {

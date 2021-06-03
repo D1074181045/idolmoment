@@ -41,7 +41,7 @@ class ForgotPasswordController extends Controller
             return response()->json([
                 'status' => 0,
                 'message' => "該郵件尚未驗證"
-            ]);
+            ], 400);
         }
 
         // We will send the password reset link to this user. Once we have attempted

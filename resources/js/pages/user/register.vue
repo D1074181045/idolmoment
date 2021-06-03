@@ -113,7 +113,7 @@ export default {
             if (this.register_disabled)
                 return
 
-            this.registering = true;
+            this.registering = this.register_disabled = true;
             const url = this.api_prefix.concat('register');
             this.$refs.register.focus();
 
@@ -123,14 +123,7 @@ export default {
                 password_confirmation: this.password_confirmation
             }).then((res) => {
                 if (res.status) {
-                    this.username = "";
-                    this.password = "";
-                    this.password_confirmation = "";
-                    this.username_disabled = true;
-                    this.password_disabled = true;
                     this.$router.push({name: 'login'});
-                } else {
-                    this.show_error(res.message);
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -143,11 +136,12 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.show_error(err.data.message);
                 }
-            }).finally(() => {
+                this.username = this.password = this.password_confirmation = "";
                 this.registering = false;
-            });
+                this.ban_register();
+            })
         },
     }
 }

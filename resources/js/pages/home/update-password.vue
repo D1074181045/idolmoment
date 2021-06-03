@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="color: var(--form-control-color)">
+    <div class="container" style="color: var(--form-control-color)" v-on:keyup.enter="update_password">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card" style="background-color: var(--form-control-bg-color)">
@@ -51,7 +51,7 @@
                         </div>
                         <button type="button" disabled class="btn btn-primary btn-block"
                                 :class="{ 'btn-loading':updating }"
-                                style="margin: 0 0;" v-on:click="to_update_password"
+                                style="margin: 0 0;" v-on:click="update_password"
                                 :disabled="update_password_disabled">修改
                         </button>
                     </div>
@@ -87,9 +87,6 @@ export default {
         CardFooter,
         PasswordToggleButton
     },
-    mounted() {
-        this.loading.finish(true);
-    },
     computed: {
         ...mapState([
             'api_prefix',
@@ -116,12 +113,12 @@ export default {
             this.new_password_disabled = this.new_password !== this.new_password_confirmation || !this.between(this.new_password.length, 8, 32) || this.old_password === this.new_password;
             this.update_password_disabled = this.old_password_disabled || this.new_password_disabled;
         },
-        to_update_password: function () {
+        update_password: function () {
             if (this.update_password_disabled || this.old_password === this.new_password)
                 return;
 
-            this.updating = true;
             const url = this.api_prefix.concat('update-password');
+            this.updating = true;
 
             axios.post(url, {
                 old_password: this.old_password,
@@ -130,9 +127,6 @@ export default {
             }).then((res) => {
                 if (res.status) {
                     this.$router.push({name: 'index'}).catch(() => {});
-                } else {
-                    this.show_error(res.message);
-                    this.update_password_disabled = false;
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -145,11 +139,11 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error(err.statusText);
+                    this.show_error(err.data.message);
                 }
-                this.update_password_disabled = false;
-            }).finally(() => {
-                this.updating = false;
+                this.new_password = this.new_password_confirmation = "";
+                this.updating = this.update_password_disabled = false;
+                this.ban_update_password();
             });
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class="tb" v-on:keyup.enter="create_enter">
+    <div class="tb" v-on:keyup.enter="create_message">
         <h3>聊天室</h3>
         <table class="table table-hover" style="margin-top: 1rem;">
             <thead class="thead-light">
@@ -26,7 +26,7 @@
         <div class="setting">
             <input type="text" class="form-control" v-model="message"/>
             <button type="button" class="btn btn-primary" style="width: 15%;" v-on:click="create_message"
-                    :disabled="create_msg_disabled">送出
+                    :disabled="chat_ban.status">送出
             </button>
         </div>
     </div>
@@ -34,7 +34,7 @@
 
 <script>
 import {msg} from '../../styles';
-import {mapMutations, mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 var put_bottom = true;
 var messages_updated = false;
@@ -52,11 +52,9 @@ export default {
     computed: {
         ...mapState([
             'api_prefix',
-            'cool_down',
         ]),
         ...mapState({
-            chat_ban: state => state.ban_type.chat,
-            create_msg_disabled: state => state.ban_type.chat.status
+            chat_ban: state => state.ban_type.chat
         })
     },
     updated: function () {
@@ -66,7 +64,7 @@ export default {
         this.tbody_scroll_position();
     },
     activated: function () {
-        this.cool_down_func('chat');
+        this.cool_down_rec({name: 'chat'});
         this.get_chats();
         this.websocket_chat_event();
     },
@@ -74,9 +72,10 @@ export default {
         Echo.leave('public-chat-channel');
     },
     methods: {
-        ...mapMutations({
-            cool_down_func: 'cool_down'
-        }),
+        ...mapActions([
+            'load_my_profile',
+            'cool_down_rec'
+        ]),
         tbody_scroll_bottom: function () {
             if (messages_updated) {
                 if (put_bottom) {
@@ -111,6 +110,13 @@ export default {
         websocket_chat_event: function () {
             Echo.channel('public-chat-channel')
                 .listen('.public-chat-event', ({name, nickname, message, chat_created_at}) => {
+                    console.log("DEBUG", "新訊息", {
+                        name: name,
+                        nickname: nickname,
+                        message: message,
+                        created_at: chat_created_at
+                    })
+
                     this.chat_messages.push({
                         name: name,
                         nickname: nickname,
@@ -125,7 +131,7 @@ export default {
                 });
         },
         create_message: function () {
-            if (this.create_msg_disabled)
+            if (this.chat_ban.status)
                 return;
 
             let url = this.api_prefix.concat('create-message');
@@ -134,14 +140,13 @@ export default {
             axios.post(url, {
                 message: this.message,
             }).then((res) => {
-                if (res.chat_time) {
-                    this.cool_down.chat = res.chat_time;
-                    this.cool_down_func('chat');
-                } else {
-                    this.chat_ban.status = false;
+                if (res.status) {
+                    this.cool_down_rec({name: 'chat', time: res.chat_time});
                 }
             }).catch(() => {
-                this.chat_ban.status = false;
+                this.load_my_profile().then(() => {
+                    this.cool_down_rec({name: 'chat'});
+                });
             });
             this.message = "";
         },
@@ -161,12 +166,6 @@ export default {
             second = second < 10 ? '0' + second.toString() : second;
 
             return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
-        },
-        create_enter: function () {
-            document.onkeydown = (e) => {
-                if (e.keyCode === 13)
-                    this.create_message();
-            }
         }
     }
 }

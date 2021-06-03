@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="color: var(--form-control-color)">
+    <div class="container" style="color: var(--form-control-color)" v-on:keyup.enter="build">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card" style="background-color: var(--form-control-bg-color)">
@@ -52,29 +52,27 @@ export default {
             'disabled_class'
         ])
     },
-    mounted() {
-        this.loading.finish(true);
-    },
     methods: {
         ...mapMutations([
             'show_error'
         ]),
+        ban_build: function () {
+            const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9]+$");
+
+            this.build_disabled = !this.nickname.match(legalityKey) || this.nickname.length === 0 || this.nickname.length > 12;
+        },
         build: function () {
             if (this.build_disabled)
                 return;
 
-            this.creating = true;
             const url = this.api_prefix.concat('store-profile');
+            this.creating = true;
 
             axios.post(url, {
                 nickname: this.nickname,
             }).then((res) => {
                 if (res.status) {
                     document.location.href = '/';
-                } else {
-                    this.show_error(res.message);
-                    this.build_disabled = false;
-                    this.creating = false;
                 }
             }).catch((err) => {
                 if (err.status === 422) {
@@ -87,17 +85,11 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.show_error("發生錯誤: " + err.statusText);
+                    this.show_error(err.data.message);
                 }
-                this.build_disabled = false;
-                this.creating = false;
+                this.build_disabled = this.creating = false;
             });
 
-        },
-        ban_build: function () {
-            const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9]+$");
-
-            this.build_disabled = !this.nickname.match(legalityKey) || this.nickname.length === 0 || this.nickname.length > 12;
         },
     }
 }

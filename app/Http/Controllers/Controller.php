@@ -111,30 +111,30 @@ class Controller extends BaseController
      * @param $GameInfo
      * @return array
      */
-    public function teetee_info($GameInfo) {
-
+    public function teetee_info($GameInfo)
+    {
         try {
-            if ($teetee = GameInfo::query()->where('nickname', $GameInfo->teetee)->first()){
+            if ($teetee = GameInfo::query()->where('nickname', $GameInfo->teetee)->first()) {
                 if ($teetee->name !== $GameInfo->name) {
                     return [
-                        'status' => $teetee->teetee === $GameInfo->nickname,
+                        'teetee_status' => $teetee->teetee === $GameInfo->nickname,
                         'teetee_name' => $teetee->teetee === $GameInfo->nickname ? $this->UserNameEncrypt2($teetee->name) : null,
                         'teetee_graduate' => $teetee->teetee === $GameInfo->nickname ? $teetee->graduate : null,
                     ];
                 }
             }
+
+            return [
+                'teetee_status' => 0,
+                'teetee_name' => null,
+                'teetee_graduate' => null,
+            ];
         } catch (\Exception $e) {
             return [
-                'status' => 0,
+                'teetee_status' => 0,
                 'teetee_name' => null,
                 'teetee_graduate' => null,
             ];
         }
-
-        return [
-            'status' => 0,
-            'teetee_name' => null,
-            'teetee_graduate' => null,
-        ];
     }
 }
