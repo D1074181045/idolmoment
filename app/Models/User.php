@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -27,6 +29,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'name',
+        'email',
         'password',
         'remember_token',
         'logged_at'
@@ -62,17 +65,20 @@ class User extends Authenticatable implements JWTSubject
         return $query->where('email', $email)->count() > 0;
     }
 
-    public function scopeEmailVerified($query, $email) {
+    public function scopeEmailUnverified($query, $email) {
         $email = $query->where('email', $email);
 
         if ($email->count() > 0) {
             $e_user = $email->first();
+
             if ($e_user->hasVerifiedEmail())
-                return true;
-            $e_user->forceFill(['email' => null])->save();
+                return false;
+
+            if ($e_user->name !== Auth::user()->name)
+                $e_user->forceFill(['email' => null])->save();
         }
 
-        return false;
+        return true;
     }
 
     public function scopeEmailVerifyStatus($query, $email) {
@@ -83,6 +89,17 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return false;
+    }
+
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
     }
 
     /**

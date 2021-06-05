@@ -8,7 +8,7 @@ import rebirth from '../pages/home/rebirth.vue';
 import chatroom from '../pages/home/chatroom.vue';
 import create_profile from '../pages/home/create-profile.vue';
 import update_password from '../pages/home/update-password.vue';
-import verify from '../pages/auth/verify';
+import send from '../pages/auth/verification/send.vue';
 
 Vue.use(Router);
 
@@ -75,13 +75,13 @@ const routes = [
         }
     },
     {
-        path: '/email/verify',
-        component: verify,
-        name: 'verify',
+        path: '/email/send',
+        component: send,
+        name: 'verification.send',
         meta: {
             title: '郵件驗證',
         }
-    }
+    },
 ];
 
 const router = new Router({

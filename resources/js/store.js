@@ -29,10 +29,12 @@ const store = new Vuex.Store({
         },
         like_num: null,
         dislike_num: null,
+        email: null,
+        email_verify: null,
         profile: null,
         cool_down: null,
         teetee_info: null,
-        IsCreated: false,
+        personal_profile_status: false,
         api_prefix: '/api/',
         prompt_count: 0,
         loading: null
@@ -54,11 +56,13 @@ const store = new Vuex.Store({
             }, 3000)
         },
         load_my_profile: function (state, res) {
-            state.IsCreated = res.status;
+            state.personal_profile_status = res.status;
 
             if (res.status) {
                 state.like_num = res.like_num;
                 state.dislike_num = res.dislike_num;
+                state.email = res.email;
+                state.email_verify = res.email_verify;
                 state.cool_down = res.cool_down;
                 state.profile = res.profile;
                 state.teetee_info = res.teetee_info;
@@ -86,17 +90,18 @@ const store = new Vuex.Store({
         between: () => (int, from, to) => int >= from && int <= to
     },
     actions: {
-        load_my_profile: function ({commit}) {
+        load_my_profile: function ({commit, state}) {
             const url = this.state.api_prefix.concat('my-profile');
 
             return new Promise(function (resolve, reject) {
                 axios.get(url)
                     .then((res) => {
-                        commit('load_my_profile', res)
-                        resolve()
+                        commit('load_my_profile', res);
+                        resolve();
                     }).catch(() => {
-                    reject()
-                })
+                        state.personal_profile_status = false;
+                        reject();
+                    })
             })
         },
         cool_down_rec: function ({state}, type) {

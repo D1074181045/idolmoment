@@ -29,14 +29,14 @@ Route::middleware('auth')->group(function(){
     Route::get('create-profile', [UserController::class, 'create_profile'])->name('user.create.profile');
 });
 
-Route::get('email/verify', [VerificationController::class, 'show'])->name('verification.notice');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name("password.reset");
 
 Route::get('{user}', [UserController::class, 'spa'])
-    ->where('user', 'login|register|password/reset')
-    ->name('user');
+    ->where('user', join('|', [
+        'login', 'register', 'password/.*', 'email/verify/.*'
+    ]))->name('user');
 
 Route::get('{home}', [HomeController::class, 'spa'])
-    ->where('home', '.*')
+    ->where('home', '^(?!api\/).*$') // 開頭非 "api/" 結尾任意
     ->middleware('auth.user')
     ->name('home');

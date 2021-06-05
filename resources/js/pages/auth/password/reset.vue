@@ -50,6 +50,8 @@
                             v-on:click="reset_password" :disabled="send_reset_pwd_disabled"
                             >重設密碼
                     </button>
+                    <button type="button" class="btn btn-dark"
+                            v-on:click="back">返回</button>
                 </div>
             </div>
         </div>
@@ -102,6 +104,9 @@ export default {
         ...mapMutations([
             'show_error'
         ]),
+        back: function () {
+            this.$router.push({name: 'login'});
+        },
         password_toggle_button: function (e) {
             this.password_show = e.target.checked;
         },

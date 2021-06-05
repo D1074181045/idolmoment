@@ -288,18 +288,13 @@ class HomeController extends Controller
     public function my_profile(Request $request)
     {
         $name = $request->user()->name;
+        $email = $request->user()->email;
+        $email_verify = $request->user()->hasVerifiedEmail();
 
-        if (!GameInfo::query()->UserGameInfoBuilt($name)->count()) {
+        if (!GameInfo::query()->UserGameInfoBuilt($name)) {
             return response()->json([
                 'status' => 0,
                 'message' => '尚未創建'
-            ]);
-        }
-
-        $cool_down = CoolDown::query()->select('signature', 'activity', 'cooperation', 'chat', 'operating')->CurrentLoginUser();
-        if (!$cool_down) {
-            return response()->json([
-                'status' => 0
             ]);
         }
 
@@ -308,13 +303,13 @@ class HomeController extends Controller
                 'popularity', 'rebirth_counter', 'reputation', 'resistance', 'signature', 'teetee', 'use_character')
             ->with(['GameCharacter' => function ($query) {
                 $query->select('tc_name', 'en_name', 'img_file_name');
+            }])
+            ->with(['CoolDown' => function ($query) {
+                $query->select('name', 'signature', 'activity', 'cooperation', 'chat', 'operating');
             }])->CurrentLoginUser();
 
-        if (!$self_game_info) {
-            return response()->json([
-                'status' => 0
-            ]);
-        }
+        $self_cool_down = $self_game_info->CoolDown;
+        unset($self_cool_down->name);
 
         $teetee_info = $this->teetee_info($self_game_info);
 
@@ -326,10 +321,12 @@ class HomeController extends Controller
         return response()->json([
             'status' => 1,
             'like_num' => $like_num,
+            'email' => $email,
+            'email_verify' => $email_verify,
             'dislike_num' => $dislike_num,
             'profile' => $self_game_info,
             'teetee_info' => $teetee_info,
-            'cool_down' => $cool_down,
+            'cool_down' => $self_cool_down,
         ]);
     }
 
@@ -346,12 +343,7 @@ class HomeController extends Controller
                 'signature' => ['nullable', 'regex:/^[\x{4e00}-\x{9fa5}a-zA-Z0-9 ]+$/u', 'string', 'max:30']
             ]);
 
-            if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
-                return response()->json([
-                    'status' => 0,
-                    'message' => '更新失敗'
-                ], 400);
-            }
+            $cool_down = CoolDown::query()->CurrentLoginUser();
 
             $signature_time = $cool_down->signature;
 
@@ -400,15 +392,7 @@ class HomeController extends Controller
                 'teetee' => ['nullable', 'regex:/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', 'string', 'max:12']
             ]);
 
-            if (!$self_game_info = GameInfo::query()->CurrentLoginUser()) {
-                return response()->json([
-                    'status' => 0,
-                    'teetee_status' => 0,
-                    'teetee_name' => null,
-                    'teetee_graduate' => null,
-                    'message' => '更新失敗'
-                ], 400);
-            }
+            $self_game_info = GameInfo::query()->CurrentLoginUser();
 
             $self_game_info->update_teetee($request->post('teetee'));
 
@@ -442,17 +426,6 @@ class HomeController extends Controller
     function change_page(Request $request)
     {
         try {
-            if (!$self_game_info = GameInfo::query()->CurrentLoginUser()) {
-                return response()->json([
-                    'status' => 0,
-                    'teetee_name' => '',
-                    'teetee_status' => 0,
-                    'total_pages' => 0,
-                    'max_popularity' => 0,
-                    'data' => ""
-                ], 400);
-            }
-
             if ($search_name = $request->get('search_name')) {
                 $idol_list = GameInfo::query()->SearchName($search_name)->get();
                 $max_popularity = GameInfo::query()->max('popularity');
@@ -512,12 +485,7 @@ class HomeController extends Controller
      */
     public function activity(Request $request)
     {
-        if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
-            return response()->json([
-                'status' => 0,
-                'message' => '活動進行失敗'
-            ], 400);
-        }
+        $cool_down = CoolDown::query()->CurrentLoginUser();
 
         $activity_time = $cool_down->activity;
 
@@ -635,12 +603,7 @@ class HomeController extends Controller
      */
     public function cooperation(Request $request)
     {
-        if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
-            return response()->json([
-                'status' => 0,
-                'message' => '合作活動進行失敗'
-            ], 400);
-        }
+        $cool_down = CoolDown::query()->CurrentLoginUser();
 
         $cooperation_time = $cool_down->cooperation;
 
@@ -731,12 +694,7 @@ class HomeController extends Controller
      */
     public function operating(Request $request)
     {
-        if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
-            return response()->json([
-                'status' => 0,
-                'message' => '操作失敗'
-            ], 400);
-        }
+        $cool_down = CoolDown::query()->CurrentLoginUser();
 
         $opposite_name = $request->post('opposite_name');
         $self_game_info = $cool_down->GameInfo;
@@ -865,12 +823,7 @@ class HomeController extends Controller
     {
         $character_name = $request->post('character_name');
 
-        if (!$self_game_info = GameInfo::CurrentLoginUser()) {
-            return response()->json([
-                'status' => 0,
-                'message' => "轉生失敗"
-            ], 400);
-        }
+        $self_game_info = GameInfo::CurrentLoginUser();
 
         if (!$game_character = GameCharacter::query()->find($character_name)) {
             return response()->json([
@@ -914,12 +867,7 @@ class HomeController extends Controller
                 'message' => ['nullable', 'max:255'],
             ]);
 
-            if (!$cool_down = CoolDown::query()->CurrentLoginUser()) {
-                return response()->json([
-                    'status' => 0,
-                    'message' => '送出失敗'
-                ], 400);
-            }
+            $cool_down = CoolDown::query()->CurrentLoginUser();
 
             $chat_time = $cool_down->chat;
 

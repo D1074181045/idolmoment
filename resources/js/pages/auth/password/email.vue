@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <CardFooter :type="'alert-danger'" />
+        <CardFooter :type="alert_type(alert_status)" />
     </div>
 </template>
 
@@ -45,8 +45,9 @@ export default {
             send_btn_name: '寄送密碼重設',
             illegal: true,
             send_disable: true,
-            isCd: false,
-            sending: false
+            check: false,
+            sending: false,
+            alert_status: false
         }
     },
     components: {
@@ -65,16 +66,20 @@ export default {
         ...mapMutations([
             'show_error'
         ]),
+        alert_type: function (status) {
+            return status ? 'alert-success' : 'alert-danger'
+        },
         check_email:function() {
-            if (!this.isCd)
-                this.send_disable = this.illegal = !legalityKey.test(this.email);
+            this.illegal = !legalityKey.test(this.email);
+
+            if (!this.check)
+                this.send_disable = this.illegal;
         },
         back: function () {
             this.$router.push({name: 'login'});
         },
         cd: function (second) {
             let _second = second;
-            this.isCd = true;
             this.sending = false;
 
             this.send_btn_name = '再次寄送密碼重設還需 ' + (_second--).toString() + ' 秒';
@@ -82,8 +87,7 @@ export default {
                 this.send_btn_name = '再次寄送密碼重設還需 ' + (_second--).toString() + ' 秒';
                 if (_second === -1) {
                     this.send_btn_name = '再次寄送密碼重設';
-                    this.send_disable = false;
-                    this.isCd = false;
+                    this.send_disable = this.check = false;
                     this.check_email();
                     clearInterval(cd);
                 }
@@ -94,11 +98,13 @@ export default {
                 return
 
             let url = this.api_prefix.concat('password/email')
-            this.send_disable = this.sending = true;
+            this.send_disable = this.sending = this.check = true;
 
             axios.post(url, {
                 email: this.email
-            }).then(() => {
+            }).then((res) => {
+                this.alert_status = true;
+                this.show_error(res.message);
                 this.cd(30);
             }).catch((err) => {
                 if (err.status === 422) {
@@ -113,7 +119,7 @@ export default {
                 } else {
                     this.show_error(err.data.message);
                 }
-                this.send_disable = this.sending = false;
+                this.alert_status = this.send_disable = this.sending = false;
             })
         }
     }

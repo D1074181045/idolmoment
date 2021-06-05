@@ -41,7 +41,7 @@ Route::middleware(['refresh.token'])->group(function(){
     Route::post('like', [HomeController::class, 'like']);
 });
 
-Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::post('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('email/send', [VerificationController::class, 'send']);
 
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);

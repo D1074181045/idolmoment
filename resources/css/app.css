@@ -25,6 +25,7 @@
     --table-secondary-bg-color: #d6d8db;
 	--form-control-color: #495057;
     --form-control-bg-color: #fff;
+    --form-control-disabled-bg-color: #e9ecef;
 	--primary-bg-color: #3490dc;
     --graduate-color: #aa9c9c;
 	--self-bg-color: rgb(207 243 243);
@@ -51,6 +52,7 @@
     --table-secondary-bg-color: #3d3d3d;
     --form-control-color: #eee;
     --form-control-bg-color: #495057;
+    --form-control-disabled-bg-color: #888b8d;
     --graduate-color: #756464;
 	--self-bg-color: rgb(66 136 136);
 	--teetee-bg-color: rgb(173 163 123);
@@ -2563,7 +2565,7 @@ pre code {
 
 .form-control:disabled,
 .form-control[readonly] {
-  background-color: #e9ecef;
+  background-color: var(--form-control-disabled-bg-color);
   opacity: 1;
 }
 

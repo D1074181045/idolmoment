@@ -5,6 +5,7 @@ import login from '../pages/user/login.vue';
 import register from '../pages/user/register.vue';
 import email from '../pages/auth/password/email.vue';
 import reset from '../pages/auth/password/reset.vue';
+import verify from "../pages/auth/verification/verify";
 
 Vue.use(Router);
 
@@ -39,6 +40,14 @@ const routes = [
         name: 'reset.password',
         meta: {
             title: '重設密碼',
+        }
+    },
+    {
+        path: '/email/verify/:id/:hash',
+        component: verify,
+        name: 'verification.verify',
+        meta: {
+            title: '郵件驗證',
         }
     }
 ];

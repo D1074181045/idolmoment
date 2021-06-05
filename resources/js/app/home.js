@@ -1,4 +1,5 @@
 import Vue from 'vue';
+
 import {mapActions} from "vuex";
 
 import store from '../store';
@@ -89,12 +90,12 @@ try {
             window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
 
             this.load_my_profile().then(() => {
-                this.loaded = true;
-
-                if (store.state.IsCreated) {
+                if (store.state.personal_profile_status) {
                     this.unlock_character_event();
                     this.danger_event();
                 }
+            }).finally(() => {
+                this.loaded = true;
             });
         },
         mounted() {
@@ -202,13 +203,9 @@ try {
     });
 
     router.beforeEach((to, from, next) => {
-        router.app.$nextTick(() => {
-            router.app.$refs.loading.start();
-        })
-
         store.commit('error_clear');
 
-        if (store.state.IsCreated) {
+        if (store.state.personal_profile_status) {
             Vue.prototype.first_load = false;
             next();
         } else {
@@ -216,6 +213,9 @@ try {
                 next({name: "create-profile"});
             else
                 next();
+            router.app.$nextTick(() => {
+                router.app.$refs.loading.finish(true);
+            })
         }
     });
 

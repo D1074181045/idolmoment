@@ -33,8 +33,9 @@
                         <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red"
                                      :to="{ name: 'update-password' }" exact>修改密碼
                         </router-link>
-                        <span class="dropdown-item nav-link-red" style="cursor: pointer;"
-                              onclick="location.href='/email/verify'">郵件驗證</span>
+                        <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red"
+                                     :to="{ name: 'verification.send' }" exact>郵件驗證
+                        </router-link>
                         <span class="dropdown-item nav-link-red" id="logout" style="cursor: pointer;"
                               v-on:click="this.logout">登出</span>
                     </div>

@@ -52,7 +52,7 @@ class GameInfo extends Model
      * @param string $username
      */
     public function scopeUserGameInfoBuilt($query, string $username) {
-        $query->where('name', '=', $username);
+        return $query->where('name', '=', $username)->count();
     }
 
     /**
