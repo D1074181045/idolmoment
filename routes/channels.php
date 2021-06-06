@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Broadcast;
+use App\Http\Other\UserNameCrypto;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('unlock-character-channel-{name}', function ($user, $name) {
-    return $user->name === Controller::UserNameDecrypt($name);
+    return $user->name === UserNameCrypto::UserNameDecrypt($name);
 });
 
 Broadcast::channel('danger-channel-{name}', function ($user, $name) {
-    return $user->name === Controller::UserNameDecrypt($name);
+    return $user->name === UserNameCrypto::UserNameDecrypt($name);
 });

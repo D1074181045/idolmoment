@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Other\UserNameCrypto;
 use App\Models\GameInfo;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
-use Vinkla\Hashids\Facades\Hashids;
 
 define('SIGNATURE_DELAY_T', env('SIGNATURE_DELAY_T', 60));
 define('ACTIVITY_DELAY_T', env('ACTIVITY_DELAY_T', 60));
@@ -19,7 +17,7 @@ define('OPERATING_DELAY_T', env('OPERATING_DELAY_T', 120));
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, UserNameCrypto;
 
     /**
      * 特殊字元轉換 List
@@ -31,65 +29,6 @@ class Controller extends BaseController
         foreach ($data as $index => $value) {
             $data[$index]->{$key} = htmlspecialchars($data[$index]->{$key});
         }
-    }
-
-    /**
-     * 使用者名稱解密
-     *
-     * @param string $hex
-     * @return string
-     */
-    public static function UserNameDecrypt(string $hex) {
-        return hex2bin(Hashids::decodeHex($hex));
-    }
-
-    /**
-     * 使用者名稱加密(多)
-     *
-     * @param $data
-     * @param string $key
-     */
-    public function UsersNameEncrypt(&$data, string $key = 'name') {
-        foreach ($data as $index => $value) {
-            $data[$index]->{$key} = Hashids::encodeHex(bin2hex($data[$index]->{$key}));
-        }
-    }
-
-    /**
-     * 使用者名稱加密(一)
-     *
-     * @param $data
-     * @param string $key
-     */
-    public function UserNameEncrypt(&$data, string $key = 'name') {
-        $data->{$key} = Hashids::encodeHex(bin2hex($data->{$key}));
-    }
-
-    /**
-     * 使用者名稱加密(一)
-     *
-     * @param $data
-     * @return string
-     */
-    public static function UserNameEncrypt2($data) {
-        return Hashids::encodeHex(bin2hex($data));
-    }
-
-    /**
-     * 取得Cookie
-     *
-     *
-     * @param string $key
-     * @return string
-     */
-    public static function getCookie(string $key)
-    {
-        if (Session::has($key))
-            $username = Session::get($key, false);
-        else
-            $username = Cookie::get($key, false);
-
-        return $username;
     }
 
     /**

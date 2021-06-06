@@ -25,11 +25,8 @@ use App\Http\Controllers\HomeController;
 
 Route::middleware('auth')->group(function(){
     Route::get('logout', [UserController::class, 'logout'])->name('home.logout');
-    Route::get('update-password', [HomeController::class, 'spa'])->name('home.update.password');
     Route::get('create-profile', [UserController::class, 'create_profile'])->name('user.create.profile');
 });
-
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name("password.reset");
 
 Route::get('{user}', [UserController::class, 'spa'])
     ->where('user', join('|', [

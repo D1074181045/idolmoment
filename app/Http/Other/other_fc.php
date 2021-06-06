@@ -4,7 +4,7 @@
 namespace App\Http\Other;
 
 
-class other_fc
+trait other_fc
 {
     /**
      * 修正資料儲存
@@ -12,7 +12,7 @@ class other_fc
      * @param $arr
      * @param $data
      */
-    public static function patch_save_data($arr, $data) {
+    protected function patch_save_data($arr, $data) {
         foreach ($arr as $value) {
             if ($data->{$value}['game_info']->popularity < 1)
                 $data->{$value}['game_info']->popularity = 1;

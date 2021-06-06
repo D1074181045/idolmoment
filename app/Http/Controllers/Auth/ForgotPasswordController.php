@@ -40,7 +40,7 @@ class ForgotPasswordController extends Controller
         if (!User::EmailVerifyStatus($request->email)) {
             return response()->json([
                 'status' => 0,
-                'message' => "該郵件尚未驗證"
+                'message' => "發送失敗，該郵件尚未驗證"
             ], 400);
         }
 

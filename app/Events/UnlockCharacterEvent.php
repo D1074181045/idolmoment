@@ -2,20 +2,17 @@
 
 namespace App\Events;
 
-use App\Models\ChatRoom;
-use App\Http\Controllers\Controller;
+use App\Http\Other\UserNameCrypto;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Auth;
 
 class UnlockCharacterEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, UserNameCrypto;
 
     public $Character;
     public $username;
@@ -39,7 +36,7 @@ class UnlockCharacterEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('unlock-character-channel-' . Controller::UserNameEncrypt2($this->username));
+        return new PrivateChannel('unlock-character-channel-' . $this->UserNameEncrypt2($this->username));
     }
 
     public function broadcastAs()

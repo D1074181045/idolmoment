@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             email: this.$store.state.email,
-            send_btn_name: '寄送',
+            send_btn_name: '發送',
             illegal: true,
             send_disable: true,
             check: false,
@@ -79,11 +79,11 @@ export default {
             let _second = second;
             this.sending = false;
 
-            this.send_btn_name = '再次寄送還需 ' + (_second--).toString() + ' 秒';
+            this.send_btn_name = '再次發送還需 ' + (_second--).toString() + ' 秒';
             let cd = setInterval(() => {
-                this.send_btn_name = '再次寄送還需 ' + (_second--).toString() + ' 秒';
+                this.send_btn_name = '再次發送還需 ' + (_second--).toString() + ' 秒';
                 if (_second === 0) {
-                    this.send_btn_name = '再次寄送';
+                    this.send_btn_name = '再次發送';
                     this.send_disable = this.check = false;
                     this.check_email();
                     clearInterval(cd);

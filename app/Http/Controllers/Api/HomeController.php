@@ -696,7 +696,7 @@ class HomeController extends Controller
     {
         $cool_down = CoolDown::query()->CurrentLoginUser();
 
-        $opposite_name = $request->post('opposite_name');
+        $opposite_name_encrypt = $request->post('opposite_name');
         $self_game_info = $cool_down->GameInfo;
 
         if ($self_game_info->graduate) {
@@ -718,9 +718,8 @@ class HomeController extends Controller
             ], 400);
         }
 
-        $this->opposite_name = $opposite_name_decrypt = $this->UserNameDecrypt($opposite_name);
-
-        $opposite_game_info = GameInfo::query()->find($opposite_name_decrypt);
+        $this->opposite_name = $this->UserNameDecrypt($opposite_name_encrypt);
+        $opposite_game_info = GameInfo::query()->find($this->opposite_name);
 
         if ($opposite_game_info->graduate) {
             return response()->json([
@@ -734,7 +733,7 @@ class HomeController extends Controller
 
         switch ($request->post('operating_type')) {
             case 'send-blade':
-                if ($self_teetee_name === $opposite_name) {
+                if ($self_teetee_name === $opposite_name_encrypt) {
                     return response()->json([
                         'status' => 0,
                         'message' => '不能寄刀片給你的貼貼'
@@ -742,12 +741,12 @@ class HomeController extends Controller
                 }
 
                 $information = $operating->send_blade();
-                event(new PromptEvent($opposite_name, 'danger', '你收到刀片了'));
+                event(new PromptEvent($opposite_name_encrypt, 'danger', '你收到刀片了'));
 
                 $operating_time = $cool_down->update_operating(160);
                 break;
             case 'defame':
-                if ($self_teetee_name === $opposite_name) {
+                if ($self_teetee_name === $opposite_name_encrypt) {
                     return response()->json([
                         'status' => 0,
                         'message' => '不能抹黑你的貼貼'
@@ -755,19 +754,19 @@ class HomeController extends Controller
                 }
 
                 $information = $operating->defame();
-                event(new PromptEvent($opposite_name, 'danger', '你被抹黑了'));
+                event(new PromptEvent($opposite_name_encrypt, 'danger', '你被抹黑了'));
 
                 $operating_time = $cool_down->update_operating(160);
                 break;
             case 'endorse':
                 $information = $operating->endorse();
-                event(new PromptEvent($opposite_name, 'success', "你受到偶像 $self_game_info->nickname 的讚賞了"));
+                event(new PromptEvent($opposite_name_encrypt, 'success', "你受到偶像 $self_game_info->nickname 的讚賞了"));
 
                 $operating_time = $cool_down->update_operating(120);
                 break;
             case 'donate':
                 $information = $operating->donate();
-                event(new PromptEvent($opposite_name, 'success', "你收到偶像 $self_game_info->nickname 的斗內了"));
+                event(new PromptEvent($opposite_name_encrypt, 'success', "你收到偶像 $self_game_info->nickname 的斗內了"));
 
                 $operating_time = $cool_down->update_operating(120);
                 break;

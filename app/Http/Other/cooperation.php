@@ -5,6 +5,8 @@ namespace App\Http\Other;
 
 class cooperation
 {
+    use other_fc;
+
     public $self = [];
     public $teetee = [];
 
@@ -113,6 +115,6 @@ class cooperation
     public function __destruct() {
         $arr = ['self', 'teetee'];
 
-        other_fc::patch_save_data($arr, $this);
+        $this->patch_save_data($arr, $this);
     }
 }

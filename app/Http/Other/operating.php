@@ -5,6 +5,8 @@ namespace App\Http\Other;
 
 class operating
 {
+    use other_fc;
+
     public $self = [];
     public $opposite = [];
 
@@ -241,6 +243,6 @@ class operating
     public function __destruct() {
         $arr = ['self', 'opposite'];
 
-        other_fc::patch_save_data($arr, $this);
+        $this->patch_save_data($arr, $this);
     }
 }

@@ -38,19 +38,6 @@ class VerificationController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Show the email verification notice.
-     *
-     * @param Request $request
-     * @return View|RedirectResponse
-     */
-    public function show(Request $request)
-    {
-        return $request->user()->hasVerifiedEmail()
-            ? redirect($this->redirectPath())
-            : view('home.app');
-    }
-
-    /**
      * Resend the email verification notification.
      *
      * @param Request $request
@@ -165,7 +152,6 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth');
         $this->middleware('throttle:6,1')->only('verify', 'send');
     }
 }

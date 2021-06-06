@@ -6,6 +6,8 @@ namespace App\Http\Other;
 
 class activity
 {
+    use other_fc;
+
     public $self = [];
 
     /**
@@ -150,6 +152,6 @@ class activity
     public function __destruct() {
         $arr = ['self'];
 
-        other_fc::patch_save_data($arr, $this);
+        $this->patch_save_data($arr, $this);
     }
 }
