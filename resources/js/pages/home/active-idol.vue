@@ -61,6 +61,7 @@
                         :class_name="'img-small'"
                         :img_file_name="idol.img_file_name"
                         :img_name="idol.use_character"
+                        :lazy="false"
                     />
                 </td>
                 <td>{{ NumberFormat(idol.popularity, 'zh-TW') }}</td>

@@ -12,6 +12,7 @@
                             :class_name="'img-big'"
                             :img_file_name="profile.game_character.img_file_name"
                             :img_name="profile.game_character.tc_name"
+                            :lazy="false"
                         />
                     </td>
                 </tr>

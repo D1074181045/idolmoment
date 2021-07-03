@@ -15,8 +15,6 @@ function String2DateTime(String) {
     );
 }
 
-let error_clear_timeout = null;
-
 const store = new Vuex.Store({
     state: {
         error: {'status': 0, 'message': null},
@@ -48,10 +46,10 @@ const store = new Vuex.Store({
             state.error.status = true;
             state.error.message = message;
 
-            if (error_clear_timeout)
-                clearTimeout(error_clear_timeout);
+            if (this.error_clear_timeout)
+                clearTimeout(this.error_clear_timeout);
 
-            error_clear_timeout = setTimeout(() => {
+            this.error_clear_timeout = setTimeout(() => {
                 store.commit('error_clear');
             }, 3000)
         },

@@ -18,6 +18,7 @@
                                 :class_name="'img-big'"
                                 :img_file_name="opposite_profile.game_character.img_file_name"
                                 :img_name="opposite_profile.game_character.tc_name"
+                                :lazy="false"
                             />
                         </td>
                     </tr>

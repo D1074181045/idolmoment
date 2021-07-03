@@ -11,6 +11,7 @@
                             :class_name="'img-big'"
                             :img_file_name="own_character.game_character.img_file_name"
                             :img_name="own_character.character_name"
+                            :lazy="true"
                         />
                         <div style="flex: auto;">
                             <p style="margin-top: 1rem;">
@@ -64,7 +65,8 @@ export default {
         return {
             rebirth_disabled: true,
             selected_character: "",
-            own_character_list: [],
+            own_character_list: null,
+            observer: null,
         }
     },
     computed: mapState([
@@ -73,10 +75,53 @@ export default {
     components: {
         Avatar
     },
+    created() {
+        this.observer = new IntersectionObserver(this.onElementObserved);
+    },
     activated: function () {
-        this.get_own_character();
+        this.get_own_character().then(() => {
+            const lazyImages = document.querySelectorAll('img.lazyload');
+            lazyImages.forEach((image) => {
+                this.observer.observe(image)
+            });
+        });
+
+        if (this.own_character_list) this.default_select();
     },
     methods: {
+        onElementObserved(entries) {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                const parentNodes = entry.target.parentNode;
+
+                for (let i = 0; i < 3; i++) {
+                    const source = parentNodes.children[i];
+                    if (source.dataset.srcset) {
+                        source.setAttribute('srcset', source.dataset.srcset);
+                        source.removeAttribute('data-srcset');
+                    }
+                }
+
+                const img = entry.target;
+
+                if (img.dataset.src) {
+                    img.setAttribute('src', img.dataset.src); // 把值塞回 src
+                    img.removeAttribute('data-src');
+                    img.addEventListener('load', (event) => {
+                        const mockup = event.target.parentNode.children[0];
+                        if (mockup.className === "mockup") {
+                            mockup.addEventListener('transitionend', mockup.remove);
+                            mockup.classList.add('fade-out');
+                        }
+                    })
+                }
+
+                this.observer.unobserve(img);
+            });
+        },
         default_select: function (item = 0) {
             this.select_character(this.own_character_list[item].character_name);
         },
