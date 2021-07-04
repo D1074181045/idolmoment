@@ -89,33 +89,29 @@ export default {
         if (this.own_character_list) this.default_select();
     },
     methods: {
-        onElementObserved(entries) {
+        onElementObserved: function (entries) {
             entries.forEach((entry) => {
                 if (!entry.isIntersecting) {
                     return;
                 }
 
-                const parentNodes = entry.target.parentNode;
+                const sources = entry.target.parentNode.querySelectorAll('source');
 
-                for (let i = 0; i < 3; i++) {
-                    const source = parentNodes.children[i];
+                sources.forEach((source) => {
                     if (source.dataset.srcset) {
                         source.setAttribute('srcset', source.dataset.srcset);
                         source.removeAttribute('data-srcset');
                     }
-                }
+                })
 
                 const img = entry.target;
 
                 if (img.dataset.src) {
-                    img.setAttribute('src', img.dataset.src); // 把值塞回 src
+                    img.setAttribute('src', img.dataset.src);
                     img.removeAttribute('data-src');
-                    img.addEventListener('load', (event) => {
-                        const mockup = event.target.parentNode.children[0];
-                        if (mockup.className === "mockup") {
-                            mockup.addEventListener('transitionend', mockup.remove);
-                            mockup.classList.add('fade-out');
-                        }
+                    img.addEventListener('load', () => {
+                        img.classList.remove('lazy-hidden');
+                        img.classList.add('lazy-show');
                     })
                 }
 

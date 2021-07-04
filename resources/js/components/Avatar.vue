@@ -2,21 +2,17 @@
     <div :class="class_name" v-if="img_file_name">
         <picture>
             <template v-if="lazy">
-                <div class="mockup"></div>
-                <source type="image/webp" :data-srcset="characters_img_path(img_file_name, 'webp')">
-                <source type="image/jpeg" :data-srcset="characters_img_path(img_file_name, 'jpg')">
-                <source type="image/png" :data-srcset="characters_img_path(img_file_name, 'png')">
+                <source v-for="{type, ext} in source_list"
+                        :type="type" :data-srcset="characters_img_path(img_file_name, ext)">
                 <img
                     :data-src="characters_img_path(img_file_name, 'jpg')"
-                    :alt="img_name"
-                    class="lazyload"
+                    :alt="img_name" class="lazyload lazy-hidden"
                     v-on:error="img_error"
                 >
             </template>
             <template v-else>
-                <source type="image/webp" :srcset="characters_img_path(img_file_name, 'webp')">
-                <source type="image/jpeg" :srcset="characters_img_path(img_file_name, 'jpg')">
-                <source type="image/png" :srcset="characters_img_path(img_file_name, 'png')">
+                <source v-for="{type, ext} in source_list"
+                        :type="type" :srcset="characters_img_path(img_file_name, ext)">
                 <img
                     :src="characters_img_path(img_file_name, 'jpg')"
                     :alt="img_name"
@@ -32,6 +28,15 @@ import {mapGetters} from 'vuex';
 
 export default {
     props: ['class_name', 'img_file_name', 'img_name', 'lazy'],
+    data: function () {
+        return {
+            source_list: [
+                {type: 'image/webp', ext: 'webp'},
+                {type: 'image/jpeg', ext: 'jpe'},
+                {type: 'image/png', ext: 'png'},
+            ]
+        }
+    },
     computed: mapGetters([
         'characters_img_path'
     ]),
@@ -75,17 +80,14 @@ export default {
     width: 60px;
 }
 
-.mockup {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #fff;
+img.lazyload.lazy-hidden {
     transition: opacity 550ms ease-in;
-    opacity: 1;
+    opacity: 0;
 }
 
-.fade-out {
-    opacity: 0;
+img.lazyload.lazy-show {
+    transition: opacity 550ms ease-in;
+    opacity: 1;
 }
 
 </style>
