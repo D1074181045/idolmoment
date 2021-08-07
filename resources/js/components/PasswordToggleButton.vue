@@ -29,8 +29,10 @@ export default {
     width: 1.2rem;
     height: 1rem;
     text-indent: -9999px;
-    -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/hide-v0.0.1.svg');
-            background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/hide-v0.0.1.svg');
+    -webkit-background-image: url('https://ik.imagekit.io/7bjbvrubevy/password-toggle-button/hide-v0.0.1');
+            background-image: url('https://ik.imagekit.io/7bjbvrubevy/password-toggle-button/hide-v0.0.1');
+    /*-webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/hide-v0.0.1.svg');*/
+    /*        background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/hide-v0.0.1.svg');*/
     background-repeat: no-repeat;
     -webkit-background-size: 18px 18px;
             background-size: 18px 18px;
@@ -40,8 +42,10 @@ export default {
 }
 
 .show-hide-toggle-button > input:checked + label {
-    -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/show-v0.0.1.svg');
-            background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/show-v0.0.1.svg');
+    -webkit-background-image: url('https://ik.imagekit.io/7bjbvrubevy/password-toggle-button/show-v0.0.1');
+            background-image: url('https://ik.imagekit.io/7bjbvrubevy/password-toggle-button/show-v0.0.1');
+    /*-webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/show-v0.0.1.svg');*/
+    /*        background-image: url('https://f000.backblazeb2.com/file/idolmoment/password-toggle-button/show-v0.0.1.svg');*/
 }
 </style>
 

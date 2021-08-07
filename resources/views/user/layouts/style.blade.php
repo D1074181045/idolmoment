@@ -25,8 +25,10 @@
         height: 24px;
         text-indent: -9999px;
         background-color: #04566700;
-        -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg');
-                background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg');
+        -webkit-background-image: url('https://ik.imagekit.io/7bjbvrubevy/theme/pic_sun');
+                background-image: url('https://ik.imagekit.io/7bjbvrubevy/theme/pic_sun');
+{{--        -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg'); --}}
+{{--                background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_sun.svg'); --}}
         background-position: 8px;
         background-repeat: no-repeat;
         -webkit-background-size: 18px 18px;
@@ -40,9 +42,11 @@
 
     .dark-swift-button > input:checked + label {
         background-color: #04566700;
-        -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg');
-                background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg');
-    }
+        -webkit-background-image: url('https://ik.imagekit.io/7bjbvrubevy/theme/pic_moon');
+                background-image: url('https://ik.imagekit.io/7bjbvrubevy/theme/pic_moon');
+{{--        -webkit-background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg'); --}}
+{{--                background-image: url('https://f000.backblazeb2.com/file/idolmoment/theme/pic_moon.svg'); --}}
+}
 </style>
 
 @yield('styles')

@@ -3,6 +3,9 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const imagekit_url = 'https://ik.imagekit.io/7bjbvrubevy/characters/';
+// const backblaze_url = 'https://f000.backblazeb2.com/file/idolmoment/characters/';
+
 function String2DateTime(String) {
     const arr = String.split(/[- :]/);
     return new Date(
@@ -68,7 +71,7 @@ const store = new Vuex.Store({
         }
     },
     getters: {
-        characters_img_path: () => (img_file_name, img_type = 'jpg') => 'https://f000.backblazeb2.com/file/idolmoment/characters/'.concat(img_file_name).concat('.', img_type),
+        characters_img_path: () => (img_name, img_type = 'jpg') => new URL(img_name.concat('.', img_type), imagekit_url),
         disabled_class: () => status => status ? 'is-invalid' : 'is-valid',
         pw_toggle: () => show => show ? {title: '顯示密碼', type: 'text'} : {title: '隱藏密碼', type: 'password'},
         NumberFormat: () => (number, type = 'en-IN') => {

@@ -36,6 +36,7 @@
         "@websanova/vue-auth": "^4.1.1",
         "deasync": "^0.1.21",
         "fs-extra": "^9.1.0",
+        "imagekitio-vue": "^1.0.9",
         "intl": "^1.2.5",
         "jquery-ui-bundle": "^1.12.1-migrate",
         "laravel-mix-alias": "^1.0.2",
