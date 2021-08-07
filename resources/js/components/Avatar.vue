@@ -32,7 +32,7 @@ export default {
         return {
             source_list: [
                 {type: 'image/webp', ext: 'webp'},
-                {type: 'image/jpeg', ext: 'jpe'},
+                {type: 'image/jpeg', ext: 'jpg'},
                 {type: 'image/png', ext: 'png'},
             ]
         }
