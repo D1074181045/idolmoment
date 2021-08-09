@@ -31,7 +31,7 @@
                     </span>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red"
-                                     :to="{ name: 'update-password' }" exact>修改密碼
+                                     :to="{ name: 'update.password' }" exact>修改密碼
                         </router-link>
                         <router-link tag="span" style="cursor: pointer;" class="dropdown-item nav-link-red"
                                      :to="{ name: 'verification.send' }" exact>郵件驗證

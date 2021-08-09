@@ -18,7 +18,7 @@ const routes = [
         component: index,
         name: 'index',
         meta: {
-            title: '我的偶像',
+            title: '我的偶像 - 偶像時刻',
             KeepAlive: false
         }
     },
@@ -27,7 +27,7 @@ const routes = [
         component: active_idol,
         name: 'active-idol',
         meta: {
-            title: '活耀偶像',
+            title: '活耀偶像 - 偶像時刻',
             KeepAlive: true
         }
     },
@@ -36,7 +36,7 @@ const routes = [
         component: profile,
         name: 'profile',
         meta: {
-            title: '偶像資訊',
+            title: '偶像資訊 - 偶像時刻',
             KeepAlive: true
         }
     },
@@ -45,7 +45,7 @@ const routes = [
         component: rebirth,
         name: 'rebirth',
         meta: {
-            title: '偶像轉生',
+            title: '偶像轉生 - 偶像時刻',
             KeepAlive: true
         }
     },
@@ -54,7 +54,7 @@ const routes = [
         component: chatroom,
         name: 'chatroom',
         meta: {
-            title: '聊天室',
+            title: '聊天室 - 偶像時刻',
             KeepAlive: true
         }
     },
@@ -63,15 +63,15 @@ const routes = [
         component: create_profile,
         name: 'create-profile',
         meta: {
-            title: '創建偶像',
+            title: '創建偶像 - 偶像時刻',
         }
     },
     {
-        path: '/update-password',
+        path: '/password/update',
         component: update_password,
-        name: 'update-password',
+        name: 'update.password',
         meta: {
-            title: '修改密碼',
+            title: '修改密碼 - 偶像時刻',
         }
     },
     {
@@ -79,7 +79,7 @@ const routes = [
         component: send,
         name: 'verification.send',
         meta: {
-            title: '郵件驗證',
+            title: '郵件驗證 - 偶像時刻',
         }
     },
 ];

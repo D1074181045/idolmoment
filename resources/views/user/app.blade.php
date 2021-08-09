@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-tw">
 <head>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes, shrink-to-fit=no"/>
-    <link rel="icon" href="{{ asset('favicon.ico')}}">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet"/>
-    <title>偶像時刻 - 二創遊戲</title>
-	<!-- Primary Meta Tags -->
-	<meta name="title" content="偶像時刻 - 二創遊戲">
-	<meta name="description" content="Hololive二創遊戲">
+    @include('global.head')
     @include('user.layouts.style')
 </head>
 <body>

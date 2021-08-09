@@ -15,7 +15,7 @@ const routes = [
         component: login,
         name: 'login',
         meta: {
-            title: '登入',
+            title: '登入 - 偶像時刻',
         }
     },
     {
@@ -23,7 +23,7 @@ const routes = [
         component: register,
         name: 'register',
         meta: {
-            title: '註冊',
+            title: '註冊 - 偶像時刻',
         }
     },
     {
@@ -31,7 +31,7 @@ const routes = [
         component: email,
         name: 'forgot.password',
         meta: {
-            title: '忘記密碼',
+            title: '忘記密碼 - 偶像時刻',
         }
     },
     {
@@ -39,7 +39,7 @@ const routes = [
         component: reset,
         name: 'reset.password',
         meta: {
-            title: '重設密碼',
+            title: '重設密碼 - 偶像時刻',
         }
     },
     {
@@ -47,7 +47,7 @@ const routes = [
         component: verify,
         name: 'verification.verify',
         meta: {
-            title: '郵件驗證',
+            title: '郵件驗證 - 偶像時刻',
         }
     }
 ];

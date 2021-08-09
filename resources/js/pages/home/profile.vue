@@ -305,7 +305,7 @@ export default {
                 .then((res) => {
                     if (res.status) {
                         if (!this.title)
-                            document.title = this.title = "偶像資訊".concat('-', res.opposite_profile.nickname);
+                            document.title = this.title = "偶像資訊".concat('(', res.opposite_profile.nickname, ')').concat(' - ', '偶像時刻');
                         this.opposite_like_num = res.opposite_like_num;
                         this.opposite_dislike_num = res.opposite_dislike_num;
                         this.like_select = res.like_select;
