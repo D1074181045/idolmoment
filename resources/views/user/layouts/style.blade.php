@@ -1,3 +1,4 @@
+<!-- Bootstrap CSS -->
 {{ Html::style( mix('css/app.css')) }}
 
 <style type="text/css">
