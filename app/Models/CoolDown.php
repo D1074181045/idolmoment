@@ -13,8 +13,8 @@ class CoolDown extends Model
     use HasFactory;
 
     protected $table = 'cool_down';
-    protected $primaryKey = 'name';
 
+    protected $primaryKey = 'name';
     public $keyType = 'string';
     public $incrementing = false;
 

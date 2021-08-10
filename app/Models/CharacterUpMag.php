@@ -10,8 +10,8 @@ class CharacterUpMag extends Model
     use HasFactory;
 
     protected $table = 'characters_up_mag';
-    protected $primaryKey = 'character_name';
 
+    protected $primaryKey = 'character_name';
     public $keyType = 'string';
     public $incrementing = false;
 }

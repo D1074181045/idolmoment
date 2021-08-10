@@ -22,12 +22,6 @@
 <script>
 import LightSwitch from "../../../components/LightSwitch";
 
-function qs(params) {
-    return Object.keys(params).map((key) => {
-        return `${key}=${params[key]}`
-    }).join('&');
-}
-
 export default {
     data: function () {
         return {
@@ -40,7 +34,9 @@ export default {
         LightSwitch
     },
     beforeRouteEnter: function (to, from, next) {
-        let url = `/api/email/verify/${to.params.id}/${to.params.hash}?${qs(to.query)}`;
+        console.log('to_list：', to);
+
+        let url = `/api${to.fullPath}`;
 
         axios.post(url).then((res) => {
             next(vm => {

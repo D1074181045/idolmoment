@@ -11,15 +11,9 @@ class GameInfo extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
     protected $table = 'game_info';
-    protected $primaryKey = 'name';
 
+    protected $primaryKey = 'name';
     public $keyType = 'string';
     public $incrementing = false;
 

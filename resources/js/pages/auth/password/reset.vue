@@ -97,6 +97,7 @@ export default {
     },
     mounted() {
         let route = this.$route;
+        console.log('route：', route);
         this.email = route.query.email;
         this.token = route.params.token;
     },

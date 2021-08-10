@@ -45,6 +45,6 @@ Route::post('email/verify/{id}/{hash}', [VerificationController::class, 'verify'
 Route::post('email/send', [VerificationController::class, 'send']);
 
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
-Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name("password.update");
+Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 /****************************************************************************************************/

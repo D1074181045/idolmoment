@@ -16,15 +16,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
     protected $table = 'users';
-    protected $primaryKey = 'name';
 
+    protected $primaryKey = 'name';
     public $keyType = 'string';
     public $incrementing = false;
 

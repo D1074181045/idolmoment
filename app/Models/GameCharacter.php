@@ -9,15 +9,9 @@ class GameCharacter extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
     protected $table = 'game_characters';
-    protected $primaryKey = 'en_name';
 
+    protected $primaryKey = 'en_name';
     public $keyType = 'string';
     public $incrementing = false;
 
