@@ -80,13 +80,14 @@ export default {
             this.sending = false;
 
             this.send_btn_name = '再次發送還需 ' + (_second--).toString() + ' 秒';
-            let cd = setInterval(() => {
-                this.send_btn_name = '再次發送還需 ' + (_second--).toString() + ' 秒';
-                if (_second === 0) {
+            let _cd = setInterval(() => {
+                if (_second > 0) {
+                    this.send_btn_name = '再次發送還需 ' + (_second--).toString() + ' 秒';
+                } else {
                     this.send_btn_name = '再次發送';
                     this.send_disable = this.check = false;
                     this.check_email();
-                    clearInterval(cd);
+                    clearInterval(_cd);
                 }
             }, 1000)
         },
@@ -100,7 +101,7 @@ export default {
             axios.post(url, {
                 email: this.email
             }).then((res) => {
-                this.$store.state.email = res.email;
+                this.$store.state.email = this.email = res.email;
                 this.$store.state.email_verify = res.email_verify;
                 this.cd(30);
             }).catch((err) => {
@@ -114,7 +115,7 @@ export default {
 
                     this.show_error(s);
                 } else {
-                    this.$store.state.email = err.data.email;
+                    this.$store.state.email = this.email = err.data.email;
                     this.$store.state.email_verify = err.data.email_verify;
                     this.show_error(err.data.message);
                 }

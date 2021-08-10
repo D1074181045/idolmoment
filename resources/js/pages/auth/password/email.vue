@@ -83,13 +83,14 @@ export default {
             this.sending = false;
 
             this.send_btn_name = '再次發送密碼重設還需 ' + (_second--).toString() + ' 秒';
-            let cd = setInterval(() => {
-                this.send_btn_name = '再次發送密碼重設還需 ' + (_second--).toString() + ' 秒';
-                if (_second === -1) {
+            let _cd = setInterval(() => {
+                if (_second > 0) {
+                    this.send_btn_name = '再次發送密碼重設還需 ' + (_second--).toString() + ' 秒';
+                } else {
                     this.send_btn_name = '再次發送密碼重設';
                     this.send_disable = this.check = false;
                     this.check_email();
-                    clearInterval(cd);
+                    clearInterval(_cd);
                 }
             }, 1000)
         },
