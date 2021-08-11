@@ -26,7 +26,9 @@ Route::middleware('auth')->group(function(){
 Route::get('{user}', [UserController::class, 'spa'])
     ->where('user', join('|', [
         'login', 'register', 'password/reset.*', 'email/verify/.*/.*'
-    ]))->name('user');
+    ]))
+    ->middleware('bs.sup')
+    ->name('user');
 
 Route::get('{home}', [HomeController::class, 'spa'])
     ->where('home', '^(?!api\/).*$') // 開頭非 "api/" 結尾任意
