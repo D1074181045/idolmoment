@@ -1,13 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Controller;
-use App\Models\GameInfo;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Redirect;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
@@ -22,6 +15,8 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('sitemap.xml', [ServiceController::class, 'getSitemap']);
 
 Route::middleware('auth')->group(function(){
     Route::get('logout', [UserController::class, 'logout'])->name('home.logout');
