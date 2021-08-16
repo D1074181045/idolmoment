@@ -22,7 +22,7 @@
 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 <!-- Primary Meta Tags -->
 <meta name="title" content="偶像時刻">
-<meta name="description" content="這是一個以Hololive為主題的二創遊戲，介面參考了mykirito.com">
+<meta name="description" content="偶像時刻, Hololive 二創網頁遊戲, 非營利相關, 網頁介面參考 我的桐人">
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet"/>
 <title>偶像時刻</title>
