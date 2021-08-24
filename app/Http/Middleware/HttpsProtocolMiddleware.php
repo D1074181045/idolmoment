@@ -18,7 +18,14 @@ class HttpsProtocolMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (env('APP_ENV') === 'production' && $_SERVER["HTTP_X_FORWARDED_PROTO"] != 'https') {
+		if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]))
+			$is_https = $_SERVER["HTTP_X_FORWARDED_PROTO"] === 'https';
+		else if (isset($_SERVER['HTTPS']))
+			$is_https = $_SERVER["HTTPS"] === 'on';
+		else
+			$is_https = false;
+
+        if (env('APP_ENV') === 'production' && !$is_https) {
             return redirect()->secure($request->getRequestUri());
         }
 
