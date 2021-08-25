@@ -18,7 +18,8 @@ export default {
 
 <style scoped>
 .show-hide-toggle-button {
-    margin-top: .7rem;
+    display: flex;
+    align-items: center;
 }
 
 .show-hide-toggle-button > input[type=checkbox] {

@@ -89,7 +89,7 @@ export default {
         if (this.own_character_list) this.default_select();
     },
     methods: {
-        onElementObserved: function (entries) {
+        onElementObserved: function (entries, observer) {
             entries.forEach((entry) => {
                 if (!entry.isIntersecting) {
                     return;
@@ -115,7 +115,7 @@ export default {
                     })
                 }
 
-                this.observer.unobserve(img);
+                observer.unobserve(img);
             });
         },
         default_select: function (item = 0) {
