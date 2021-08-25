@@ -91,6 +91,7 @@ try {
 
             this.load_my_profile().then(() => {
                 if (store.state.personal_profile_status) {
+                    this.keyup_unlock_character();
                     this.unlock_character_event();
                     this.danger_event();
                 }
@@ -123,29 +124,11 @@ try {
                     }
                 });
             },
-            unlock_character_event: function () {
-                function keyup_unlock_role (character_name) {
-                    const url = store.state.api_prefix.concat('unlock-character');
-                    axios.post(url, {
-                        character_name: character_name,
-                    })
-                }
-
-                function unlock_character_message (new_character_name) {
-                    let character = '<div style="color: #DC3545;">' + new_character_name + '</div>';
-
-                    return Swal.fire({
-                        title: "已解鎖新偶像",
-                        html: character,
-                        icon: "success",
-                        allowOutsideClick: false
-                    });
-                }
-
+            keyup_unlock_character: function () {
                 let key = "";
 
                 const surprises = [
-                    {'keyCode': "383840403737393966656665", 'character-name': "Akai Haato"}, // 上上下下左左右右BABA
+                    {'keyCode': "726567726577656772657765", 'character-name': "Akai Haato"}, // hachamachama
                     {'keyCode': "82828282", 'character-name': "Uruha Rushia"}, // rrrr
                     {'keyCode': "85668566", 'character-name': "Inugami Korone"} // ubub
                 ];
@@ -158,7 +141,7 @@ try {
 
                         surprises.forEach((surprise) => {
                             if (key === surprise['keyCode']) {
-                                keyup_unlock_role(surprise['character-name']);
+                                unlock_character(surprise['character-name']);
                                 return true;
                             } else if (surprise['keyCode'].includes(key)) {
                                 return true;
@@ -172,22 +155,41 @@ try {
                     }
                 })
 
+                function unlock_character (character_name) {
+                    const url = store.state.api_prefix.concat('unlock-character');
+                    axios.post(url, {
+                        character_name: character_name,
+                    })
+                }
+            },
+            unlock_character_event: function () {
                 Echo.private('unlock-character-channel-'.concat(store.state.profile.name))
                     .listen('.unlock-character-event', ({Character}) => {
                         console.log("DEBUG", '獲得新偶像', Character);
                         unlock_character_message(Character);
                     });
+
+                function unlock_character_message (new_character_name) {
+                    let character = '<div style="color: #DC3545;">' + new_character_name + '</div>';
+
+                    return Swal.fire({
+                        title: "已解鎖新偶像",
+                        html: character,
+                        icon: "success",
+                        allowOutsideClick: false
+                    });
+                }
             },
             danger_event: function () {
                 Echo.private('danger-channel-'.concat(store.state.profile.name))
                     .listen('.danger-event', ({type, message}) => {
                         console.log("DEBUG", '緊急事件', {type: type, message: message});
                         if (message) {
-                            if (this.clear_prompt_msg)
-                                clearTimeout(this.clear_prompt_msg);
+                            if (this.clear_prompt_msg) clearTimeout(this.clear_prompt_msg);
 
                             this.prompt_type = type;
                             this.prompt_msg = message;
+
                             this.load_my_profile().then(() => {
                                 store.state.prompt_count++;
                             });

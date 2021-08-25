@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Other;
+namespace App\Other;
 
 use Vinkla\Hashids\Facades\Hashids;
 

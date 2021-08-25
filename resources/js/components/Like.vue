@@ -61,13 +61,11 @@ export default {
             }
         },
         click_like: function (type) {
-            if (!this.can_seed)
-                return;
+            if (!this.can_seed) return;
 
             let url = this.api_prefix.concat('like');
 
-            if (this.like_select === type)
-                type = 'removelike';
+            if (this.like_select === type) type = 'removelike';
 
             axios.post(url, {
                 type: type,

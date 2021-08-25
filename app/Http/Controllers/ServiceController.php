@@ -13,6 +13,7 @@ class ServiceController extends Controller
         $sitemap->add(url('/'), Carbon::now());
         $sitemap->add(url('/login'), Carbon::now());
         $sitemap->add(url('/register'), Carbon::now());
+        $sitemap->add(url('/password/reset'), Carbon::now());
 
         return $sitemap->render('xml');
     }

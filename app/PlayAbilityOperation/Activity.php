@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Http\Other;
+namespace App\PlayAbilityOperation;
 
 
-class activity
+class Activity
 {
-    use other_fc;
+    use PatchSaveData;
 
     public $self = [];
 

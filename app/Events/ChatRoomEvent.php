@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\ChatRoom;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -31,9 +30,6 @@ class ChatRoomEvent implements ShouldBroadcast
      */
     public function __construct($name, $nickname, $message, $chat_created_at)
     {
-//        if (ChatRoom::all()->count() > 100)
-//            ChatRoom::query()->orderBy('created_at')->first()->delete();
-
         $this->name = $name;
         $this->nickname = $nickname;
         $this->message = $message;

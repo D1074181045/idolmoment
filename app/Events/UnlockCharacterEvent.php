@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Http\Other\UserNameCrypto;
+use App\Other\UserNameCrypto;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;

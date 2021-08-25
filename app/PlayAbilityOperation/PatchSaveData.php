@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Http\Other;
+namespace App\PlayAbilityOperation;
 
 
-trait other_fc
+trait PatchSaveData
 {
     /**
      * 修正資料儲存

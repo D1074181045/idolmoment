@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Http\Other;
+namespace App\PlayAbilityOperation;
 
-class operating
+class Operating
 {
-    use other_fc;
+    use PatchSaveData;
 
     public $self = [];
     public $opposite = [];
