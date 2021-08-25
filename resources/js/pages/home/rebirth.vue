@@ -159,10 +159,13 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
 .table {
     margin-bottom: 1px;
+
+    th {
+        width: 120px;
+    }
 }
 
 .current-select {
@@ -187,66 +190,61 @@ export default {
     -webkit-transition: all 0.2s ease 0s;
             transition: all 0.2s ease 0s;
     cursor: pointer;
-}
-
-.not-select:hover {
-    border-color: rgb(119, 119, 119);
+    &:hover {
+        border-color: rgb(119, 119, 119);
+    }
 }
 
 .character-frame {
     width: 50%;
-}
 
-.character-frame:first-child {
-    width: 50%;
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
-}
-
-.character-frame:nth-child(2) {
-    width: 50%;
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
-}
-
-.character-frame:nth-child(odd) {
-    width: 50%;
-    border-bottom: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
-}
-
-.character-frame:nth-child(even) {
-    width: 50%;
-    border-bottom: 1px solid var(--border-color);
-    border-right: 1px solid var(--border-color);
-}
-
-@media screen and (max-width: 640px) {
-    .character-frame {
-        width: 100%;
+    &:first-child {
+        width: 50%;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
         border-right: 1px solid var(--border-color);
         border-left: 1px solid var(--border-color);
+    }
+
+    &:nth-child(2) {
+        width: 50%;
+        border-top: 1px solid var(--border-color);
         border-bottom: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
     }
 
-    .character-frame:nth-child(odd) {
-        width: 100%;
+    &:nth-child(odd) {
+        width: 50%;
+        border-bottom: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+        border-left: 1px solid var(--border-color);
     }
 
-    .character-frame:nth-child(even) {
-        width: 100%;
+    &:nth-child(even) {
+        width: 50%;
+        border-bottom: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
     }
 
-    .character-frame:last-child {
-        width: 100%;
-    }
-}
+    @media screen and (max-width: 640px) {
+        & {
+            width: 100%;
+            border-right: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
 
-table th {
-    width: 120px;
+            &:nth-child(odd) {
+                width: 100%;
+            }
+
+            &:nth-child(even) {
+                width: 100%;
+            }
+
+            &:last-child {
+                width: 100%;
+            }
+        }
+    }
 }
 </style>

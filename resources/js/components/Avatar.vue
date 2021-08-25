@@ -51,44 +51,43 @@ export default {
 }
 </script>
 
-<style scoped>
-.img-big {
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    max-width: 160px;
-    background-color: rgb(255, 255, 255);
-}
+<style scoped lang="scss">
+    @mixin img_def {
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        background-color: rgb(255, 255, 255);
+    }
 
-.img-small {
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    max-width: 60px;
-    background-color: rgb(255, 255, 255);
-}
+    .img-big {
+        max-width: 160px;
+        @include img_def;
 
-.img-big > picture img {
-    height: 160px;
-    width: 160px;
-}
+        > picture img {
+            height: 160px;
+            width: 160px;
+        }
+    }
 
-.img-small > picture img {
-    height: 60px;
-    width: 60px;
-}
+    .img-small {
+        max-width: 60px;
+        @include img_def;
 
-img.lazyload.lazy-hidden {
-    transition: opacity 550ms ease-in;
-    opacity: 0;
-}
+        > picture img {
+            height: 60px;
+            width: 60px;
+        }
+    }
 
-img.lazyload.lazy-show {
-    transition: opacity 550ms ease-in;
-    opacity: 1;
-}
-
+    img.lazyload {
+        transition: opacity 550ms ease-in;
+        &.lazy-hidden {
+            opacity: 0;
+        }
+        &.lazy-show {
+            opacity: 1;
+        }
+    }
 </style>
 

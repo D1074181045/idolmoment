@@ -171,25 +171,28 @@ export default {
 }
 </script>
 
-<style scoped>
-table tbody {
-    display: block;
-    max-height: 500px;
-    overflow-y: scroll;
-}
+<style scoped lang="scss">
+table {
+    tbody {
+        display: block;
+        max-height: 500px;
+        overflow-y: scroll;
 
-table thead, tbody tr {
-    display: table;
-    width: 100%;
-}
+        tr {
+            display: table;
+            width: 100%;
+        }
+    }
 
-table thead {
-    width: calc(100% - 1em)
-}
+    thead {
+        display: table;
+        width: calc(100% - 1em);
 
-@media screen and (max-width: 600px) {
-    table thead {
-        width: calc(100%)
+        @media screen and (max-width: 768px) {
+            & {
+                width: calc(100%)
+            }
+        }
     }
 }
 </style>

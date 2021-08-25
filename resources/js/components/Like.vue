@@ -93,6 +93,7 @@ export default {
         margin: 0 8px;
         padding: unset;
     }
+
     a {
         cursor: pointer;
         display: flex;
