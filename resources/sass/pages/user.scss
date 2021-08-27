@@ -1,0 +1,16 @@
+.dark-swift-button {
+    margin: 0 32px !important;
+
+    @media screen and (max-width: 768px) {
+        position: inherit !important;
+    }
+
+    input[type=checkbox]:checked + label {
+        background-color: transparent !important;
+    }
+
+    > label {
+        height: 24px !important;
+        background-color: transparent !important;
+    }
+}

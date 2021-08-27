@@ -11,10 +11,6 @@ const mix = require('laravel-mix');
  |
  */
 
-// mix.options({
-//     extractVueStyles: true,
-// });
-
 if (mix.inProduction()) {
     mix.options({
         terser: {
@@ -31,11 +27,12 @@ if (mix.inProduction()) {
     });
 }
 
-
 mix
-    .js('resources/js/app/home.js', 'public/js/app.home.min.js')
     .js('resources/js/app/user.js', 'public/js/app.user.min.js')
+    .js('resources/js/app/home.js', 'public/js/app.home.min.js')
     .extract()
+    .sass('resources/sass/pages/home.scss', 'public/css/app.home.css')
+    .sass('resources/sass/pages/user.scss', 'public/css/app.user.css')
     .sass('resources/sass/app.scss', 'public/css')
     .styles(['resources/css/app.css', 'public/css/app.css'], 'public/css/app.css')
     .version();
