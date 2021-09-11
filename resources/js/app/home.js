@@ -211,7 +211,7 @@ try {
             Vue.prototype.first_load = false;
             next();
         } else {
-            if (to.name !== "create-profile" && to.name !== "update-password")
+            if (to.name !== "create-profile" && to.name !== "update.password" && to.name !== "verification.send")
                 next({name: "create-profile"});
             else
                 next();

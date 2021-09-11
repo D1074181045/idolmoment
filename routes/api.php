@@ -39,10 +39,10 @@ Route::middleware(['refresh.token'])->group(function(){
     Route::get('change-page', [HomeController::class, 'change_page']);
     Route::post('create-message', [HomeController::class, 'create_message']);
     Route::post('like', [HomeController::class, 'like']);
+    Route::post('email/send', [VerificationController::class, 'send']);
 });
 
 Route::post('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-Route::post('email/send', [VerificationController::class, 'send']);
 
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);

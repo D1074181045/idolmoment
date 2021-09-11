@@ -683,6 +683,8 @@ class HomeController extends Controller
         if (!GameInfo::query()->UserGameInfoBuilt($name)) {
             return response()->json([
                 'status' => 0,
+                'email' => $email,
+                'email_verify' => $email_verify,
                 'message' => '尚未創建'
             ]);
         }
@@ -709,9 +711,9 @@ class HomeController extends Controller
 
         return response()->json([
             'status' => 1,
-            'like_num' => $like_num,
             'email' => $email,
             'email_verify' => $email_verify,
+            'like_num' => $like_num,
             'dislike_num' => $dislike_num,
             'profile' => $self_game_info,
             'teetee_info' => $teetee_info,

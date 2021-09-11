@@ -58,12 +58,12 @@ const store = new Vuex.Store({
         },
         load_my_profile: function (state, res) {
             state.personal_profile_status = res.status;
+            state.email = res.email;
+            state.email_verify = res.email_verify;
 
             if (res.status) {
                 state.like_num = res.like_num;
                 state.dislike_num = res.dislike_num;
-                state.email = res.email;
-                state.email_verify = res.email_verify;
                 state.cool_down = res.cool_down;
                 state.profile = res.profile;
                 state.teetee_info = res.teetee_info;
@@ -99,7 +99,7 @@ const store = new Vuex.Store({
                     .then((res) => {
                         commit('load_my_profile', res);
                         resolve();
-                    }).catch(() => {
+                    }).catch((err) => {
                         state.personal_profile_status = false;
                         reject();
                     })
