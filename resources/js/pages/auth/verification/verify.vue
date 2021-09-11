@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import LightSwitch from "../../../components/LightSwitch";
+import LightSwitch from "~/components/LightSwitch";
 
 export default {
     data: function () {

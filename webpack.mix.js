@@ -1,3 +1,4 @@
+const { join } = require('path')
 const mix = require('laravel-mix');
 
 /*
@@ -10,6 +11,14 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+mix.webpackConfig({
+    resolve: {
+        alias: {
+            '~': join(__dirname, './resources/js')
+        }
+    }
+})
 
 if (mix.inProduction()) {
     mix.options({

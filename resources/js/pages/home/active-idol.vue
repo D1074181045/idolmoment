@@ -101,7 +101,7 @@
 <script>
 import {mapState, mapGetters} from "vuex";
 
-import Avatar from "../../components/Avatar";
+import Avatar from "~/components/Avatar";
 
 export default {
     data: function () {
@@ -186,8 +186,7 @@ export default {
             })
         },
         get_search_name: function () {
-            if (!this.search_name)
-                return;
+            if (!this.search_name) return;
 
             const url = this.api_prefix.concat('change-page');
 

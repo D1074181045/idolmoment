@@ -58,7 +58,7 @@
 
 <script>
 import { mapState } from "vuex";
-import Avatar from "../../components/Avatar";
+import Avatar from "~/components/Avatar";
 
 export default {
     data: function () {
@@ -227,23 +227,21 @@ export default {
     }
 
     @media screen and (max-width: 640px) {
-        & {
+        width: 100%;
+        border-right: 1px solid var(--border-color);
+        border-left: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+
+        &:nth-child(odd) {
             width: 100%;
-            border-right: 1px solid var(--border-color);
-            border-left: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+        }
 
-            &:nth-child(odd) {
-                width: 100%;
-            }
+        &:nth-child(even) {
+            width: 100%;
+        }
 
-            &:nth-child(even) {
-                width: 100%;
-            }
-
-            &:last-child {
-                width: 100%;
-            }
+        &:last-child {
+            width: 100%;
         }
     }
 }

@@ -35,10 +35,9 @@
 </template>
 
 <script>
-import CardFooter from "../../../components/CardFooter";
+import CardFooter from "~/components/CardFooter";
 import {mapGetters, mapMutations, mapState} from "vuex";
-
-let legalityKey = new RegExp("^\\w{1,255}@[a-zA-Z0-9]{2,63}\\.[a-zA-Z]{2,63}(\\.[a-zA-Z]{2,63})*$");
+import {email_re} from "~/regex";
 
 export default {
     data() {
@@ -70,7 +69,7 @@ export default {
             'show_error'
         ]),
         check_email:function() {
-            this.illegal = !legalityKey.test(this.email);
+            this.illegal = !email_re.test(this.email) || this.email.length > 255;
 
             if (!this.check)
                 this.send_disable = this.illegal;

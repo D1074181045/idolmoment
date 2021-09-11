@@ -222,10 +222,10 @@
 </template>
 
 <script>
-import {msg} from '../../styles';
+import {msg} from '~/styles';
 import {mapActions, mapGetters, mapState} from "vuex";
-import Avatar from "../../components/Avatar";
-import Like from "../../components/Like";
+import Avatar from "~/components/Avatar";
+import Like from "~/components/Like";
 
 export default {
     data: function () {

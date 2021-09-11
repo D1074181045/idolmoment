@@ -23,7 +23,7 @@ trait UserNameCrypto
      * @param $data
      * @param string $key
      */
-    public function UsersNameEncrypt(&$data, string $key = 'name') {
+    public static function UsersNameEncrypt(&$data, string $key = 'name') {
         foreach ($data as $index => $value) {
             $data[$index]->{$key} = Hashids::encodeHex(bin2hex($data[$index]->{$key}));
         }
@@ -35,7 +35,7 @@ trait UserNameCrypto
      * @param $data
      * @param string $key
      */
-    public function UserNameEncrypt(&$data, string $key = 'name') {
+    public static function UserNameEncrypt(&$data, string $key = 'name') {
         $data->{$key} = Hashids::encodeHex(bin2hex($data->{$key}));
     }
 

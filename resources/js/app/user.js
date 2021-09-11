@@ -1,13 +1,13 @@
 import Vue from 'vue';
 
-import store from '../store';
-import router from '../router/user';
+import store from '~/store';
+import router from '~/router/user';
 
-import Loading from '../components/Loading'
+import Loading from '~/components/Loading';
 
 try {
-    require('../plugins/bootstrap');
-    require('../plugins/axios');
+    require('~/plugins/bootstrap');
+    require('~/plugins/axios');
 
     router.beforeEach((to, from, next) => {
         router.app.$nextTick(() => {

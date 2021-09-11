@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {msg} from '../../styles';
+import {msg} from '~/styles';
 import {mapActions, mapState} from "vuex";
 
 var put_bottom = true;
@@ -96,6 +96,7 @@ export default {
         },
         get_chats: function () {
             const url = this.api_prefix.concat('get-chats');
+
             axios.get(url)
                 .then((res) => {
                     if (res.status) {
@@ -131,8 +132,7 @@ export default {
                 });
         },
         create_message: function () {
-            if (this.chat_ban.status)
-                return;
+            if (this.chat_ban.status) return;
 
             let url = this.api_prefix.concat('create-message');
             this.chat_ban.status = true;
@@ -189,9 +189,7 @@ table {
         width: calc(100% - 1em);
 
         @media screen and (max-width: 768px) {
-            & {
-                width: calc(100%)
-            }
+            width: calc(100%);
         }
     }
 }

@@ -2,11 +2,11 @@ import Vue from 'vue';
 
 import {mapActions} from "vuex";
 
-import store from '../store';
-import router from "../router/home";
+import store from '~/store';
+import router from "~/router/home";
 
-import LightSwitch from "../components/LightSwitch";
-import Loading from '../components/Loading'
+import LightSwitch from "~/components/LightSwitch";
+import Loading from '~/components/Loading';
 
 class vue_global {
     static variables() {
@@ -29,7 +29,7 @@ class vue_global {
 }
 
 try {
-    require('../plugins');
+    require('~/plugins');
 
     window.axios.interceptors.request.use(
         function (config) {

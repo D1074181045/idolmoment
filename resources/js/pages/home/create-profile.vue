@@ -29,8 +29,9 @@
 </template>
 
 <script>
-import CardFooter from "../../components/CardFooter";
+import CardFooter from "~/components/CardFooter";
 import {mapGetters, mapMutations, mapState} from "vuex";
+import {nickname_re} from "~/regex";
 
 export default {
     data: function () {
@@ -57,13 +58,10 @@ export default {
             'show_error'
         ]),
         ban_build: function () {
-            const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9]+$");
-
-            this.build_disabled = !this.nickname.match(legalityKey) || this.nickname.length === 0 || this.nickname.length > 12;
+            this.build_disabled = !nickname_re.test(this.nickname);
         },
         build: function () {
-            if (this.build_disabled)
-                return;
+            if (this.build_disabled) return;
 
             const url = this.api_prefix.concat('store-profile');
             this.creating = true;

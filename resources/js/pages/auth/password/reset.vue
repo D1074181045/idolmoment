@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import CardFooter from "../../../components/CardFooter";
-import LightSwitch from "../../../components/LightSwitch";
-import PasswordToggleButton from "../../../components/PasswordToggleButton";
+import CardFooter from "~/components/CardFooter";
+import LightSwitch from "~/components/LightSwitch";
+import PasswordToggleButton from "~/components/PasswordToggleButton";
 
 import {mapGetters, mapMutations, mapState} from "vuex";
 

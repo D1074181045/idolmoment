@@ -146,12 +146,11 @@
 </template>
 
 <script>
-import {msg} from '../../styles';
+import {msg} from '~/styles';
 import {mapState, mapGetters, mapActions} from "vuex";
-import Avatar from "../../components/Avatar";
-import Like from "../../components/Like";
-
-const legalityKey = new RegExp("^[\u3100-\u312f\u4e00-\u9fa5a-zA-Z0-9 ]+$");
+import Avatar from "~/components/Avatar";
+import Like from "~/components/Like";
+import {signature_re, teetee_re} from "~/regex";
 
 export default {
     data: function () {
@@ -236,21 +235,14 @@ export default {
             'cool_down_rec'
         ]),
         ban_signature: function () {
-            if (this.signature) {
-                this.class_signature_disabled = !legalityKey.test(this.signature) || this.signature.length > 30;
-            } else {
-                this.class_signature_disabled = false;
-            }
+            this.class_signature_disabled = !signature_re.test(this.signature);
 
             if (!this.signature_ban.time) {
                 this.signature_ban.status = this.class_signature_disabled;
             }
         },
         set_teetee: function () {
-            if (this.teetee !== null) {
-                if (this.teetee.length > 12 || !legalityKey.test(this.teetee) && this.teetee.length !== 0)
-                    return;
-            }
+            if (!teetee_re.test(this.teetee)) return;
 
             const url = this.api_prefix.concat('update-teetee');
 
@@ -270,8 +262,7 @@ export default {
             })
         },
         set_signature: function () {
-            if (this.signature_ban.status)
-                return;
+            if (this.signature_ban.status) return;
 
             const url = this.api_prefix.concat('update-signature');
             this.signature_ban.status = true;
@@ -290,8 +281,7 @@ export default {
             });
         },
         do_activity: function (activity_type) {
-            if (this.activity_ban.status)
-                return;
+            if (this.activity_ban.status) return;
 
             const url = this.api_prefix.concat('activity');
             this.activity_ban.status = true;

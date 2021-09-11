@@ -4,9 +4,10 @@
     }
 }
 
-.navbar-toggler:focus,
-.navbar-toggler:hover {
-    outline: 0;
+.navbar-toggler {
+    &:focus, &:hover {
+        outline: 0;
+    }
 }
 
 .navbar-nav .nav-link {
@@ -79,9 +80,8 @@ td {
     }
 }
 
-@include phone {
-    .navbar-collapse {
-        padding: 0 !important;
+.navbar-collapse {
+    @include phone {
+        padding: 0;
     }
 }
-
