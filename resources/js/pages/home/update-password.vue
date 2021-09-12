@@ -67,7 +67,7 @@
 import CardFooter from "~/components/CardFooter";
 import PasswordToggleButton from "~/components/PasswordToggleButton";
 
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
     data: function () {
@@ -99,9 +99,6 @@ export default {
         ])
     },
     methods: {
-        ...mapMutations([
-            'show_error'
-        ]),
         old_password_toggle_button: function (e) {
             this.old_password_show = e.target.checked;
         },
@@ -128,19 +125,7 @@ export default {
                 if (res.status) {
                     this.$router.push({name: 'index'}).catch(() => {});
                 }
-            }).catch((err) => {
-                if (err.status === 422) {
-                    let s = "";
-                    let errors = err.data.errors;
-
-                    Object.keys(errors).forEach((error) => {
-                        s += errors[error] + '\n';
-                    });
-
-                    this.show_error(s);
-                } else {
-                    this.show_error(err.data.message);
-                }
+            }).catch(() => {
                 this.new_password = this.new_password_confirmation = "";
                 this.updating = this.update_password_disabled = false;
                 this.ban_update_password();

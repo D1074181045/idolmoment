@@ -30,7 +30,7 @@
 
 <script>
 import CardFooter from "~/components/CardFooter";
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import {nickname_re} from "~/regex";
 
 export default {
@@ -54,9 +54,6 @@ export default {
         ])
     },
     methods: {
-        ...mapMutations([
-            'show_error'
-        ]),
         ban_build: function () {
             this.build_disabled = !nickname_re.test(this.nickname);
         },
@@ -72,22 +69,9 @@ export default {
                 if (res.status) {
                     document.location.href = '/';
                 }
-            }).catch((err) => {
-                if (err.status === 422) {
-                    let s = "";
-                    let errors = err.data.errors;
-
-                    Object.keys(errors).forEach((error) => {
-                        s += errors[error] + '\n';
-                    });
-
-                    this.show_error(s);
-                } else {
-                    this.show_error(err.data.message);
-                }
+            }).catch(() => {
                 this.build_disabled = this.creating = false;
             });
-
         },
     }
 }

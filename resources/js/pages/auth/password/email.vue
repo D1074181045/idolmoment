@@ -106,19 +106,7 @@ export default {
                 this.alert_status = true;
                 this.show_error(res.message);
                 this.cd(30);
-            }).catch((err) => {
-                if (err.status === 422) {
-                    let s = "";
-                    let errors = err.data.errors;
-
-                    Object.keys(errors).forEach((error) => {
-                        s += errors[error] + '\n';
-                    });
-
-                    this.show_error(s);
-                } else {
-                    this.show_error(err.data.message);
-                }
+            }).catch(() => {
                 this.alert_status = this.send_disable = this.sending = false;
             })
         }

@@ -65,7 +65,7 @@ import CardFooter from "~/components/CardFooter";
 import LightSwitch from "~/components/LightSwitch";
 import PasswordToggleButton from "~/components/PasswordToggleButton";
 
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
     data: function () {
@@ -102,9 +102,6 @@ export default {
         this.token = route.params.token;
     },
     methods: {
-        ...mapMutations([
-            'show_error'
-        ]),
         back: function () {
             this.$router.push({name: 'login'});
         },
@@ -129,19 +126,7 @@ export default {
                 password_confirmation: this.password_confirmation
             }).then(() => {
                 this.$router.push({name: 'login'});
-            }).catch((err) => {
-                if (err.status === 422) {
-                    let s = "";
-                    let errors = err.data.errors;
-
-                    Object.keys(errors).forEach((error) => {
-                        s += errors[error] + '\n';
-                    });
-
-                    this.show_error(s);
-                } else {
-                    this.show_error(err.data.message);
-                }
+            }).catch(() => {
                 this.send_reset_pwd_disabled = false;
             }).finally(() => {
                 this.sending = false;

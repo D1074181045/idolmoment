@@ -54,10 +54,24 @@ export default {
     },
     methods: {
         status_href: function (status) {
-            return status ? '/' : '/email/send';
+            switch (status) {
+                case 0:
+                    return '/email/send';
+                case 2:
+                    return '/login';
+                default:
+                    return '/';
+            }
         },
         status_str: function (status) {
-            return status ? '返回首頁' : '返回郵件驗證';
+            switch (status) {
+                case 0:
+                    return '返回郵件驗證';
+                case 2:
+                    return '前往登入';
+                default:
+                    return '返回首頁';
+            }
         },
         alert_class: function (success) {
             return success ? 'alert-success' : 'alert-danger';

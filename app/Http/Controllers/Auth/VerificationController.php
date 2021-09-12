@@ -7,13 +7,13 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class VerificationController extends Controller
 {
@@ -106,11 +106,8 @@ class VerificationController extends Controller
     public function verify(Request $request)
     {
         try {
-            if (!$request->user()) {
-                return response()->json([
-                    'status' => 1,
-                    'message' => '郵件驗證失敗，請先登入在驗證',
-                ], 400);
+            if ($request->user() != JWTAuth::parseToken()->authenticate()) {
+                throw new JWTException;
             }
 
             if (!hash_equals((string)$request->route('id'), (string)$request->user()->getKey())) {
@@ -120,18 +117,24 @@ class VerificationController extends Controller
             if (!hash_equals((string)$request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
                 throw new AuthorizationException;
             }
-
-        } catch (AuthorizationException $e) {
+        } catch (JWTException $e) {
             return response()->json([
-                'status' => 0,
-                'message' => '郵件驗證失敗，驗證碼無效',
+                'status' => 2,
+                'message' => '郵件驗證失敗，請重新登入再驗證',
             ], 400);
+        } catch (AuthorizationException $e) {
+            if (!$request->user()->hasVerifiedEmail()) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => '郵件驗證失敗，驗證碼無效',
+                ], 400);
+            }
         }
 
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json([
                 'status' => 1,
-                'message' => '你的郵件已驗證',
+                'message' => '該用戶郵件已驗證',
             ], 400);
         }
 

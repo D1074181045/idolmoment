@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Models\GameInfo;
 use App\Models\OwnCharacter;
 use App\Models\User;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +20,34 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
+    use AuthenticatesUsers, ThrottlesLogins;
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'username';
+    }
+
     /**
      * 登入訊息
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws ValidationException
      */
     function login(Request $request)
     {
+        if (method_exists($this,'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
+
+            $this->fireLockoutEvent($request);
+            $this->sendLockoutResponse($request);
+        }
+
         try {
             $this->validate($request, [
                 'username' => ['required'],
@@ -40,6 +62,8 @@ class UserController extends Controller
             $input_data = ['name' => $username, 'password' => $password];
 
             if (!$token = JWTAuth::attempt($input_data, $autologin)) {
+                $this->incrementLoginAttempts($request);
+
                 return response()->json([
                     'status' => 0,
                     'message' => "錯誤：登入失敗，帳號或密碼不正確。"
@@ -64,6 +88,7 @@ class UserController extends Controller
             }
 
             Auth::attempt($input_data, false);
+            $this->sendLoginResponse($request);
 
             return response()->json([
                 'status' => 1,

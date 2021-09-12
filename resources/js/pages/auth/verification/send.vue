@@ -36,7 +36,7 @@
 
 <script>
 import CardFooter from "~/components/CardFooter";
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import {email_re} from "~/regex";
 
 export default {
@@ -65,9 +65,6 @@ export default {
         this.check_email();
     },
     methods: {
-        ...mapMutations([
-            'show_error'
-        ]),
         check_email:function() {
             this.illegal = !email_re.test(this.email) || this.email.length > 255;
 
@@ -104,20 +101,11 @@ export default {
                 this.$store.state.email_verify = res.email_verify;
                 this.cd(30);
             }).catch((err) => {
-                if (err.status === 422) {
-                    let s = "";
-                    let errors = err.data.errors;
-
-                    Object.keys(errors).forEach((error) => {
-                        s += errors[error] + '\n';
-                    });
-
-                    this.show_error(s);
-                } else {
+                if (err.data.email)
                     this.$store.state.email = this.email = err.data.email;
+                if (err.data.email_verify)
                     this.$store.state.email_verify = err.data.email_verify;
-                    this.show_error(err.data.message);
-                }
+
                 this.send_disable = this.sending = false;
             })
         }

@@ -63,7 +63,7 @@ import CardFooter from '~/components/CardFooter';
 import LightSwitch from '~/components/LightSwitch';
 import PasswordToggleButton from "~/components/PasswordToggleButton";
 
-import {mapGetters, mapMutations, mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
     data: function () {
@@ -93,9 +93,6 @@ export default {
         ])
     },
     methods: {
-        ...mapMutations([
-            'show_error'
-        ]),
         password_toggle_button: function (e) {
             this.password_show = e.target.checked;
         },
@@ -129,19 +126,7 @@ export default {
                     localStorage.token = res.token;
                     document.location.href = "/";
                 }
-            }).catch((err) => {
-                if (err.status === 422) {
-                    let s = "";
-                    let errors = err.data.errors;
-
-                    Object.keys(errors).forEach((error) => {
-                        s += errors[error] + '\n';
-                    });
-
-                    this.show_error(s);
-                } else {
-                    this.show_error(err.data.message);
-                }
+            }).catch(() => {
                 this.password = "";
                 this.autologin = this.logging = false;
                 this.ban_login();

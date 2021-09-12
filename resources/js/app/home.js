@@ -47,7 +47,7 @@ try {
             })
             return response;
         },
-        function (error) {
+        function () {
             router.app.$nextTick(() => {
                 router.app.$refs.loading.finish(false);
             })
@@ -87,8 +87,6 @@ try {
             }
         },
         created() {
-            window.axios.defaults.headers.common['Authorization'] = 'Bearer'.concat(' ', localStorage.token);
-
             this.load_my_profile().then(() => {
                 if (store.state.personal_profile_status) {
                     this.keyup_unlock_character();
@@ -211,10 +209,14 @@ try {
             Vue.prototype.first_load = false;
             next();
         } else {
-            if (to.name !== "create-profile" && to.name !== "update.password" && to.name !== "verification.send")
+            if (to.name !== "create-profile" &&
+                to.name !== "update.password" &&
+                to.name !== "verification.send") {
+
                 next({name: "create-profile"});
-            else
+            } else {
                 next();
+            }
             router.app.$nextTick(() => {
                 router.app.$refs.loading.finish(true);
             })
