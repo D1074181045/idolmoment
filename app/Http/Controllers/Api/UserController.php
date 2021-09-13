@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Auth\ThrottlesLogins;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\CreateUserRequest;
@@ -9,8 +10,6 @@ use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Models\GameInfo;
 use App\Models\OwnCharacter;
 use App\Models\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +19,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-    use AuthenticatesUsers, ThrottlesLogins;
+    use ThrottlesLogins;
 
     /**
      * Get the login username to be used by the controller.
@@ -70,6 +69,8 @@ class UserController extends Controller
                 ], 400);
             }
 
+            $this->clearLoginAttempts($request);
+
             if ($autologin) {
                 Auth::attempt($input_data, true);
 
@@ -88,7 +89,6 @@ class UserController extends Controller
             }
 
             Auth::attempt($input_data, false);
-            $this->sendLoginResponse($request);
 
             return response()->json([
                 'status' => 1,
