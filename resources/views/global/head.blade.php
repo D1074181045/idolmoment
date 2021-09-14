@@ -1,11 +1,11 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-40FCBBVWVM"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J4QD1NT7ZP"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    gtag('config', 'G-40FCBBVWVM');
+  gtag('config', 'G-J4QD1NT7ZP');
 </script>
 <!-- Required meta tags -->
 <meta charset="utf-8">
