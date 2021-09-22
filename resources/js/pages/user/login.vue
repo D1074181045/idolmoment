@@ -115,12 +115,10 @@ export default {
             const url = this.api_prefix.concat('login');
             this.$refs.login.focus();
 
-            axios.get(url, {
-                params: {
-                    username: this.username,
-                    password: this.password,
-                    autologin: this.autologin
-                }
+            axios.post(url, {
+                username: this.username,
+                password: this.password,
+                autologin: this.autologin
             }).then((res) => {
                 if (res.status) {
                     localStorage.token = res.token;

@@ -732,6 +732,11 @@ class HomeController extends Controller
     {
         $opposite_name = $this->UserNameDecrypt($name);
 
+        if (!$opposite_name)
+            return response()->json([
+                'error' => "not found"
+            ], 400);
+
         $opposite_game_info = GameInfo::query()->with(['GameCharacter' => function ($query) {
             $query->select('tc_name', 'en_name', 'img_file_name');
         }])->findOrFail($opposite_name, [

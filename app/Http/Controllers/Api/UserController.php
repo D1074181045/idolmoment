@@ -54,9 +54,9 @@ class UserController extends Controller
                 'autologin' => ['required']
             ]);
 
-            $username = strtolower($request->get('username'));
-            $password = $request->get('password');
-            $autologin = filter_var($request->get('autologin'), FILTER_VALIDATE_BOOLEAN);
+            $username = strtolower($request->post('username'));
+            $password = $request->post('password');
+            $autologin = filter_var($request->post('autologin'), FILTER_VALIDATE_BOOLEAN);
 
             $input_data = ['name' => $username, 'password' => $password];
 
